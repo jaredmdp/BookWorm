@@ -1,7 +1,7 @@
 
 # BookWorm
 
-*Brief intro Vision statement goes here*
+BookWorm will be a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
 
 ## Iteration Documents
 For the markers:
@@ -14,7 +14,7 @@ For the markers:
 
 
 ## Vision Statement
-- Our [Vision Statement](#) for Iteration 0
+- Our [Vision Statement](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/docs/Vision%20Statement.md) for Iteration 0
 
 
 ## Iteration Milestones
