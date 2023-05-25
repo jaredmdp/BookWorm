@@ -1,6 +1,6 @@
 # Vision Statement
 
-BookWorm will be a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts. Our application will allow readers to discover and connect with other people through books that align with their interests.
+BookWorm will be a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
 
 The application is designed with a primary focus on providing readers with a way to discover books based on their reading preferences. It will allow the readers to create reading wish lists, filter by their favorite genres, search for authors, rate their favorite books, purchase books and leave comments on their favorite books. The readers will also have access to a profile which remembers their preferences. Authors will have similar functionalities as readers, with the addition of being able to showcase their own books to be discovered by users.
 
