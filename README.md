@@ -3,38 +3,19 @@
 
 BookWorm will be a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
 
-## Iteration Documents
-For the markers:
-
-[Iteration 1](#)
-
-[Iteration 2](#)
-
-[Iteration 3](#)
-
 
 ## Vision Statement
 - Our [Vision Statement](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/docs/Vision%20Statement.md) for Iteration 0
 
 
 ## Iteration Milestones
-
+*Each milestone contains its respective documents.*
 - [Iteration 1](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/milestones/2#tab-issues)
 - [Iteration 2](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/milestones/3#tab-issues)
 - [Iteration 3](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/milestones/4#tab-issues)
 
 
-
-## Features
-- [Feature List]
-
-
-## User Stories
-- [User Story List]
-
-
-## Developer Tasks
-- [Developer Task List]
+## [Features | User Stories | Devloper Tasks](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/boards/253)
 
 
 ## Architecture
@@ -50,7 +31,7 @@ For the markers:
 
 
 ## Retrospective
-- Out document for [Retrospective]
+- Our document for [Retrospective](link)
 
 ## Tests
 - [UnitTests](link)
