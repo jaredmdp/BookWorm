@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.honda.bookworm.R;
 
-public class UserLogin extends AppCompatActivity {
+public class UserLogin_ViewHandler extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

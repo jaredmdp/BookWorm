@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="BookWorm.View.user_login">
+    tools:context="BookWorm.View.UserLogin_ViewHandler">
 
     <TextView
         android:id="@+id/userlogin_login_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="75dp"
         android:text="User Login"
         android:textAlignment="center"
         android:textAllCaps="false"
@@ -53,7 +53,7 @@
         android:id="@+id/userlogin_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="35dp"
         android:backgroundTint="@color/worm_skin"
         android:fontFamily="sans-serif-black"
         android:paddingHorizontal="50dp"
@@ -69,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        android:focusable="true"
         android:clickable="true"
         android:text="not a user? Signup!"
         android:textAlignment="center"
@@ -77,7 +78,6 @@
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toBottomOf="@+id/userlogin_login_button"
 
         />
@@ -85,12 +85,14 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginStart="-30dp"
-        android:layout_marginBottom="-10dp"
+        android:adjustViewBounds="true"
         android:alpha=".8"
+        android:focusableInTouchMode="false"
         android:src="@drawable/welcoming_worm"
+        android:translationX="-25dp"
+        android:translationY="-10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />.
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
