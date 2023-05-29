@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BookWorm</string>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="user_name">Username</string>
+    <string name="password">Password</string>
 </resources>
