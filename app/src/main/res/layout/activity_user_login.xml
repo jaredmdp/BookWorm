@@ -66,6 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/userlogin_password_input" />
 
     <TextView
+        android:id="@+id/userlogin_signup_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
