@@ -13,18 +13,6 @@
         android:theme="@style/Theme.BookWorm"
         tools:targetApi="31">
 
-<!-- **ONLY ONE ACTIVITY ACTIVE AT A TIME** -->
-
-<!--Signup page : Before commenting out comment the other activities-->
-<!--        <activity-->
-<!--            android:name="BookWorm.View.UserSignup_ViewHandler"-->
-<!--            android:exported="true" >-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
         <activity
             android:name="BookWorm.View.UserLogin_ViewHandler"
             android:exported="true">
@@ -34,6 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--user signup page-->
+        <activity android:name="BookWorm.View.UserSignup_ViewHandler"/>
 
     </application>
 
