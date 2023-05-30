@@ -61,6 +61,7 @@
         android:text="Login"
         android:textSize="25sp"
         android:textStyle="bold"
+        android:onClick="userLoginButtonClicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userlogin_password_input" />
@@ -72,6 +73,7 @@
         android:layout_marginTop="25dp"
         android:focusable="true"
         android:clickable="true"
+        android:onClick="userSignUpLinkClicked"
         android:text="not a user? Signup!"
         android:textAlignment="center"
         android:textAllCaps="false"

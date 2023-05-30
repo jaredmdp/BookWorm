@@ -23,9 +23,6 @@ public class UserLogin_ViewHandler extends AppCompatActivity {
         setContentView(R.layout.activity_user_login);
 
         stylizeLink();
-
-        listenSignupLinkText();
-        listenClickOnLoginButton();
     }
 
     private void stylizeLink() {
@@ -34,42 +31,30 @@ public class UserLogin_ViewHandler extends AppCompatActivity {
     }
 
 
-    private void listenSignupLinkText(){
-        TextView linkToSignup = findViewById(R.id.userlogin_signup_link);
-        linkToSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserSignup_ViewHandler.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-
-    private void listenClickOnLoginButton() {
-        Button loginButton = findViewById(R.id.userlogin_login_button);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                proceedToLogin();
-            }
-        });
-    }
-
     private void proceedToLogin(){
         EditText usernameInput = (EditText) findViewById(R.id.userlogin_username_input);
         EditText passwordInput = (EditText) findViewById(R.id.userlogin_password_input);
 
         String msg = String.format("Username: %s \nPassword: %s", usernameInput.getText(),
-                passwordInput.getText());
-
+                passwordInput.getText()); //TO REMOVE
 
         //toast makes the popup notification on the screen
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show(); // TO REMOVE
+
+        /*TO DO
+            - input validation
+            - show appropriate msg if error
+            - move to next Activity
+         */
     }
 
 
+    public void userLoginButtonClicked(View view) {
+        proceedToLogin();
+    }
 
-
-
+    public void userSignUpLinkClicked(View view) {
+        Intent intent = new Intent(getApplicationContext(), UserSignup_ViewHandler.class);
+        startActivity(intent);
+    }
 }
