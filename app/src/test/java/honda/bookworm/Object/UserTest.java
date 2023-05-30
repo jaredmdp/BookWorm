@@ -1,10 +1,9 @@
-package TestBookWorm.Object;
+package honda.bookworm.Object;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import BookWorm.Object.User;
-import BookWorm.Object.Book;
+import honda.bookworm.Object.User;
 
 public class UserTest {
 

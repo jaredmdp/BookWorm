@@ -1,4 +1,4 @@
-package BookWorm.View;
+package honda.bookworm.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
