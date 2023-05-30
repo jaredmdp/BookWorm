@@ -8,12 +8,28 @@
 
 
     <ImageView
+        android:id="@+id/signup_user_img"
         android:layout_width="350dp"
         android:layout_height="300dp"
         android:alpha=".5"
+        android:contentDescription="User image bottom right of page"
         android:src="@drawable/person_icon"
         android:translationX="100dp"
         android:translationY="50dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/signup_author_img"
+        android:layout_width="300dp"
+        android:layout_height="275dp"
+        android:alpha=".5"
+        android:contentDescription="Image of a quill at the bottom right of the page"
+        android:src="@drawable/author_pen"
+        android:translationX="50dp"
+        android:translationY="5dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -21,6 +37,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
+        android:contentDescription="Peeking worm from the top left corner of the screen"
         android:src="@drawable/worm_hearteyes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -105,6 +122,7 @@
         android:layout_marginTop="20sp"
         android:text="I am an author"
         android:textSize="20sp"
+        android:onClick="isAuthorCheckBoxClicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_password_input" />
@@ -122,6 +140,7 @@
         android:text="@string/sign_up"
         android:textSize="23sp"
         android:textStyle="bold"
+        android:onClick="isSignupButtonClicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_is_author_checkbox" />
