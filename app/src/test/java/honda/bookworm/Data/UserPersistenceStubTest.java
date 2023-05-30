@@ -1,4 +1,4 @@
-package TestBookWorm.Data;
+package honda.bookworm.Data;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import BookWorm.Data.Stubs.UserPersistenceStub;
-import BookWorm.Object.User;
+import honda.bookworm.Data.Stubs.UserPersistenceStub;
+import honda.bookworm.Object.User;
 
 public class UserPersistenceStubTest {
     private UserPersistenceStub userStub;

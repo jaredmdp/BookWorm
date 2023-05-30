@@ -1,8 +1,8 @@
-package BookWorm.Data;
+package honda.bookworm.Data;
 
 import java.util.List;
 
-import BookWorm.Object.User;
+import honda.bookworm.Object.User;
 
 public interface UserPersistence {
     List<User> getAllUsers();

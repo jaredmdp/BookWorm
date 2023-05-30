@@ -1,11 +1,11 @@
-package BookWorm.Data.Stubs;
+package honda.bookworm.Data.Stubs;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import BookWorm.Object.User;
+import honda.bookworm.Object.User;
 
-import BookWorm.Data.UserPersistence;
+import honda.bookworm.Data.UserPersistence;
 
 public class UserPersistenceStub implements UserPersistence {
     private List<User> users;

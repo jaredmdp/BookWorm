@@ -1,4 +1,4 @@
-package BookWorm.Object;
+package honda.bookworm.Object;
 
 import java.util.Objects;
 
