@@ -1,7 +1,10 @@
-package honda.bookworm.Object;
+package honda.bookworm.tests.Object;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import honda.bookworm.Object.Author;
+import honda.bookworm.Object.Book;
 
 public class AuthorTest {
 
