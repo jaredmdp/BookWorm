@@ -1,13 +1,12 @@
-package honda.bookworm;
+package honda.bookworm.tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import honda.bookworm.Data.UserPersistence;
-import honda.bookworm.Data.UserPersistenceStubTest;
-import honda.bookworm.Object.BookTest;
-import honda.bookworm.Object.UserTest;
-import honda.bookworm.Object.AuthorTest;
+import honda.bookworm.tests.Data.UserPersistenceStubTest;
+import honda.bookworm.tests.Object.BookTest;
+import honda.bookworm.tests.Object.UserTest;
+import honda.bookworm.tests.Object.AuthorTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
