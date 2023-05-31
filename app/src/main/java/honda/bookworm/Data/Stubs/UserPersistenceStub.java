@@ -25,47 +25,35 @@ public class UserPersistenceStub implements UserPersistence {
 
     @Override
     public User getUserByUsername(String currentUsername) {
+        User user = null;
         for(int i = 0; i < users.size(); i++){
             if(users.get(i).getUsername().equalsIgnoreCase(currentUsername)){
-                return users.get(i);
+                user = users.get(i);
             }
         }
-        return null;
+        return user;
     }
 
     @Override
     public User addUser(User currentUser) {
-        boolean duplicate = users.contains(currentUser);
-
-        //check duplicate
-        if(!duplicate){
-            users.add(currentUser);
-            return currentUser;
-        }
-        return null;
+        users.add(currentUser);
+        return currentUser;
     }
 
     @Override
     public User updateUser(User currentUser, User updateUser) {
         int index = users.indexOf(currentUser);
 
-        //check exist
-        if(index >= 0){
-            users.set(index,updateUser);
-            return updateUser;
-        }
-        return null;
+        users.set(index,updateUser);
+        return updateUser;
+
     }
 
     @Override
     public User removeUser(User currentUser) {
         int index = users.indexOf(currentUser);
 
-        //check exist
-        if(index >= 0){
-            users.remove(index);
-            return currentUser;
-        }
-        return null;
+        users.remove(index);
+        return currentUser;
     }
 }

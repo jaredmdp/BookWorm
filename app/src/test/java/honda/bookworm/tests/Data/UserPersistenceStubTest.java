@@ -37,8 +37,8 @@ public class UserPersistenceStubTest {
     }
 
     @Test
-    public void testGetUserByUsernameValid(){
-        System.out.println("\nStarting GetUserByUsernameValid");
+    public void testGetUserByUsername(){
+        System.out.println("\nStarting GetUserByUsername");
 
         User user = userStub.getUserByUsername("johndoe");
         User userTest = new User("John", "Doe", "johndoe", "password1");
@@ -47,45 +47,23 @@ public class UserPersistenceStubTest {
         assertNotNull(userTest);
         assertTrue(user.equals(userTest));
 
-        System.out.println("\nFinished GetUserByUsernameValid");
+        System.out.println("\nFinished GetUserByUsername");
     }
 
     @Test
-    public void testGetUserByUsernameInvalid(){
-        System.out.println("\nStarting GetUserByUsernameInvalid");
-
-        User user = userStub.getUserByUsername("hello");
-
-        assertNull(user);
-
-        System.out.println("\nFinished GetUserByUsernameInvalid");
-    }
-
-    @Test
-    public void testAddUserValid(){
-        System.out.println("\nStarting AddUserValid");
+    public void testAddUser(){
+        System.out.println("\nStarting AddUser");
 
         User user = userStub.addUser(new User("Mama", "Mia", "mamamia", "password"));
 
         assertNotNull(user);
 
-        System.out.println("\nFinished AddUserValid");
+        System.out.println("\nFinished AddUser");
     }
 
     @Test
-    public void testAddUserInvalid(){
-        System.out.println("\nStarting AddUserInvalid");
-
-        User user = userStub.addUser(new User("John", "Doe", "johndoe", "password1"));
-
-        assertNull(user);
-
-        System.out.println("\nFinished AddUserInvalid");
-    }
-
-    @Test
-    public void testUpdateUserValid(){
-        System.out.println("\nStarting UpdateUserValid");
+    public void testUpdateUser(){
+        System.out.println("\nStarting UpdateUser");
 
         User currentUser = new User("John", "Doe", "johndoe", "password1");
         User updateUser = new User("Johnny", "Depp", "johndoe", "password1");
@@ -93,39 +71,16 @@ public class UserPersistenceStubTest {
 
         assertNotNull(user);
 
-        System.out.println("\nFinished UpdateUserValid");
+        System.out.println("\nFinished UpdateUser");
     }
 
     @Test
-    public void testUpdateUserInvalid(){
-        System.out.println("\nStarting UpdateUserInvalid");
-
-        User currentUser = new User("unknown", "test", "nope", "password");
-        User updateUser = new User("Johnny", "Depp", "johndoe", "password1");
-        User user = userStub.updateUser(currentUser, updateUser);
-
-        assertNull(user);
-
-        System.out.println("\nFinished UpdateUserInvalid");
-    }
-
-    @Test
-    public void testRemoveUserValid(){
-        System.out.println("\nStarting RemoveUserValid");
+    public void testRemoveUser(){
+        System.out.println("\nStarting RemoveUser");
         User user = userStub.removeUser(new User("Joe", "Mama", "joemama", "password4"));
 
         assertNotNull(user);
 
-        System.out.println("\nFinished RemoveUserValid");
-    }
-
-    @Test
-    public void testRemoveUserInvalid(){
-        System.out.println("\nStarting RemoveUserInvalid");
-        User user = userStub.removeUser(new User("unknown", "test", "nope", "password"));
-
-        assertNull(user);
-
-        System.out.println("\nFinished RemoveUserInvalid");
+        System.out.println("\nFinished RemoveUser");
     }
 }
