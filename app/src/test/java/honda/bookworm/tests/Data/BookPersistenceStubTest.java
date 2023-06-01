@@ -10,6 +10,7 @@ import java.util.List;
 import honda.bookworm.Data.BookPersistence;
 import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Object.Book;
+import honda.bookworm.Object.Genre;
 
 public class BookPersistenceStubTest {
     private BookPersistenceStub bookStub;
@@ -24,11 +25,11 @@ public class BookPersistenceStubTest {
         List<Book> allBooks = bookStub.getAllBooks();
         List<Book> dummyBooks = new ArrayList<>();
 
-        dummyBooks.add(new Book("The Way of Kings", "Brandon Sanderson", "Fantasy Fiction", "9780765326355"));
-        dummyBooks.add(new Book("Mistborn", "Brandon Sanderson", "Fantasy Fiction", "9780765350381"));
-        dummyBooks.add(new Book("Words of Radiance", "Brandon Sanderson", "Fantasy Fiction", "9780765326362"));
-        dummyBooks.add(new Book("Elantris", "Brandon Sanderson", "Fantasy Fiction", "9780765311788"));
-        dummyBooks.add(new Book("The Alloy of Law", "Brandon Sanderson", "Fantasy Fiction", "9780765368546"));
+        dummyBooks.add(new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355"));
+        dummyBooks.add(new Book("Mistborn", "Brandon Sanderson", Genre.Fantasy, "9780765350381"));
+        dummyBooks.add(new Book("Words of Radiance", "Brandon Sanderson", Genre.Fantasy, "9780765326362"));
+        dummyBooks.add(new Book("Elantris", "Brandon Sanderson", Genre.Fantasy, "9780765311788"));
+        dummyBooks.add(new Book("The Alloy of Law", "Brandon Sanderson", Genre.Fantasy, "9780765368546"));
 
         assertNotNull(allBooks);
         assertEquals(5, allBooks.size());
@@ -70,7 +71,7 @@ public class BookPersistenceStubTest {
     public void testAddBook() {
         System.out.println("\nStarting testAddBook");
 
-        Book newBook = new Book("Oathbringer", "Brandon Sanderson", "Fantasy Epic", "9783453270381");
+        Book newBook = new Book("Oathbringer", "Brandon Sanderson", Genre.Fantasy, "9783453270381");
         Book result = bookStub.addBook(newBook);
         assertNotNull(result);
         assertEquals(newBook, result);

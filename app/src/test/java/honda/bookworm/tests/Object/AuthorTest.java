@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
+import honda.bookworm.Object.Genre;
 
 public class AuthorTest {
 
@@ -26,7 +27,7 @@ public class AuthorTest {
 
         Author author = new Author("Jane", "Smith", "janesmith", "password");
 
-        Book book1 = new Book("Book 1", "Author 1", "Genre 1", "1234");
+        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
 
         assertTrue(author.getWrittenBooks().isEmpty());
         author.addWrittenBook(book1);
@@ -43,8 +44,8 @@ public class AuthorTest {
 
         Author author = new Author("Jane", "Smith", "janesmith", "password");
 
-        Book book1 = new Book("Book 1", "Author 1", "Genre 1", "1234");
-        Book book2 = new Book("Book 2", "Author 2", "Genre 2", "1235");
+        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
 
         author.addWrittenBook(book1);
         author.addWrittenBook(book2);
