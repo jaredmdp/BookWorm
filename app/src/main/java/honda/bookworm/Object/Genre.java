@@ -19,6 +19,7 @@ public enum Genre {
     Biography,
     Historical,
     Mystery,
+    Survival,
     Manga;
 
     //creating a nicer default output format for certain genres

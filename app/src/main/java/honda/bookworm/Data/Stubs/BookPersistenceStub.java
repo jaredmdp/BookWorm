@@ -18,6 +18,33 @@ public class BookPersistenceStub implements BookPersistence {
         books.add(new Book("Words of Radiance", "Brandon Sanderson", Genre.Fantasy, "9780765326362"));
         books.add(new Book("Elantris", "Brandon Sanderson", Genre.Fantasy, "9780765311788"));
         books.add(new Book("The Alloy of Law", "Brandon Sanderson", Genre.Fantasy, "9780765368546"));
+
+        books.add(new Book ("The Last Wish","Andrzej Sapkowski", Genre.Adult,"0575077832") );
+        books.add(new Book ("Blood of Elves","Andrzej Sapkowski", Genre.Adult,"9780316029193") );
+        books.add(new Book ("Sword of Destiny","Andrzej Sapkowski", Genre.Adult,"970575077832") );
+        books.add(new Book ("The Time of Contempt","Andrzej Sapkowski", Genre.Adult,"0316219134") );
+
+        books.add(new Book ("The Fake Book","Jouttun Tall", Genre.Fiction,"12345678909") );
+        books.add(new Book ("Totally Fake Book","Vanier Myth", Genre.Fiction,"92345678909") );
+        books.add(new Book ("Not a Fake Book","Vanier Myth", Genre.Fiction,"192345668809") );
+        books.add(new Book ("Again to the Past","Nurse Brown", Genre.Fiction,"192345768809") );
+        books.add(new Book ("Again to the Past Once More","Nurse Brown", Genre.Fiction,"192342768809") );
+        books.add(new Book ("It Depends!","Who Noels", Genre.Fiction,"992342968809") );
+
+        books.add(new Book ("The Wager","David Grann",Genre.Survival ,"292345768801") );
+        books.add(new Book ("Life of Pi","Yann Martel", Genre.Survival,"292344468801") );
+        books.add(new Book ("The Martian","Andy Weir", Genre.Survival,"292344464801") );
+        books.add(new Book ("Lord of the Flies","William Golding", Genre.Survival,"292346664801") );
+        books.add(new Book ("The Maze Runner","James Dasher", Genre.Survival,"292346964801") );
+        books.add(new Book ("On the Island","Tracy Gravis Graves", Genre.Survival,"29234555801") );
+
+        books.add(new Book ("Clean Code","Robert C. Martin", Genre.NonFiction,"9780132350884") );
+        books.add(new Book ("Atomic Habits","James Clear", Genre.NonFiction,"5780100220888") );
+        books.add(new Book ("The Art of War","Sun Tzu", Genre.NonFiction,"578099920888") );
+        books.add(new Book ("Introduction to Algorithms","Thomas H. Cormen", Genre.NonFiction,"9780132350884") );
+        books.add(new Book ("The C Programming Language","Brian W. Kernighan", Genre.NonFiction,"9780132650884") );
+        books.add(new Book ("Operating Systems: Three Easy Pieces","Remzi H. Arpaci-Dusseau", Genre.NonFiction,"9780100650884") );
+
     }
 
     @Override
@@ -89,5 +116,25 @@ public class BookPersistenceStub implements BookPersistence {
 
         return booksByAuthor;
     }
+
+    @Override
+    public List<Book> getBooksByGenre(Genre genre) {
+        List<Book> booksByGenre = new ArrayList<>();
+
+        for (Book book : books){
+            for (Genre bookGenre : book.getGenre() ){
+                if(genre == bookGenre){
+                    booksByGenre.add(book);
+                }
+            }
+        }
+
+        if (booksByGenre.isEmpty()) {
+            return null;
+        }
+
+        return booksByGenre;
+    }
+
 
 }

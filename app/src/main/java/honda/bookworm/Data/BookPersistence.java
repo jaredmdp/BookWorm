@@ -3,6 +3,7 @@ package honda.bookworm.Data;
 import java.util.List;
 
 import honda.bookworm.Object.Book;
+import honda.bookworm.Object.Genre;
 
 public interface BookPersistence {
     List<Book> getAllBooks();
@@ -12,6 +13,5 @@ public interface BookPersistence {
     void removeBookByISBN(String ISBN); //All ISBNS are 13 digits
     void removeBookByTitle(String title);
     List<Book> getBooksByAuthor(String author);
-
-    //List<Book> getBooksByGenre(); implement later when we have genre enum?
+    List<Book> getBooksByGenre(Genre genre);
 }
