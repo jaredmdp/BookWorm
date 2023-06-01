@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="BookWorm.View.UserLogin_ViewHandler">
+    tools:context="honda.bookworm.View.UserLogin_ViewHandler">
 
     <TextView
         android:id="@+id/userlogin_login_heading"
