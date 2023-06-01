@@ -5,6 +5,7 @@ import java.util.List;
 
 import honda.bookworm.Data.BookPersistence;
 import honda.bookworm.Object.Book;
+import honda.bookworm.Object.Genre;
 
 public class BookPersistenceStub implements BookPersistence {
     private List<Book> books;
@@ -12,11 +13,11 @@ public class BookPersistenceStub implements BookPersistence {
     public BookPersistenceStub() {
         this.books = new ArrayList<>();
 
-        books.add(new Book("The Way of Kings", "Brandon Sanderson", "Fantasy Fiction", "9780765326355"));
-        books.add(new Book("Mistborn", "Brandon Sanderson", "Fantasy Fiction", "9780765350381"));
-        books.add(new Book("Words of Radiance", "Brandon Sanderson", "Fantasy Fiction", "9780765326362"));
-        books.add(new Book("Elantris", "Brandon Sanderson", "Fantasy Fiction", "9780765311788"));
-        books.add(new Book("The Alloy of Law", "Brandon Sanderson", "Fantasy Fiction", "9780765368546"));
+        books.add(new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355"));
+        books.add(new Book("Mistborn", "Brandon Sanderson", Genre.Fantasy, "9780765350381"));
+        books.add(new Book("Words of Radiance", "Brandon Sanderson", Genre.Fantasy, "9780765326362"));
+        books.add(new Book("Elantris", "Brandon Sanderson", Genre.Fantasy, "9780765311788"));
+        books.add(new Book("The Alloy of Law", "Brandon Sanderson", Genre.Fantasy, "9780765368546"));
     }
 
     @Override

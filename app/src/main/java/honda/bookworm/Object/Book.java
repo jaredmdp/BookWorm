@@ -1,17 +1,19 @@
 package honda.bookworm.Object;
 
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class Book {
     private String name;
     private String author;
     private String ISBN;
-    private String genre;
+    private ArrayList<Genre> genre;
 
-    public Book(String name, String author, String genre, String ISBN) {
+    public Book(String name, String author, Genre genre, String ISBN) {
         this.name = name;
         this.author = author;
-        this.genre = genre;
+        this.genre = new ArrayList<Genre>();
+        this.genre.add(genre);
         this.ISBN = ISBN;
     }
 
@@ -41,18 +43,25 @@ public class Book {
         this.ISBN = ISBN;
     }
 
-    public String getGenre() {
+    public ArrayList<Genre> getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+    public void addGenre(Genre genre) {this.genre.add(genre);}
+
+    public void removeGenre(Genre genre){this.genre.remove(genre);}
 
     public String toString() {
+        //create string list of genres for output
+        String genres = "";
+        for(int i=0; i<this.genre.size()-1; i++) {
+            genres = genres + this.genre.get(i).toString() + " ";
+        }
+        genres = genres + this.genre.get(this.genre.size()-1).toString();
+
         return "Book name:'" + name + '\'' +
                 ", author:'" + author + '\'' +
-                ", genre:'" + genre + '\'' +
+                ", genre:'" + genres + '\'' +
                 ", ISBN:'" + ISBN + '\''
                 ;
     }

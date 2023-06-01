@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.User;
+import honda.bookworm.Object.Genre;
 
 public class UserTest {
 
@@ -68,8 +69,8 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        Book book1 = new Book("Book 1", "Author 1", "Genre 1", "1234");
-        Book book2 = new Book("Book 2", "Author 2", "Genre 2", "1235");
+        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
 
         user.addToWishlist(book1);
         user.addToWishlist(book2);
@@ -87,8 +88,8 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        Book book1 = new Book("Book 1", "Author 1", "Genre 1", "1234");
-        Book book2 = new Book("Book 2", "Author 2", "Genre 2", "1235");
+        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
 
         user.addToWishlist(book1);
         user.addToWishlist(book2);
@@ -142,8 +143,8 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        Book book1 = new Book("Book 1", "Author 1", "Genre 1", "1234");
-        Book book2 = new Book("Book 2", "Author 2", "Genre 2", "1235");
+        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
 
         user.addToFavoriteBooks(book1);
         user.addToFavoriteBooks(book2);
@@ -161,8 +162,8 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        Book book1 = new Book("Book 1", "Author 1", "Genre 1", "1234");
-        Book book2 = new Book("Book 2", "Author 2", "Genre 2", "1235");
+        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
 
         user.addToFavoriteBooks(book1);
         user.addToFavoriteBooks(book2);
