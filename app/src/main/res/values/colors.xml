@@ -11,7 +11,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--    custom colors-->
-    <color name="off_white">#f7f3f0</color>
+    <color name="off_white">#fff7f3f0</color>
     <color name="worm_skin">#e69c91</color>
+    <color name="worm_skin_light">#F5DDD7</color>
     <color name="text_link_blue">#4197d3</color>
 </resources>
