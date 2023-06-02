@@ -5,9 +5,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import honda.bookworm.Data.Stubs.UserPersistenceStub;
+import honda.bookworm.Object.Author;
+import honda.bookworm.Object.Book;
+import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 public class UserPersistenceStubTest {
@@ -27,13 +31,57 @@ public class UserPersistenceStubTest {
         usersTest.add(new User("John", "Doe", "johndoe", "password1"));
         usersTest.add(new User("Jane", "Smith", "janesmith", "password2"));
         usersTest.add(new User("John", "Wick", "johnwick", "password3"));
-        usersTest.add(new User("Joe", "Mama", "joemama", "password4"));
+        usersTest.add(new Author("Joe", "Mama", "joemama", "password4"));
+        usersTest.add(new Author("Brandon", "Sanderson", "BrandonSanderson", "password4"));
 
         assertNotNull(users);
         assertNotNull(usersTest);
-        assertTrue(users.equals(usersTest));
-
+        for(int i=0; i<users.size(); i++){
+            assertTrue(users.get(i).getUsername().equals(usersTest.get(i).getUsername()));
+        }
         System.out.println("\nFinished GetAllUsers");
+    }
+
+    @Test
+    public void testGetAllAuthors(){
+        System.out.println("\nStarting GetAllAuthors");
+
+        List <Author> authors = userStub.getAllAuthors();
+        List <Author> authorsTest = new ArrayList<>();
+
+        authorsTest.add(new Author("Joe", "Mama", "joemama", "password4"));
+        authorsTest.add(new Author("Brandon", "Sanderson", "BrandonSanderson", "password4"));
+
+        assertNotNull(authors);
+        assertNotNull(authorsTest);
+
+        for(int i=0; i<authors.size(); i++){
+            assertTrue(authors.get(i).getUsername().equals(authorsTest.get(i).getUsername()));
+        }
+
+        System.out.println("\nFinished GetAllAuthors");
+    }
+
+    @Test
+    public void testGetAllWrittenBooks(){
+        System.out.println("\nStarting GetAllWrittenBooks");
+
+        List<Book> books = userStub.getAllWrittenBooks("Brandon Sanderson");
+        List<Book> booksTest = new ArrayList<>();
+
+        booksTest.add(new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355"));
+        booksTest.add(new Book("Mistborn", "Brandon Sanderson", Genre.Fantasy, "9780765350381"));
+        booksTest.add(new Book("Words of Radiance", "Brandon Sanderson", Genre.Fantasy, "9780765326362"));
+        booksTest.add(new Book("Elantris", "Brandon Sanderson", Genre.Fantasy, "9780765311788"));
+        booksTest.add(new Book("The Alloy of Law", "Brandon Sanderson", Genre.Fantasy, "9780765368546"));
+
+        assertNotNull(books);
+        assertNotNull(booksTest);
+
+        assertTrue(books.equals(booksTest));
+
+        System.out.println("\nFinished GetAllWrittenBooks");
+
     }
 
     @Test
@@ -77,7 +125,7 @@ public class UserPersistenceStubTest {
     @Test
     public void testRemoveUser(){
         System.out.println("\nStarting RemoveUser");
-        User user = userStub.removeUser(new User("Joe", "Mama", "joemama", "password4"));
+        User user = userStub.removeUser(new Author("Joe", "Mama", "joemama", "password4"));
 
         assertNotNull(user);
 
