@@ -7,7 +7,7 @@
         <item name="colorOnPrimary">@color/off_white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/worm_skin</item>
-        <item name="colorSecondaryVariant">@color/worm_skin</item>
+        <item name="colorSecondaryVariant">#3A4149</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
