@@ -7,6 +7,7 @@ import honda.bookworm.Object.Genre;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
 import java.text.AttributedCharacterIterator;
@@ -25,11 +27,13 @@ import java.util.List;
 public class Home_ViewHandler extends AppCompatActivity {
     private final int CARD_WIDTH = 400;
     private final int CARD_HEIGHT = 525;
+    private boolean isLoggedin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
         buildBookView();
     }
@@ -60,15 +64,25 @@ public class Home_ViewHandler extends AppCompatActivity {
         }
     }
 
-    public void onSearchPressed(View view) {
+    public void onUserPressed(View view) {
+        MaterialButton logoutBtn = findViewById(R.id.home_userProfile_logoutButton);
+        Intent intent;
+        if(isLoggedin){
+            viewVisibilityToggle(logoutBtn);
+        }else{
+            intent = new Intent(getApplicationContext(), UserLogin_ViewHandler.class);
+            startActivity(intent);
+        }
+
         Toast.makeText(getApplicationContext(),
-                "under construction: to be implemented",
+                "isLoggedin:"+isLoggedin,
                 Toast.LENGTH_SHORT).show();
+
     }
 
     private void populateHorizontalView (int id, Book book){
         LinearLayout viewContainer = (LinearLayout) findViewById(id);
-        viewContainer.addView(createBookToView(book),CARD_WIDTH,CARD_HEIGHT);
+        viewContainer.addView(createBookCard(book),CARD_WIDTH,CARD_HEIGHT);
     }
 
     private int createHorizontalView(LinearLayout parent) {
@@ -78,34 +92,57 @@ public class Home_ViewHandler extends AppCompatActivity {
 
         HorizontalScrollView hsv = new HorizontalScrollView(this);
         hsv.addView(llh);
+        hsv.setHorizontalScrollBarEnabled(false);
 
         HorizontalScrollView.LayoutParams params = new HorizontalScrollView.LayoutParams(
                 HorizontalScrollView.LayoutParams.MATCH_PARENT,
                 HorizontalScrollView.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(0, 25, 0, 50);
+        params.setMargins(0, 10, 0, 100);
         hsv.setLayoutParams(params);
+
+
 
         parent.addView(hsv);
         return llh.getId();
     }
 
-    private View createBookToView(Book book) {
+    private View createBookCard(Book book) {
         View bookCardView = getLayoutInflater().inflate(R.layout.sub_view_book_card, null, false);
         TextView bookName = (TextView) bookCardView.findViewById(R.id.book_card_title);
         bookName.setText(book.getName());
 
         bookCardView.setTag(book);
+        addClickListenerToBookCard(bookCardView);
 
-        bookCardView.setOnClickListener(new View.OnClickListener() {
+        return bookCardView;
+    }
+
+    private void addClickListenerToBookCard (View bookCard){
+        bookCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),v.getTag().toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
-        return bookCardView;
+    }
+
+    private void viewVisibilityToggle (View view){
+        if(view !=null){
+            if(view.getVisibility() == View.VISIBLE){
+                view.setVisibility(View.GONE);
+            }else{
+                view.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 
+    public void onLogoutPressed(View view) {
+        if(isLoggedin){
+            isLoggedin = !isLoggedin;
+            viewVisibilityToggle(view);
+        }
+    }
 }

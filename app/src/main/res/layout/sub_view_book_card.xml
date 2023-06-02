@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor= "?attr/colorSecondaryVariant"
-        android:layout_marginVertical="10dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginHorizontal="10dp">
     <RelativeLayout
             android:layout_width="wrap_content"
@@ -22,10 +23,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher_foreground"
+            app:tint="@color/black"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
+            android:alpha=".5"
 
             />
 
@@ -40,9 +43,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="25dp"
         android:text="Book_Title"
-        android:textSize="20sp"
+        android:textSize="14sp"
         android:textAlignment="center"
-        android:translationZ="25dp"/>
+        android:translationZ="25dp"
+        android:elegantTextHeight="true"
+        android:elevation="10dp"/>
 </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
