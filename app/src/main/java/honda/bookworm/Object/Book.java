@@ -7,6 +7,7 @@ public class Book {
     private String name;
     private String author;
     private String ISBN;
+    private String description;
     private ArrayList<Genre> genre;
 
     public Book(String name, String author, Genre genre, String ISBN) {
@@ -15,10 +16,19 @@ public class Book {
         this.genre = new ArrayList<Genre>();
         this.genre.add(genre);
         this.ISBN = ISBN;
+        description = "";
+    }
+
+    public Book(String name, String author, Genre genre, String ISBN, String description) {
+        this.name = name;
+        this.author = author;
+        this.genre = new ArrayList<Genre>();
+        this.genre.add(genre);
+        this.ISBN = ISBN;
+        this.description = description;
     }
 
     // Getters and Setters
-
     public String getName() {
         return name;
     }
@@ -41,6 +51,14 @@ public class Book {
 
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public ArrayList<Genre> getGenre() {

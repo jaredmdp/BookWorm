@@ -99,6 +99,27 @@ public class BookTest {
     }
 
     @Test
+    public void testBookDescription() {
+        String name = "The Way of Kings";
+        String author = "Brandon Sanderson";
+        Genre genre = Genre.Fantasy;
+        String ISBN = "9780765326355";
+        String description = "Fantasy novel with rich world-building and compelling characters.";
+
+        Book book = new Book(name, author, genre, ISBN, description);
+
+        assertEquals(description, book.getDescription());
+
+        name = "1984";
+        author = "George Orwell";
+        genre = Genre.Fiction;
+        ISBN = "9780451524935";
+        book = new Book(name, author, genre, ISBN);
+
+        assertEquals("", book.getDescription());
+    }
+
+    @Test
     public void testToString() {
         System.out.println("\nStarting ToString");
 
