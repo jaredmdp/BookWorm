@@ -30,28 +30,33 @@ public class UserLogin_ViewHandler extends AppCompatActivity {
         linkToSignup.setPaintFlags(linkToSignup.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
-
-    private void proceedToLogin(){
+    public void userLoginButtonClicked(View view) {
         EditText usernameInput = (EditText) findViewById(R.id.userlogin_username_input);
         EditText passwordInput = (EditText) findViewById(R.id.userlogin_password_input);
+        proceedToLogin(usernameInput.getText().toString(),passwordInput.getText().toString());
+    }
 
-        String msg = String.format("Username: %s \nPassword: %s", usernameInput.getText(),
-                passwordInput.getText()); //TO REMOVE
-
-        //toast makes the popup notification on the screen
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show(); // TO REMOVE
-
-        /*TO DO
-            - input validation
-            - show appropriate msg if error
-            - move to next Activity
+    private void proceedToLogin(String username, String password){
+        /*TO DO:
+            - get input validation from the userVerification Business layer
+            - show appropriate msg if error(throws exception) using Toast (toast structure present below)
+                - also call resetLoginFields
+            - move to next Activity (home) if no exception thrown
          */
+
+        String msg = String.format("Username: %s \nPassword: %s", username, password);
+        //toast makes the popup notification on the screen
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
     }
 
-
-    public void userLoginButtonClicked(View view) {
-        proceedToLogin();
+    private void resetLoginFeilds(){
+        EditText usernameInput = (EditText) findViewById(R.id.userlogin_username_input);
+        EditText passwordInput = (EditText) findViewById(R.id.userlogin_password_input);
+        usernameInput.setText("");
+        passwordInput.setText("");
     }
+
 
     public void userSignUpLinkClicked(View view) {
         Intent intent = new Intent(getApplicationContext(), UserSignup_ViewHandler.class);
