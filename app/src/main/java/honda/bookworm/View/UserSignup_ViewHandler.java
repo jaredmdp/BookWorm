@@ -12,16 +12,21 @@ import com.honda.bookworm.R;
 
 public class UserSignup_ViewHandler extends AppCompatActivity {
 
-    private final EditText FIRST_NAME = findViewById(R.id.signup_firstname_input);
-    private final EditText LAST_NAME = findViewById(R.id.signup_lastname_input);
-    private final EditText USER_NAME = findViewById(R.id.signup_username_input);
-    private final EditText PASSWORD = findViewById(R.id.signup_password_input);
-    private final CheckBox IS_AUTHOR_CHECK = findViewById(R.id.signup_is_author_checkbox);
+    private EditText firstNameEditText;
+    private EditText lastNameEditText;
+    private EditText usernameEditText;
+    private EditText passwordEditText;
+    private CheckBox isAuthorCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_signup);
+        firstNameEditText= findViewById(R.id.signup_firstname_input);
+        lastNameEditText = findViewById(R.id.signup_lastname_input);
+        usernameEditText = findViewById(R.id.signup_username_input);
+        passwordEditText = findViewById(R.id.signup_password_input);
+        isAuthorCheckbox = findViewById(R.id.signup_is_author_checkbox);
     }
 
 
@@ -36,12 +41,12 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
     }
 
     private void resetSignUpFields() {
-        emptyEditText(FIRST_NAME);
-        emptyEditText(LAST_NAME);
-        emptyEditText(USER_NAME);
-        emptyEditText(PASSWORD);
+        emptyEditText(firstNameEditText);
+        emptyEditText(lastNameEditText);
+        emptyEditText(usernameEditText);
+        emptyEditText(passwordEditText);
 
-        IS_AUTHOR_CHECK.setChecked(false);
+        isAuthorCheckbox.setChecked(false);
         switchUserandAuthorImage(false);
     }
 
@@ -57,11 +62,11 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
     /* **** CLICK LISTENERS BELOW **** */
 
     public void isSignupButtonClicked(View view) {
-        String firstName = FIRST_NAME.getText().toString();
-        String lastName = LAST_NAME.getText().toString();
-        String username = USER_NAME.getText().toString();
-        String password = PASSWORD.getText().toString();
-        boolean isAuthor = IS_AUTHOR_CHECK.isChecked();
+        String firstName = firstNameEditText.getText().toString();
+        String lastName = lastNameEditText.getText().toString();
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        boolean isAuthor = isAuthorCheckbox.isChecked();
         processUserInput(firstName,lastName,username,password,isAuthor);
     }
 
