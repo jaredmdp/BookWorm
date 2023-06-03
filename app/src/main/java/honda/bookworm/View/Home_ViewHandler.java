@@ -129,6 +129,7 @@ public class Home_ViewHandler extends AppCompatActivity {
                 intent.putExtra("author",book.getAuthor());
                 intent.putExtra("genre",book.getGenreAsString());
                 intent.putExtra("isbn",book.getISBN());
+                intent.putExtra("description",book.getDescription());
 
                 startActivity(intent);
             }

@@ -27,21 +27,23 @@ public class BookView_ViewHandler extends AppCompatActivity {
         String isbn =    bookInfo.getString("isbn");
         String description = bookInfo.getString("description","[Empty]");
 
-        assignValues(title,author,genre,isbn);
+        assignValues(title,author,genre,isbn,description);
     }
 
 
     //need to figure out image
-    private void assignValues(String bookTitle, String bookAuthor, String bookGenre, String bookIsbn){
+    private void assignValues(String bookTitle, String bookAuthor, String bookGenre, String bookIsbn, String bookDescription){
         TextView title = findViewById(R.id.book_view_book_title);
         TextView author = findViewById(R.id.book_view_book_author);
         TextView genre = findViewById(R.id.book_view_book_genre);
         TextView isbn = findViewById(R.id.book_view_book_isbn);
+        TextView description = findViewById(R.id.book_view_book_description);
 
         title.setText(String.format("%s %s",title.getText(),bookTitle));
         author.setText(String.format("%s %s",author.getText(),bookAuthor));
         genre.setText(String.format("%s %s",genre.getText(),bookGenre));
         isbn.setText(String.format("%s %s",isbn.getText(),bookIsbn));
+        description.setText(String.format("%s %s",description.getText(),bookDescription));
 
         String url = String.format("https://www.amazon.ca/s?k=%s",bookTitle.toLowerCase().replaceAll(" ","+"));
         createPurchaseButtonViewListener(url);
