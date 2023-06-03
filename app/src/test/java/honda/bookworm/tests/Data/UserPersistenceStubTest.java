@@ -105,21 +105,50 @@ public class UserPersistenceStubTest {
         User user = userStub.addUser(new User("Mama", "Mia", "mamamia", "password"));
 
         assertNotNull(user);
+        assertEquals(user.getUsername(), "mamamia");
 
         System.out.println("\nFinished AddUser");
     }
 
     @Test
+    public void testAddDuplicateUser() {
+        System.out.println("\nStarting testAddDuplicateUser");
+
+        //user is already in the system when initialized
+        User user = userStub.addUser(new User("John", "Doe", "johndoe", "password1"));
+        assertNull(user);
+
+        System.out.println("\nFinished testAddDuplicateUser");
+    }
+
+    @Test
     public void testUpdateUser(){
-        System.out.println("\nStarting UpdateUser");
+        System.out.println("\nStarting tesstUpdateUser");
 
         User currentUser = new User("John", "Doe", "johndoe", "password1");
         User updateUser = new User("Johnny", "Depp", "johndoe", "password1");
-        User user = userStub.updateUser(currentUser, updateUser);
+        User result = userStub.updateUser(currentUser, updateUser);
 
-        assertNotNull(user);
+        assertNotNull(result);
+        assertEquals(result.getUsername(), "johndoe");
+        assertEquals(result.getFirstName(), "Johnny");
+        assertEquals(result.getLastName(), "Depp");
 
-        System.out.println("\nFinished UpdateUser");
+        System.out.println("\nFinished testUpdateUser");
+    }
+
+    //tries to update a user that is not in the stub
+    @Test
+    public void testUpdateFalseUser() {
+        System.out.println("\nStarting testUpdateFalseUser");
+
+        User falseUser = new User("Johnny", "Depp", "johndoe", "password1");
+        User updateFalse = new User("Josie", "Boe", "johndoe", "password1");
+        User result = userStub.updateUser(falseUser, updateFalse);
+
+        assertNull(result);
+
+        System.out.println("\nFinished testUpdateFalseUser");
     }
 
     @Test

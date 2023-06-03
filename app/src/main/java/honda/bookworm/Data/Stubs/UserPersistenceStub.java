@@ -76,17 +76,47 @@ public class UserPersistenceStub implements UserPersistence {
 
     @Override
     public User addUser(User currentUser) {
-        users.add(currentUser);
-        return currentUser;
+        User result = null;
+
+        try {
+            if (isDuplicateUsername(currentUser.getUsername())) {
+                throw new IllegalArgumentException("Duplicate username found");
+            } else {
+                users.add(currentUser);
+                result = currentUser;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to update user: " + e.getMessage());
+        }
+        return result;
+    }
+
+    private boolean isDuplicateUsername(String username) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public User updateUser(User currentUser, User updateUser) {
-        int index = users.indexOf(currentUser);
+        User result = null;
 
-        users.set(index,updateUser);
-        return updateUser;
+        try {
+            int index = users.indexOf(currentUser);
+            if (index != -1) {
+                users.set(index, updateUser);
+                result = updateUser;
+            } else {
+                throw new IllegalArgumentException("User not found");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to update user: " + e.getMessage());
+        }
 
+        return result;
     }
 
     @Override

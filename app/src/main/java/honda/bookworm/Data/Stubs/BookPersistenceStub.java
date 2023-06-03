@@ -74,9 +74,43 @@ public class BookPersistenceStub implements BookPersistence {
 
     @Override
     public Book addBook(Book newBook) {
-        books.add(newBook);
-        return newBook;
+        Book result = null;
+
+        try {
+            if (isDuplicateISBN(newBook.getISBN())) {
+                throw new IllegalArgumentException("Duplicate ISBN found");
+            } else if (isDuplicateTitle(newBook.getName())) {
+                throw new IllegalArgumentException("Duplicate title found");
+            } else {
+                books.add(newBook);
+                result = newBook;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to add book: " + e.getMessage());
+        }
+
+        return result;
     }
+
+    private boolean isDuplicateISBN(String ISBN) {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getISBN().equals(ISBN)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isDuplicateTitle(String title) {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getName().equalsIgnoreCase(title)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     @Override
     public void removeBookByISBN(String ISBN) {
