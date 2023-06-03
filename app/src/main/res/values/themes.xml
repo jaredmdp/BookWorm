@@ -15,4 +15,10 @@
 
         <item name="colorTertiaryFixedDim">#b3f7f3f0</item>
     </style>
+    <style name="Theme.BookWorm.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.BookWorm.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.BookWorm.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

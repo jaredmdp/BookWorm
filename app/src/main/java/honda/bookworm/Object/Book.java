@@ -69,13 +69,19 @@ public class Book {
 
     public void removeGenre(Genre genre){this.genre.remove(genre);}
 
-    public String toString() {
-        //create string list of genres for output
+    public String getGenreAsString(){
         String genres = "";
         for(int i=0; i<this.genre.size()-1; i++) {
-            genres = genres + this.genre.get(i).toString() + " ";
+            genres = genres + this.genre.get(i).toString() + ", ";
         }
         genres = genres + this.genre.get(this.genre.size()-1).toString();
+
+        return genres;
+    }
+
+    public String toString() {
+        //create string list of genres for output
+        String genres = getGenreAsString();
 
         return "Book name:'" + name + '\'' +
                 ", author:'" + author + '\'' +

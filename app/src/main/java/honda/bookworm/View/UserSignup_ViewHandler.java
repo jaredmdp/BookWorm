@@ -12,6 +12,12 @@ import com.honda.bookworm.R;
 
 public class UserSignup_ViewHandler extends AppCompatActivity {
 
+    private final EditText FIRST_NAME = findViewById(R.id.signup_firstname_input);
+    private final EditText LAST_NAME = findViewById(R.id.signup_lastname_input);
+    private final EditText USER_NAME = findViewById(R.id.signup_username_input);
+    private final EditText PASSWORD = findViewById(R.id.signup_password_input);
+    private final CheckBox IS_AUTHOR_CHECK = findViewById(R.id.signup_is_author_checkbox);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,46 +25,26 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
     }
 
 
-    private void processUserInput() {
+    private void processUserInput(String firstName, String lastName, String username, String password, boolean isAuthor) {
         /*TO-DO:
          - take in provided input
          - validate the input
-         - provide proper feedback to user via "Toasts" if something wrong
+         - provide proper feedback to user via "Toasts" if excpetion thrown
+            - if exception resetSignUpFeilds
          - proceed to next page
         */
     }
 
     private void resetSignUpFields() {
-        EditText firstName = findViewById(R.id.signup_firstname_input);
-        EditText lastName = findViewById(R.id.signup_lastname_input);
+        emptyEditText(FIRST_NAME);
+        emptyEditText(LAST_NAME);
+        emptyEditText(USER_NAME);
+        emptyEditText(PASSWORD);
 
-        EditText userName = findViewById(R.id.signup_username_input);
-        EditText password = findViewById(R.id.signup_password_input);
-
-        CheckBox isAuthorCheckBox = findViewById(R.id.signup_is_author_checkbox);
-
-        emptyEditText(firstName);
-        emptyEditText(lastName);
-        emptyEditText(userName);
-        emptyEditText(password);
-
-        isAuthorCheckBox.setChecked(false);
+        IS_AUTHOR_CHECK.setChecked(false);
         switchUserandAuthorImage(false);
     }
 
-
-    private void switchUserandAuthorImage(boolean result) {
-        ImageView userImage = findViewById(R.id.signup_user_img);
-        ImageView authorImage = findViewById(R.id.signup_author_img);
-
-        if (result) {
-            userImage.setVisibility(View.GONE);
-            authorImage.setVisibility(View.VISIBLE);
-        } else {
-            authorImage.setVisibility(View.GONE);
-            userImage.setVisibility(View.VISIBLE);
-        }
-    }
 
 
     private void emptyEditText(EditText et) {
@@ -71,14 +57,31 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
     /* **** CLICK LISTENERS BELOW **** */
 
     public void isSignupButtonClicked(View view) {
-        processUserInput();
-        resetSignUpFields();
+        String firstName = FIRST_NAME.getText().toString();
+        String lastName = LAST_NAME.getText().toString();
+        String username = USER_NAME.getText().toString();
+        String password = PASSWORD.getText().toString();
+        boolean isAuthor = IS_AUTHOR_CHECK.isChecked();
+        processUserInput(firstName,lastName,username,password,isAuthor);
     }
 
     public void isAuthorCheckBoxClicked(View view) {
         if (view != null && view instanceof CheckBox) {
             boolean isAuthor = ((CheckBox) (view)).isChecked();
             switchUserandAuthorImage(isAuthor);
+        }
+    }
+
+    private void switchUserandAuthorImage(boolean result) {
+        ImageView userImage = findViewById(R.id.signup_user_img);
+        ImageView authorImage = findViewById(R.id.signup_author_img);
+
+        if (result) {
+            userImage.setVisibility(View.GONE);
+            authorImage.setVisibility(View.VISIBLE);
+        } else {
+            authorImage.setVisibility(View.GONE);
+            userImage.setVisibility(View.VISIBLE);
         }
     }
 

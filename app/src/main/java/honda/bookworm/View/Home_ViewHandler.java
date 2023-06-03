@@ -25,26 +25,26 @@ import java.text.AttributedCharacterIterator;
 import java.util.List;
 
 public class Home_ViewHandler extends AppCompatActivity {
-    private final int CARD_WIDTH = 400;
-    private final int CARD_HEIGHT = 525;
-    private boolean isLoggedin = true;
+    private final int CARD_WIDTH = 400; //bookCard Width
+    private final int CARD_HEIGHT = 525; //bookCard Height
+    private boolean isLoggedin = true; //TO REMOVE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
         buildBookView();
     }
 
     private void buildBookView(){
         Genre [] genres = Genre.class.getEnumConstants();
-        BookPersistence bp = new BookPersistenceStub();
-        LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
+        BookPersistence bp = new BookPersistenceStub(); //TO REMOVE
         String genreName;
         List<Book> bookList;
+        LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
         int scrollViewContainerID;
+
 
         for(Genre genre : genres){
             genreName = genre.toString();
@@ -123,6 +123,14 @@ public class Home_ViewHandler extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),v.getTag().toString(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), BookView_ViewHandler.class);
+                Book book = (Book) v.getTag();
+                intent.putExtra("title",book.getName());
+                intent.putExtra("author",book.getAuthor());
+                intent.putExtra("genre",book.getGenreAsString());
+                intent.putExtra("isbn",book.getISBN());
+
+                startActivity(intent);
             }
         });
 

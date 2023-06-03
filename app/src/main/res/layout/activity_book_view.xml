@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="honda.bookworm.View.BookView_ViewHandler"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="10dp"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/empty_book"
+            android:foreground="@mipmap/ic_launcher_foreground"
+            android:foregroundGravity="center"
+            android:foregroundTint="#88000000"/>
+
+        <TextView
+            android:id="@+id/book_view_book_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title: "
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/book_view_book_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Author: "
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/book_view_book_genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Genre: "
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/book_view_book_isbn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ISBN: "
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="2dp"/>
+
+
+<!--        place holders for description and purchase link-->
+
+        <TextView
+            android:id="@+id/book_view_book_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description: "
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="2dp"
+            android:visibility="visible"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/book_view_book_purchase_link"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Purchase Book"
+            android:layout_marginTop="10dp"
+            app:backgroundTint="@color/grass_green"
+            android:autoLink="web"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+
+
+</ScrollView>
