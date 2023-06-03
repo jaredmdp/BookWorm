@@ -107,6 +107,23 @@ public class BookPersistenceStubTest {
     }
 
     @Test
+    public void testAddDuplicateBook() {
+        System.out.println("\nStarting testAddBook");
+
+        //check for duplicate book that is already in the system
+        Book dupeBook = new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355");
+        Book result = bookStub.addBook(dupeBook);
+        assertNotEquals(result, dupeBook);
+        assertNull(result);
+
+        //Double check that the book we added is already in the system
+        List<Book> allBooks = bookStub.getAllBooks();
+        assertTrue(allBooks.contains(dupeBook));
+
+        System.out.println("\nFinished testAddBook");
+    }
+
+    @Test
     public void testRemoveBookByISBN() {
         System.out.println("\nStarting testRemoveBookByISBN");
 
