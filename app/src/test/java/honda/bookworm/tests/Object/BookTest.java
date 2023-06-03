@@ -128,7 +128,7 @@ public class BookTest {
         book.addGenre(Genre.Fiction);
         book.addGenre(Genre.Adventure);
 
-        String expectedString = "Book name:'Dune', author:'Frank Herbert', genre:'Sci-Fi Fiction Adventure', ISBN:'9780399128967'";
+        String expectedString = "Book name:'Dune', author:'Frank Herbert', genre:'Sci-Fi, Fiction, Adventure', ISBN:'9780399128967'";
         assertEquals(expectedString, book.toString());
 
         System.out.println("\nFinished ToString");
