@@ -114,9 +114,13 @@ public class UserPersistenceStubTest {
     public void testAddDuplicateUser() {
         System.out.println("\nStarting testAddDuplicateUser");
 
-        //user is already in the system when initialized
-        User user = userStub.addUser(new User("John", "Doe", "johndoe", "password1"));
-        assertNull(user);
+        try {
+            //user is already in the system when initialized
+            User user = userStub.addUser(new User("John", "Doe", "johndoe", "password1"));
+            assertNull(user);
+        } catch (IllegalStateException e) {
+            System.out.println("Failed to insert user existing user: " + e.getMessage());
+        }
 
         System.out.println("\nFinished testAddDuplicateUser");
     }

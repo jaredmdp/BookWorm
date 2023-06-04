@@ -14,13 +14,17 @@ import android.widget.Toast;
 
 import com.honda.bookworm.R;
 
+import honda.bookworm.Business.AccessUsers;
+
 public class UserLogin_ViewHandler extends AppCompatActivity {
 
-
+    private AccessUsers accessUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
+
+        accessUsers = new AccessUsers();
 
         stylizeLink();
     }
@@ -37,17 +41,25 @@ public class UserLogin_ViewHandler extends AppCompatActivity {
     }
 
     private void proceedToLogin(String username, String password){
-        /*TO DO:
-            - get input validation from the userVerification Business layer
-            - show appropriate msg if error(throws exception) using Toast (toast structure present below)
-                - also call resetLoginFields
-            - move to next Activity (home) if no exception thrown
-         */
+        String msg;
+        boolean loginState = false;
 
-        String msg = String.format("Username: %s \nPassword: %s", username, password);
-        //toast makes the popup notification on the screen
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        try {
+            //login success
+            loginState = accessUsers.verifyUser(username, password);
 
+        } catch (IllegalStateException e) {
+            //login failed
+            msg = String.format("Invalid user credentials: %s" , e.getMessage());
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+
+        //if valid movie to next intent
+        if (loginState) {
+            Intent intent = new Intent(this, Home_ViewHandler.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void resetLoginFeilds(){

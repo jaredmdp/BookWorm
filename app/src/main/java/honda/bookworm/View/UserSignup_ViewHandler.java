@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.content.Intent;
+import android.widget.Toast;
 
 import com.honda.bookworm.R;
+
+import honda.bookworm.Business.AccessUsers;
 
 public class UserSignup_ViewHandler extends AppCompatActivity {
 
@@ -17,6 +21,7 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private CheckBox isAuthorCheckbox;
+    private AccessUsers accessUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +32,37 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
         usernameEditText = findViewById(R.id.signup_username_input);
         passwordEditText = findViewById(R.id.signup_password_input);
         isAuthorCheckbox = findViewById(R.id.signup_is_author_checkbox);
+
+        accessUsers = new AccessUsers();
     }
 
 
     private void processUserInput(String firstName, String lastName, String username, String password, boolean isAuthor) {
-        /*TO-DO:
+        /*
          - take in provided input
          - validate the input
          - provide proper feedback to user via "Toasts" if excpetion thrown
             - if exception resetSignUpFeilds
          - proceed to next page
         */
+        boolean signUpState = false;
+        String msg = "";
+
+        try {
+            accessUsers.addNewUser(firstName, lastName, username, password, isAuthor);
+            signUpState = true;
+        } catch (IllegalStateException e) {
+            msg = String.format(("Invalid Sign-up: %s"), e.getMessage());
+        }
+
+        //redirect if signup to Homepage if successful
+        if (signUpState) {
+            Intent intent = new Intent (this, Home_ViewHandler.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void resetSignUpFields() {
