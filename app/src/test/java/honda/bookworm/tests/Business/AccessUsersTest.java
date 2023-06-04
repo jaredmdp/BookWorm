@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import honda.bookworm.Business.AccessUsers;
+
 import honda.bookworm.Object.User;
 
 public class AccessUsersTest {
@@ -28,6 +29,7 @@ public class AccessUsersTest {
         int expectedSize = initialSize + 1;
 
         signUp.addNewUser("hello", "test", "hellotest", "password1", false);
+
 
         assertEquals(expectedSize, signUp.getAllUser().size());
 

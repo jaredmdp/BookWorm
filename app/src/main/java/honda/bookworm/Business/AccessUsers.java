@@ -38,18 +38,18 @@ public class AccessUsers {
     }
 
     public boolean verifyUser(String username, String password) {
-            User user = userPersistence.getUserByUsername(username);
+        User user = userPersistence.getUserByUsername(username);
 
-            if (user != null) {
-                if( user.getPassword().equals(password) ){
-                    Services.setActiveUser(user);
-                    return true;
-                }else {
-                    throw new IllegalStateException("Incorrect password provided.");
-                }
-            } else {
-                throw new IllegalStateException(String.format("User '%s' not found",username));
+        if (user != null) {
+            if( user.getPassword().equals(password) ){
+                Services.setActiveUser(user);
+                return true;
+            }else {
+                throw new IllegalStateException("Incorrect password provided.");
             }
+        } else {
+            throw new IllegalStateException(String.format("User '%s' not found",username));
+        }
     }
 
     public User getActiveUser(){

@@ -27,12 +27,12 @@ import java.text.AttributedCharacterIterator;
 import java.util.List;
 
 public class Home_ViewHandler extends AppCompatActivity {
-    private final int CARD_WIDTH = 400; //bookCard Width
-    private final int CARD_HEIGHT = 525; //bookCard Height
+    private final int CARD_WIDTH = 400; // bookCard Width
+    private final int CARD_HEIGHT = 525; // bookCard Height
 
+    private AccessUsers accessUsers;
 
     private AccessBooks accessBooks;
-    private AccessUsers accessUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,57 +45,63 @@ public class Home_ViewHandler extends AppCompatActivity {
         buildBookView();
     }
 
-    private void customizeToUser(){
+    private void customizeToUser() {
         User activeUser = accessUsers.getActiveUser();
         TextView userName = findViewById(R.id.home_username);
-        if(activeUser != null){
-            userName.setText(activeUser.getFirstName()+" "+activeUser.getLastName());
+        if (activeUser != null) {
+            userName.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
             userName.setVisibility(View.VISIBLE);
         }
     }
 
-    private void buildBookView(){
-        Genre [] genres = Genre.class.getEnumConstants();
+    private void buildBookView() {
+        Genre[] genres = Genre.class.getEnumConstants();
 
         String genreName;
         List<Book> bookList;
         LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
         int scrollViewContainerID;
 
-
-        for(Genre genre : genres){
+        for (Genre genre : genres) {
             genreName = genre.toString();
-            bookList = accessBooks.getBooksGenre(genre);
-            if( bookList != null){
-                TextView tv = new TextView(linearBody.getContext());
-                tv.setText(genreName);
-                tv.setTextSize(25);
-                linearBody.addView(tv);
+            try {
+                bookList = accessBooks.getBooksGenre(genre);
+                if (bookList != null) {
+                    TextView tv = new TextView(linearBody.getContext());
+                    tv.setText(genreName);
+                    tv.setTextSize(25);
+                    linearBody.addView(tv);
 
-                scrollViewContainerID= createHorizontalView(linearBody);
-                for(Book book: bookList){
-                    populateHorizontalView(scrollViewContainerID,book);
+                    scrollViewContainerID = createHorizontalView(linearBody);
+                    for (Book book : bookList) {
+                        populateHorizontalView(scrollViewContainerID, book);
+                    }
+                } else {
+                    // show user that genre is not available
                 }
+            } catch (NullPointerException e) {
+                String msg = String.format("Invalid Genre: %s", e.getMessage());
+                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
             }
+
         }
     }
 
     public void onUserPressed(View view) {
         MaterialButton logoutBtn = findViewById(R.id.home_userProfile_logoutButton);
         Intent intent;
-        if(accessUsers.getActiveUser()!= null){
+        if (accessUsers.getActiveUser() != null) {
             viewVisibilityToggle(logoutBtn);
-        }else{
+        } else {
             intent = new Intent(getApplicationContext(), UserLogin_ViewHandler.class);
             startActivity(intent);
         }
 
-
     }
 
-    private void populateHorizontalView (int id, Book book){
+    private void populateHorizontalView(int id, Book book) {
         LinearLayout viewContainer = (LinearLayout) findViewById(id);
-        viewContainer.addView(createBookCard(book),CARD_WIDTH,CARD_HEIGHT);
+        viewContainer.addView(createBookCard(book), CARD_WIDTH, CARD_HEIGHT);
     }
 
     private int createHorizontalView(LinearLayout parent) {
@@ -109,12 +115,9 @@ public class Home_ViewHandler extends AppCompatActivity {
 
         HorizontalScrollView.LayoutParams params = new HorizontalScrollView.LayoutParams(
                 HorizontalScrollView.LayoutParams.MATCH_PARENT,
-                HorizontalScrollView.LayoutParams.WRAP_CONTENT
-        );
+                HorizontalScrollView.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 10, 0, 100);
         hsv.setLayoutParams(params);
-
-
 
         parent.addView(hsv);
         return llh.getId();
@@ -131,18 +134,18 @@ public class Home_ViewHandler extends AppCompatActivity {
         return bookCardView;
     }
 
-    private void addClickListenerToBookCard (View bookCard){
+    private void addClickListenerToBookCard(View bookCard) {
         bookCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),v.getTag().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), v.getTag().toString(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), BookView_ViewHandler.class);
                 Book book = (Book) v.getTag();
-                intent.putExtra("title",book.getName());
-                intent.putExtra("author",book.getAuthor());
-                intent.putExtra("genre",book.getGenreAsString());
-                intent.putExtra("isbn",book.getISBN());
-                intent.putExtra("description",book.getDescription());
+                intent.putExtra("title", book.getName());
+                intent.putExtra("author", book.getAuthor());
+                intent.putExtra("genre", book.getGenreAsString());
+                intent.putExtra("isbn", book.getISBN());
+                intent.putExtra("description", book.getDescription());
 
                 startActivity(intent);
             }
@@ -150,19 +153,18 @@ public class Home_ViewHandler extends AppCompatActivity {
 
     }
 
-    private void viewVisibilityToggle (View view){
-        if(view !=null){
-            if(view.getVisibility() == View.VISIBLE){
+    private void viewVisibilityToggle(View view) {
+        if (view != null) {
+            if (view.getVisibility() == View.VISIBLE) {
                 view.setVisibility(View.GONE);
-            }else{
+            } else {
                 view.setVisibility(View.VISIBLE);
             }
         }
     }
 
-
     public void onLogoutPressed(View view) {
-        if(Services.getActiveUser()!=null){
+        if (Services.getActiveUser() != null) {
             accessUsers.logOutActiveUser();
             TextView userName = findViewById(R.id.home_username);
             userName.setVisibility(View.GONE);
