@@ -411,6 +411,8 @@ public class BookPersistenceStubTest {
     //We need to rewrite this test once we create adjustment to list Authors by Objects!
     @Test
     public void testGetBooksByAuthor() {
+        System.out.println("\nStarting testGetBooksByAuthor");
+
         //test author that is not in Stub
         String author = "JK Rowling";
         List<Book> authorBooks = bookStub.getBooksByAuthor(author);
@@ -421,10 +423,15 @@ public class BookPersistenceStubTest {
         authorBooks = bookStub.getBooksByAuthor(author);
         assertNotNull(authorBooks);
         assertEquals(5, authorBooks.size());
+
+        System.out.println("\nFinished testGetBooksByAuthor");
+
     }
 
     @Test
     public void testGetBooksByGenre() {
+        System.out.println("\nStarting testGetBooksByGenre");
+
         //test genre that is not in Stub
         Genre genre = Genre.Manga;
         List<Book> genreBooks = bookStub.getBooksByGenre(genre);
@@ -435,6 +442,9 @@ public class BookPersistenceStubTest {
         genreBooks = bookStub.getBooksByGenre(genre);
         assertNotNull(genreBooks);
         assertEquals(4, genreBooks.size());
+
+        System.out.println("\nFinished testGetBooksByGenre");
+
     }
 
 }
