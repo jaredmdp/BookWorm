@@ -22,8 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="honda.bookworm.View.UserLogin_ViewHandler" />
-        <activity android:name="honda.bookworm.View.UserSignup_ViewHandler" />
+        <activity android:name="honda.bookworm.View.UserLogin_ViewHandler"
+            android:screenOrientation="portrait" />
+        <activity android:name="honda.bookworm.View.UserSignup_ViewHandler"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

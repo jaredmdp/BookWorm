@@ -1,9 +1,11 @@
 package honda.bookworm.View;
 
-import honda.bookworm.Data.Stubs.BookPersistenceStub;
+import honda.bookworm.Application.Services;
+import honda.bookworm.Business.AccessBooks;
+import honda.bookworm.Business.AccessUsers;
 import honda.bookworm.Object.Book;
-import honda.bookworm.Data.BookPersistence;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Object.User;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,19 +29,34 @@ import java.util.List;
 public class Home_ViewHandler extends AppCompatActivity {
     private final int CARD_WIDTH = 400; //bookCard Width
     private final int CARD_HEIGHT = 525; //bookCard Height
-    private boolean isLoggedin = true; //TO REMOVE
+
+
+    private AccessBooks accessBooks;
+    private AccessUsers accessUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        accessUsers = new AccessUsers();
+        accessBooks = new AccessBooks();
+        customizeToUser();
         buildBookView();
+    }
+
+    private void customizeToUser(){
+        User activeUser = accessUsers.getActiveUser();
+        TextView userName = findViewById(R.id.home_username);
+        if(activeUser != null){
+            userName.setText(activeUser.getFirstName()+" "+activeUser.getLastName());
+            userName.setVisibility(View.VISIBLE);
+        }
     }
 
     private void buildBookView(){
         Genre [] genres = Genre.class.getEnumConstants();
-        BookPersistence bp = new BookPersistenceStub(); //TO REMOVE
+
         String genreName;
         List<Book> bookList;
         LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
@@ -48,8 +65,7 @@ public class Home_ViewHandler extends AppCompatActivity {
 
         for(Genre genre : genres){
             genreName = genre.toString();
-            bookList = bp.getBooksByGenre(genre);
-
+            bookList = accessBooks.getBooksGenre(genre);
             if( bookList != null){
                 TextView tv = new TextView(linearBody.getContext());
                 tv.setText(genreName);
@@ -67,16 +83,13 @@ public class Home_ViewHandler extends AppCompatActivity {
     public void onUserPressed(View view) {
         MaterialButton logoutBtn = findViewById(R.id.home_userProfile_logoutButton);
         Intent intent;
-        if(isLoggedin){
+        if(accessUsers.getActiveUser()!= null){
             viewVisibilityToggle(logoutBtn);
         }else{
             intent = new Intent(getApplicationContext(), UserLogin_ViewHandler.class);
             startActivity(intent);
         }
 
-        Toast.makeText(getApplicationContext(),
-                "isLoggedin:"+isLoggedin,
-                Toast.LENGTH_SHORT).show();
 
     }
 
@@ -149,9 +162,12 @@ public class Home_ViewHandler extends AppCompatActivity {
 
 
     public void onLogoutPressed(View view) {
-        if(isLoggedin){
-            isLoggedin = !isLoggedin;
+        if(Services.getActiveUser()!=null){
+            accessUsers.logOutActiveUser();
+            TextView userName = findViewById(R.id.home_username);
+            userName.setVisibility(View.GONE);
             viewVisibilityToggle(view);
         }
     }
+
 }

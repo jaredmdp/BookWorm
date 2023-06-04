@@ -66,7 +66,7 @@ public class UserPersistenceStub implements UserPersistence {
     @Override
     public User getUserByUsername(String currentUsername) {
         User user = null;
-        for(int i = 0; i < users.size(); i++){
+        for(int i = 0; i < users.size() && user==null ; i++){
             if(users.get(i).getUsername().equalsIgnoreCase(currentUsername)){
                 user = users.get(i);
             }
@@ -78,19 +78,17 @@ public class UserPersistenceStub implements UserPersistence {
     public User addUser(User currentUser) {
         User result = null;
 
-        try {
-            if (isDuplicateUsername(currentUser.getUsername())) {
-                throw new IllegalArgumentException("Duplicate username found");
+            if (getUserByUsername(currentUser.getUsername()) != null) {
+                throw new IllegalStateException("Username taken.");
             } else {
                 users.add(currentUser);
                 result = currentUser;
             }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Failed to update user: " + e.getMessage());
-        }
         return result;
     }
 
+
+    //is this necessary ?
     private boolean isDuplicateUsername(String username) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equalsIgnoreCase(username)) {

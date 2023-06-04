@@ -8,6 +8,7 @@ import honda.bookworm.tests.Data.UserPersistenceStubTest;
 import honda.bookworm.tests.Object.BookTest;
 import honda.bookworm.tests.Object.UserTest;
 import honda.bookworm.tests.Object.AuthorTest;
+import honda.bookworm.tests.Business.AccessUsersTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -15,7 +16,8 @@ import honda.bookworm.tests.Object.AuthorTest;
         UserTest.class,
         AuthorTest.class,
         UserPersistenceStubTest.class,
-        BookPersistenceStubTest.class
+        BookPersistenceStubTest.class,
+        AccessUsersTest.class
 })
 
 public class AllTests
