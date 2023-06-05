@@ -138,7 +138,6 @@ public class Home_ViewHandler extends AppCompatActivity {
         bookCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), v.getTag().toString(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), BookView_ViewHandler.class);
                 Book book = (Book) v.getTag();
                 intent.putExtra("title", book.getName());
