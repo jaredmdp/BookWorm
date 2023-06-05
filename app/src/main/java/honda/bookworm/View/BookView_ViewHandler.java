@@ -62,4 +62,8 @@ public class BookView_ViewHandler extends AppCompatActivity {
             }
         });
     }
+
+    public void onFavouriteClicked(View view) {
+        //to be implemented in iteration 2
+    }
 }

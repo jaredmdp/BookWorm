@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="honda.bookworm.View.BookView_ViewHandler"
-    android:orientation="vertical">
+    >
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scrollbars="none">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp">
+        android:layout_marginVertical="10dp"
+        android:paddingBottom="25dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -84,8 +93,23 @@
             android:autoLink="web"
             android:visibility="visible"/>
 
-    </LinearLayout>
+    </LinearLayout></ScrollView>
 
 
+    <!-- for future implementation -->
+    <ToggleButton
+        android:id="@+id/book_view_fav_button_toggle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="onFavouriteClicked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="25dp"
+        android:textOn=""
+        android:textOff=""
+        android:background="@drawable/favorite_button_toggle"
+        android:backgroundTint="@color/worm_skin"
+        android:visibility="gone"/>
 
-</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
