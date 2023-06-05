@@ -99,6 +99,16 @@ public class UserPersistenceStubTest {
     }
 
     @Test
+    public void testGetUserByUsernameNotFound(){
+        System.out.println("\nStarting GetUserByUsernameNotFound");
+
+        User user = userStub.getUserByUsername("FindME");
+        assertNull(user);
+
+        System.out.println("\nFinished GetUserByUsernameNotFound");
+    }
+
+    @Test
     public void testAddUser(){
         System.out.println("\nStarting AddUser");
 
@@ -123,6 +133,23 @@ public class UserPersistenceStubTest {
         }
 
         System.out.println("\nFinished testAddDuplicateUser");
+    }
+
+    @Test
+    public void testIsDuplicateUsername() {
+        System.out.println("\nStarting testIsDuplicateUsername");
+        UserPersistenceStub userPersistence = new UserPersistenceStub();
+
+        boolean result1 = userPersistence.isDuplicateUsername("johndoe");
+        assertTrue(result1);
+
+        boolean result2 = userPersistence.isDuplicateUsername("janedoe");
+        assertFalse(result2);
+
+        boolean result3 = userPersistence.isDuplicateUsername("JOHNDoe");
+        assertTrue(result3);
+
+        System.out.println("\nFinished testIsDuplicateUsername");
     }
 
     @Test
