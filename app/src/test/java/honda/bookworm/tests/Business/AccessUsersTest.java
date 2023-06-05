@@ -167,5 +167,25 @@ public class AccessUsersTest {
         System.out.println("Finished testAddUserFailEmptyStrings");
     }
 
+    @Test
+    public void testAddUserFailShortUserName() {
+        System.out.println("Starting testAddUserFailShortUserName");
+
+        User newUser = new User("spongebob", "squarepants", "s", "password1");
+
+        try {
+            User result = signUp.addNewUser("spongebob", "squarepants", "s", "password1", false);
+            assertNotNull(result);
+            assertEquals(result, newUser);
+        } catch (Exception e){
+            System.out.println("Failed to insert user: " + e.getMessage());
+        }
+
+        //check if user was placed in the stubs
+        assertFalse(signUp.getAllUser().contains(newUser));
+
+        System.out.println("Finished testAddUserFailShortUserName");
+    }
+
 
 }

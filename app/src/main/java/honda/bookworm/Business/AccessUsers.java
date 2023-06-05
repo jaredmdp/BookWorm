@@ -19,7 +19,7 @@ public class AccessUsers {
         User newUser;
         User result;
 
-        //throws if empty, and password length < 3
+        //form validation checks
         validateInput(first, last, username, password);
 
         if (isAuthor) {
@@ -44,6 +44,10 @@ public class AccessUsers {
 
         if (password.length() <= 3) {
             throw new IllegalStateException("Password must be greater than 3 characters");
+        }
+
+        if (username.length() < 2) {
+            throw new IllegalStateException("Usernames must be at least 2 characters long.");
         }
     }
 
