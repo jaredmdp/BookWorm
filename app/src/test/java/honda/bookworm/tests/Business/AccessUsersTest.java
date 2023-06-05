@@ -30,6 +30,11 @@ public class AccessUsersTest {
 
         signUp.addNewUser("hello", "test", "hellotest", "password1", false);
 
+        assertEquals(expectedSize, signUp.getAllUser().size());
+
+        //adds author variant
+        signUp.addNewUser("hello", "test", "hellotest2", "password1", true);
+        expectedSize = expectedSize + 1;
 
         assertEquals(expectedSize, signUp.getAllUser().size());
 
@@ -52,8 +57,8 @@ public class AccessUsersTest {
     }
 
     @Test
-    public void testVerifyUserFalse() {
-        System.out.println("Starting testVerifyUserFalse");
+    public void testVerifyUserFalseNotFound() {
+        System.out.println("Starting testVerifyUserFalseNotFound");
 
         //this user doesn't exist in Stub
         String username = "janedoe";
@@ -63,15 +68,33 @@ public class AccessUsersTest {
             boolean result = signUp.verifyUser(username, password);
             assertFalse(result);
         } catch (Exception e) {
-            System.out.println("Failed to update user: " + e.getMessage());
+            System.out.println("Failed to verify user: " + e.getMessage());
         }
 
-        System.out.println("Finished testVerifyUserFalse");
+        System.out.println("Finished testVerifyUserFalseNotFound");
     }
 
     @Test
-    public void testAddUserFail(){
-        System.out.println("Starting testAddUserFail");
+    public void testVerifyUserFalsePasswordWrong(){
+        System.out.println("Starting testVerifyUserFalsePasswordWrong");
+
+        //this is the wrong password
+        String username = "johndoe";
+        String badPassword = "Dumb Password";
+
+        try{
+            boolean result = signUp.verifyUser(username, badPassword);
+            assertFalse(result);
+        } catch(Exception e){
+            System.out.println("Failed to verify user: " + e.getMessage());
+        }
+
+        System.out.println("Finished testVerifyUserFalsePasswordWrong");
+    }
+
+    @Test
+    public void testAddUserFailDuplicateUser(){
+        System.out.println("Starting testAddUserFailDuplicateUser");
 
         User newUser = new User("John", "Doe", "johndoe", "password1");
 
@@ -83,7 +106,25 @@ public class AccessUsersTest {
             assertTrue(signUp.getAllUser().contains(newUser)); //check if its actually a duplicate username
         }
 
-        System.out.println("Finished testAddUserFail");
+        System.out.println("Finished testAddUserFailDuplicateUser");
+    }
+
+    @Test
+    public void testAddUserFailPasswordBad(){
+        System.out.println("Starting testAddUserFailPasswordBad");
+
+        User newUser = new User("Johnathon", "Doe the Third", "johnthe3", "123");
+
+        try{
+            assertFalse(signUp.getAllUser().contains(newUser)); //not inserting a duplicate user
+            User result = signUp.addNewUser("Johnathon", "Doe the Third", "johnthe3", "123", false);
+        } catch(Exception e){
+            System.out.println("Failed to insert user: " + e.getMessage());
+        }
+
+        assertFalse(signUp.getAllUser().contains(newUser)); //user still not inserted
+
+        System.out.println("Finished testAddUserFailPasswordBad");
     }
 
     @Test

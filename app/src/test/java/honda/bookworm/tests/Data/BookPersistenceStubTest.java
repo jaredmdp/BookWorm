@@ -311,6 +311,17 @@ public class BookPersistenceStubTest {
     }
 
     @Test
+    public void testGetBookByISBNNotFound(){
+        System.out.println("\nStarting testGetBooksByISBNNotFound");
+
+        String ISBN = "1111111111111";
+        Book book = bookStub.getBookByISBN(ISBN);
+        assertNull(book);
+
+        System.out.println("\nFinished testGetBookByISBNNotFound");
+    }
+
+    @Test
     public void testGetBookByTitle() {
         System.out.println("\nStarting testGetBookByTitle");
 
@@ -319,11 +330,18 @@ public class BookPersistenceStubTest {
         assertNotNull(book);
         assertEquals(title, book.getName());
 
-        title = "random book that is not in Stub";
-        book = bookStub.getBookByTitle(title);
+        System.out.println("\nFinished testGetBookByTitle");
+    }
+
+    @Test
+    public void testGetBookByTitleNotFound(){
+        System.out.println("\nStarting testGetBooksByTitleNotFound");
+
+        String title = "random book that is not in Stub";
+        Book book = bookStub.getBookByTitle(title);
         assertNull(book);
 
-        System.out.println("\nFinished testGetBookByTitle");
+        System.out.println("\nFinished testGetBookByTitleNotFound");
     }
 
     @Test
@@ -343,20 +361,37 @@ public class BookPersistenceStubTest {
     }
 
     @Test
-    public void testAddDuplicateBook() {
-        System.out.println("\nStarting testAddBook");
+    public void testAddDuplicateTitleBook() {
+        System.out.println("\nStarting testAddDuplicateTitleBook");
 
         //check for duplicate book that is already in the system
-        Book dupeBook = new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355");
+        Book dupeBook = new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "123"); //book with dupe title only
         Book result = bookStub.addBook(dupeBook);
         assertNotEquals(result, dupeBook);
         assertNull(result);
 
         //Double check that the book we added is already in the system
-        List<Book> allBooks = bookStub.getAllBooks();
-        assertTrue(allBooks.contains(dupeBook));
+        Book original = bookStub.getBookByTitle(dupeBook.getName());
+        assertNotNull(original);
 
-        System.out.println("\nFinished testAddBook");
+        System.out.println("\nFinished testAddDuplicateTitleBook");
+    }
+
+    @Test
+    public void testAddDuplicateISBNBook(){
+        System.out.println("\nStarting testAddDuplicateISBNBook");
+
+        //check for duplicate book that is already in the system
+        Book dupeBook = new Book("I am a Book", "Brandon Sanderson", Genre.Fantasy, "9780765326355"); //book with dupe ISBN only
+        Book result = bookStub.addBook(dupeBook);
+        assertNotEquals(result, dupeBook);
+        assertNull(result);
+
+        //Double check that the book we added is already in the system
+        Book original = bookStub.getBookByISBN(dupeBook.getISBN());
+        assertNotNull(original);
+
+        System.out.println("\nFinished testAddDuplicateISBNBook");
     }
 
     @Test
@@ -380,6 +415,23 @@ public class BookPersistenceStubTest {
     }
 
     @Test
+    public void testRemoveBookByISBNNotFound() {
+        System.out.println("\nStarting testRemoveBookByISBNNotFound");
+
+        String ISBN = "11111111111"; //Made up ISBN
+        List<Book> allBooks = bookStub.getAllBooks();
+
+        assertEquals(27, allBooks.size());
+        bookStub.removeBookByISBN(ISBN);
+
+        //update book count
+        allBooks = bookStub.getAllBooks();
+        assertEquals(27, allBooks.size());
+
+        System.out.println("\nFinished testRemoveBookByISBNNotFound");
+    }
+
+    @Test
     public void testRemoveBookByTitle() {
         System.out.println("\nStarting testRemoveBookByTitle");
 
@@ -396,16 +448,25 @@ public class BookPersistenceStubTest {
         assertNull(result);
         assertEquals(26, allBooks.size());
 
+        System.out.println("\nFinished testRemoveBookByTitle");
+    }
+
+    @Test
+    public void testRemoveBookByTitleNotFound(){
+        System.out.println("\nStarting testRemoveBookByTitleNotFound");
+
+        String Title = "Skyward";
+        List<Book> allBooks = bookStub.getAllBooks();
+
         //test book that is not in system
-        Title = "Skyward";
-        allBooks = bookStub.getAllBooks();
+        assertEquals(27, allBooks.size());
         bookStub.removeBookByTitle(Title);
 
         //update book count
         allBooks = bookStub.getAllBooks();
-        assertEquals(26, allBooks.size());
+        assertEquals(27, allBooks.size());
 
-        System.out.println("\nFinished testRemoveBookByTitle");
+        System.out.println("\nFinished testRemoveBookByTitleNotFound");
     }
 
     //We need to rewrite this test once we create adjustment to list Authors by Objects!
@@ -413,38 +474,51 @@ public class BookPersistenceStubTest {
     public void testGetBooksByAuthor() {
         System.out.println("\nStarting testGetBooksByAuthor");
 
+        //test valid author
+        String author = "Brandon Sanderson";
+        List<Book> authorBooks = bookStub.getBooksByAuthor(author);
+        assertNotNull(authorBooks);
+        assertEquals(5, authorBooks.size());
+
+        System.out.println("\nFinished testGetBooksByAuthor");
+    }
+
+    @Test
+    public void testGetBooksByAuthorNotFound() {
+        System.out.println("\nStarting testGetBooksByAuthorNotFound");
+
         //test author that is not in Stub
         String author = "JK Rowling";
         List<Book> authorBooks = bookStub.getBooksByAuthor(author);
         assertNull(authorBooks);
 
-        //test valid author
-        author = "Brandon Sanderson";
-        authorBooks = bookStub.getBooksByAuthor(author);
-        assertNotNull(authorBooks);
-        assertEquals(5, authorBooks.size());
-
-        System.out.println("\nFinished testGetBooksByAuthor");
-
+        System.out.println("\nFinished testGetBooksByAuthorNotFound");
     }
 
     @Test
     public void testGetBooksByGenre() {
         System.out.println("\nStarting testGetBooksByGenre");
 
-        //test genre that is not in Stub
-        Genre genre = Genre.Manga;
-        List<Book> genreBooks = bookStub.getBooksByGenre(genre);
-        assertNull(genreBooks);
-
         //test valid author
-        genre = Genre.Adult;
-        genreBooks = bookStub.getBooksByGenre(genre);
+        Genre genre = Genre.Adult;
+        List<Book> genreBooks = bookStub.getBooksByGenre(genre);
         assertNotNull(genreBooks);
         assertEquals(4, genreBooks.size());
 
         System.out.println("\nFinished testGetBooksByGenre");
 
+    }
+
+    @Test
+    public void testGetBooksByGenreNotFound(){
+        System.out.println("\nStarting testGetBooksByGenreNotFound");
+
+        //test genre that is not in Stub
+        Genre genre = Genre.Manga;
+        List<Book> genreBooks = bookStub.getBooksByGenre(genre);
+        assertNull(genreBooks);
+
+        System.out.println("\nFinished testGetBooksByGenreNotFound");
     }
 
 }
