@@ -12,7 +12,6 @@ public interface UserPersistence {
     List<Book> getAllWrittenBooks(String author);
     User getUserByUsername(String currentUsername);
     User addUser(User currentUser);
-    User updateUser(User currentUser, User updateUser);
     User removeUser(User currentUser);
 
 

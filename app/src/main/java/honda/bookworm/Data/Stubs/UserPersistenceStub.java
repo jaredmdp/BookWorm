@@ -97,24 +97,7 @@ public class UserPersistenceStub implements UserPersistence {
         return false;
     }
 
-    @Override
-    public User updateUser(User currentUser, User updateUser) {
-        User result = null;
 
-        try {
-            int index = users.indexOf(currentUser);
-            if (index != -1) {
-                users.set(index, updateUser);
-                result = updateUser;
-            } else {
-                throw new IllegalArgumentException("User not found");
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Failed to update user: " + e.getMessage());
-        }
-
-        return result;
-    }
 
     @Override
     public User removeUser(User currentUser) {
