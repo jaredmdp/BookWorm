@@ -309,17 +309,10 @@ public class BookPersistenceStub implements BookPersistence {
     public Book addBook(Book newBook) {
         Book result = null;
 
-        try {
-            if (isDuplicateISBN(newBook.getISBN())) {
-                throw new IllegalArgumentException("Duplicate ISBN found");
-            } else if (isDuplicateTitle(newBook.getName())) {
-                throw new IllegalArgumentException("Duplicate title found");
-            } else {
-                books.add(newBook);
-                result = newBook;
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Failed to add book: " + e.getMessage());
+        //check duplicate ISBN and title
+        if(!isDuplicateISBN(newBook.getISBN()) && !isDuplicateTitle(newBook.getName())) {
+            books.add(newBook);
+            result = newBook;
         }
 
         return result;
@@ -346,7 +339,6 @@ public class BookPersistenceStub implements BookPersistence {
 
     @Override
     public void removeBookByISBN(String ISBN) {
-
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).getISBN().equals(ISBN)) {
                 books.remove(i);
@@ -356,7 +348,6 @@ public class BookPersistenceStub implements BookPersistence {
 
     @Override
     public void removeBookByTitle(String Title) {
-
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).getName().equalsIgnoreCase(Title)) {
                 books.remove(i);
