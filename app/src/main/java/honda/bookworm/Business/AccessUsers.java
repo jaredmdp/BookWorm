@@ -16,25 +16,43 @@ public class AccessUsers {
     }
 
     public User addNewUser(String first, String last, String username, String password, boolean isAuthor){
-        User newUser = null;
-        User result = null;
+        User newUser;
+        User result;
 
-        if (password.length()>3) {
-            if (isAuthor) {
-                newUser = new Author(first, last, username, password);
-            } else {
-                newUser = new User(first, last, username, password);
-            }
-            result = userPersistence.addUser(newUser);
-        }else{
-            throw new IllegalStateException("Password must be greater than 3 letters");
+        //form validation checks
+        validateInput(first, last, username, password);
+
+        if (isAuthor) {
+            newUser = new Author(first, last, username, password);
+        } else {
+            newUser = new User(first, last, username, password);
         }
+
+        result = userPersistence.addUser(newUser);
 
         if(result != null){
             Services.setActiveUser(result);
         }
 
         return result;
+    }
+
+    private void validateInput(String first, String last, String username, String password) {
+        if (isEmpty(first) || isEmpty(last) || isEmpty(username)) {
+            throw new IllegalStateException("First name, last name, and username must not be empty");
+        }
+
+        if (password.length() <= 3) {
+            throw new IllegalStateException("Password must be greater than 3 characters");
+        }
+
+        if (username.length() < 2) {
+            throw new IllegalStateException("Usernames must be at least 2 characters long.");
+        }
+    }
+
+    private boolean isEmpty(String str) {
+        return str == null || str.trim().isEmpty();
     }
 
     public boolean verifyUser(String username, String password) {
