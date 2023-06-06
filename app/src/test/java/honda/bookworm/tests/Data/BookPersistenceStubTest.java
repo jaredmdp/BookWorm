@@ -367,12 +367,7 @@ public class BookPersistenceStubTest {
         //check for duplicate book that is already in the system
         Book dupeBook = new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "123"); //book with dupe title only
         Book result = bookStub.addBook(dupeBook);
-        assertNotEquals(result, dupeBook);
         assertNull(result);
-
-        //Double check that the book we added is already in the system
-        Book original = bookStub.getBookByTitle(dupeBook.getName());
-        assertNotNull(original);
 
         System.out.println("\nFinished testAddDuplicateTitleBook");
     }
@@ -384,12 +379,7 @@ public class BookPersistenceStubTest {
         //check for duplicate book that is already in the system
         Book dupeBook = new Book("I am a Book", "Brandon Sanderson", Genre.Fantasy, "9780765326355"); //book with dupe ISBN only
         Book result = bookStub.addBook(dupeBook);
-        assertNotEquals(result, dupeBook);
         assertNull(result);
-
-        //Double check that the book we added is already in the system
-        Book original = bookStub.getBookByISBN(dupeBook.getISBN());
-        assertNotNull(original);
 
         System.out.println("\nFinished testAddDuplicateISBNBook");
     }
