@@ -76,8 +76,6 @@ public class Home_ViewHandler extends AppCompatActivity {
                     for (Book book : bookList) {
                         populateHorizontalView(scrollViewContainerID, book);
                     }
-                } else {
-                    // show user that genre is not available
                 }
             } catch (NullPointerException e) {
                 String msg = String.format("Invalid Genre: %s", e.getMessage());
