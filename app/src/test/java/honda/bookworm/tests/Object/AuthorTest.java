@@ -65,7 +65,7 @@ public class AuthorTest {
         Author author1 = new Author("John", "Wick", "Johnwick", "hunter2");
         Author author2 = new Author("John", "Wick", "Johnwick", "hunter2");
         assertEquals(author1, author2);
-
+        assertEquals(author1,author1);
         System.out.println("\nFinished AuthorEquals");
     }
 
