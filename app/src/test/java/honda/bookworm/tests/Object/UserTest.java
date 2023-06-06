@@ -35,6 +35,7 @@ public class UserTest {
         User user1 = new User("John", "Wick", "Johnwick", "hunter2");
         User user2 = new User("John", "Wick", "Johnwick", "hunter2");
         assertEquals(user1, user2);
+        assertEquals(user1,user1);
 
         System.out.println("\nFinished UserEquals");
     }
