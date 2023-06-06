@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import honda.bookworm.Object.Book;
 
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Object.User;
 
 public class BookTest {
 
@@ -88,12 +89,14 @@ public class BookTest {
         Book wrongAuthor= new Book("Dun", "Fran Herbert", Genre.SciFi, "9780399128967");
         Book wrongGenre = new Book("Dun", "Frank Herbert", Genre.Romance, "9780399128967");
         Book wrongISBN = new Book("Dun", "Frank Herbert", Genre.SciFi, "12");
+        User wrongObject = new User("wrong", "object", "test", "123");
 
         assertTrue(book.equals(rightBook));
         assertFalse(book.equals(wrongTitle));
         assertFalse(book.equals(wrongAuthor));
         assertFalse(book.equals(wrongGenre));
         assertFalse(book.equals(wrongISBN));
+        assertFalse(book.equals(wrongObject));
 
         System.out.println("\nFinished Equals");
     }
