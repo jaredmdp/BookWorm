@@ -88,7 +88,7 @@ public class UserPersistenceStub implements UserPersistence {
         return result;
     }
 
-    public boolean isDuplicateUsername(String username) {
+    private boolean isDuplicateUsername(String username) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equalsIgnoreCase(username)) {
                 return true;

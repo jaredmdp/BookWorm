@@ -136,23 +136,6 @@ public class UserPersistenceStubTest {
     }
 
     @Test
-    public void testIsDuplicateUsername() {
-        System.out.println("\nStarting testIsDuplicateUsername");
-        UserPersistenceStub userPersistence = new UserPersistenceStub();
-
-        boolean result1 = userPersistence.isDuplicateUsername("johndoe");
-        assertTrue(result1);
-
-        boolean result2 = userPersistence.isDuplicateUsername("janedoe");
-        assertFalse(result2);
-
-        boolean result3 = userPersistence.isDuplicateUsername("JOHNDoe");
-        assertTrue(result3);
-
-        System.out.println("\nFinished testIsDuplicateUsername");
-    }
-
-    @Test
     public void testUpdateUser(){
         System.out.println("\nStarting tesstUpdateUser");
 
