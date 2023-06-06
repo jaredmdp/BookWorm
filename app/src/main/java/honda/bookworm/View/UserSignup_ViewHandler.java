@@ -38,13 +38,6 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
 
 
     private void processUserInput(String firstName, String lastName, String username, String password, boolean isAuthor) {
-        /*
-         - take in provided input
-         - validate the input
-         - provide proper feedback to user via "Toasts" if excpetion thrown
-            - if exception resetSignUpFeilds
-         - proceed to next page
-        */
         boolean signUpState = false;
         String msg = "";
 
@@ -55,11 +48,11 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
             msg = String.format(("Invalid Sign-up: %s"), e.getMessage());
         }
 
-        //redirect if signup to Homepage if successful
+        //redirect to Homepage if signup was successful
         if (signUpState) {
             Intent intent = new Intent (this, Home_ViewHandler.class);
             startActivity(intent);
-            finish();
+            finishAffinity();
         } else {
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
         }

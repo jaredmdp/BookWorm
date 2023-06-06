@@ -54,11 +54,11 @@ public class UserLogin_ViewHandler extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
-        //if valid movie to next intent
+        //if valid go to home in loggedin state
         if (loginState) {
             Intent intent = new Intent(this, Home_ViewHandler.class);
             startActivity(intent);
-            finish();
+            finishAffinity();
         }
     }
 
