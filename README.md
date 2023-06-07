@@ -19,7 +19,7 @@ BookWorm will be a book browsing application that changes the way our users expl
 
 
 ## Architecture
-- Our planned [Architecture](link) for our project
+- Our planned [Architecture](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/docs/Architechture.md) for our project
 
 
 ## Coding Style
@@ -30,10 +30,7 @@ BookWorm will be a book browsing application that changes the way our users expl
 - Our document for [Contributing](link) standards for this project
 
 
-## Retrospective
-- Our document for [Retrospective](link)
-
 ## Tests
-- [UnitTests](link)
-- [IntegrationTests](link)
-- [AcceptanceTests](link)
+- [UnitTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/app/src/test/java/honda/bookworm/tests/AllUnitTests.java)
+- [IntegrationTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/app/src/test/java/honda/bookworm/tests/AllIntegrationTests.java)
+- [AcceptanceTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/app/src/test/java/honda/bookworm/tests/AllTests.java)
