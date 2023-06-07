@@ -38,6 +38,6 @@ Our document for [Contributing](./docs/Workflow.md) standards for this project
 
 
 ## Tests
-- [UnitTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/update_documentaiton/app/src/test/java/honda/bookworm/tests/AllUnitTests.java)
-- [IntegrationTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/update_documentaiton/app/src/test/java/honda/bookworm/tests/AllIntegrationTests.java)
-- [AcceptanceTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/app/src/test/java/honda/bookworm/tests/AllTests.java)
+- [UnitTests](./app/src/test/java/honda/bookworm/tests/AllUnitTests.java)
+- [IntegrationTests](./app/src/test/java/honda/bookworm/tests/AllIntegrationTests.java)
+- [AcceptanceTests](./app/src/test/java/honda/bookworm/tests/AllTests.java)
