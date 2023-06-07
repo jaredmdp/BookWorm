@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="honda.bookworm.View.UserLogin_ViewHandler">
+
+    <TextView
+        android:id="@+id/userlogin_login_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:text="User Login"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="181dp"
+        tools:text="User Login" />
+
+    <EditText
+        android:id="@+id/userlogin_username_input"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:background="?colorPrimary"
+        android:hint="@string/user_name"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8sp"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userlogin_login_heading" />
+
+    <EditText
+        android:id="@+id/userlogin_password_input"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="?colorPrimary"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8sp"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userlogin_username_input" />
+
+    <Button
+        android:id="@+id/userlogin_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:backgroundTint="@color/worm_skin"
+        android:fontFamily="sans-serif-black"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="10dp"
+        android:text="Login"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:onClick="userLoginButtonClicked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userlogin_password_input" />
+
+    <TextView
+        android:id="@+id/userlogin_signup_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:onClick="userSignUpLinkClicked"
+        android:text="not a user? Signup!"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/text_link_blue"
+        android:textSize="23sp"
+        android:paddingVertical="14dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userlogin_login_button"
+
+        />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:focusableInTouchMode="false"
+        android:src="@drawable/welcoming_worm"
+        android:translationX="-25dp"
+        android:translationY="-10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
