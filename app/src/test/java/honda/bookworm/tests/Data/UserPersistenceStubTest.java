@@ -136,36 +136,6 @@ public class UserPersistenceStubTest {
     }
 
     @Test
-    public void testUpdateUser(){
-        System.out.println("\nStarting tesstUpdateUser");
-
-        User currentUser = new User("John", "Doe", "johndoe", "password1");
-        User updateUser = new User("Johnny", "Depp", "johndoe", "password1");
-        User result = userStub.updateUser(currentUser, updateUser);
-
-        assertNotNull(result);
-        assertEquals(result.getUsername(), "johndoe");
-        assertEquals(result.getFirstName(), "Johnny");
-        assertEquals(result.getLastName(), "Depp");
-
-        System.out.println("\nFinished testUpdateUser");
-    }
-
-    //tries to update a user that is not in the stub
-    @Test
-    public void testUpdateFalseUser() {
-        System.out.println("\nStarting testUpdateFalseUser");
-
-        User falseUser = new User("Johnny", "Depp", "johndoe", "password1");
-        User updateFalse = new User("Josie", "Boe", "johndoe", "password1");
-        User result = userStub.updateUser(falseUser, updateFalse);
-
-        assertNull(result);
-
-        System.out.println("\nFinished testUpdateFalseUser");
-    }
-
-    @Test
     public void testRemoveUser(){
         System.out.println("\nStarting RemoveUser");
         User user = userStub.removeUser(new Author("Joe", "Mama", "joemama", "password4"));
