@@ -76,16 +76,14 @@ public class UserPersistenceStub implements UserPersistence {
 
     @Override
     public User addUser(User currentUser) {
-        User result = null;
         String username = currentUser.getUsername();
 
             if (isDuplicateUsername(username)) {
-                throw new IllegalStateException("Username taken.");
+                return null;
             } else {
                 users.add(currentUser);
-                result = currentUser;
+                return currentUser;
             }
-        return result;
     }
 
     private boolean isDuplicateUsername(String username) {

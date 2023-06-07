@@ -30,9 +30,11 @@ public class AccessUsers {
 
         result = userPersistence.addUser(newUser);
 
-        if(result != null){
-            Services.setActiveUser(result);
+        if(result == null){
+            throw new IllegalStateException("Username taken.");
         }
+
+        Services.setActiveUser(result);
 
         return result;
     }
