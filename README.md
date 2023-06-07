@@ -30,9 +30,6 @@ BookWorm will be a book browsing application that changes the way our users expl
 - Our document for [Contributing](link) standards for this project
 
 
-## Retrospective
-- Our document for [Retrospective](link)
-
 ## Tests
 - [UnitTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/app/src/test/java/honda/bookworm/tests/AllUnitTests.java)
 - [IntegrationTests](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/app/src/test/java/honda/bookworm/tests/AllIntegrationTests.java)
