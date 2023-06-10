@@ -3,12 +3,12 @@ package honda.bookworm.Business;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
-import honda.bookworm.Data.BookPersistence;
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
 public class AccessBooks {
-    private BookPersistence bookPersistence;
+    private IBookPersistence bookPersistence;
 
     public AccessBooks() {
         bookPersistence = Services.getBookPersistence();

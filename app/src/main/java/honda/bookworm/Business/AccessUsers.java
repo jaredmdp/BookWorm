@@ -3,13 +3,13 @@ package honda.bookworm.Business;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
-import honda.bookworm.Data.UserPersistence;
+import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.User;
 
 public class AccessUsers {
 
-    private UserPersistence userPersistence;
+    private IUserPersistence userPersistence;
 
     public AccessUsers(){
         userPersistence = Services.getUserPersistence();
