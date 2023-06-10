@@ -1,25 +1,25 @@
 package honda.bookworm.Application;
 
-import honda.bookworm.Data.BookPersistence;
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Data.Stubs.UserPersistenceStub;
-import honda.bookworm.Data.UserPersistence;
+import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.User;
 
 public class Services {
-    private static BookPersistence bookPersistence = null;
-    private static UserPersistence userPersistence = null;
+    private static IBookPersistence bookPersistence = null;
+    private static IUserPersistence userPersistence = null;
 
     private static User activeUser = null;
 
-    public static synchronized BookPersistence getBookPersistence(){
+    public static synchronized IBookPersistence getBookPersistence(){
         if (bookPersistence == null){
             bookPersistence = new BookPersistenceStub();
         }
         return bookPersistence;
     }
 
-    public static synchronized UserPersistence getUserPersistence(){
+    public static synchronized IUserPersistence getUserPersistence(){
         if (userPersistence == null){
             userPersistence = new UserPersistenceStub();
         }

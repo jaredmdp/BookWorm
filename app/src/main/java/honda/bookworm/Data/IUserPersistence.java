@@ -6,7 +6,7 @@ import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.User;
 
-public interface UserPersistence {
+public interface IUserPersistence {
     List<User> getAllUsers();
     List<Author> getAllAuthors();
     List<Book> getAllWrittenBooks(String author);
