@@ -14,6 +14,8 @@ import com.honda.bookworm.R;
 
 public class BookView_ViewHandler extends AppCompatActivity {
 
+    private final int MIN = 7;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,6 @@ public class BookView_ViewHandler extends AppCompatActivity {
         assignValues(title, author, genre, isbn, description);
     }
 
-
     //need to figure out image
     private void assignValues(String bookTitle, String bookAuthor, String bookGenre, String bookIsbn, String bookDescription) {
         TextView title = findViewById(R.id.book_view_book_title);
@@ -38,6 +39,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
         TextView genre = findViewById(R.id.book_view_book_genre);
         TextView isbn = findViewById(R.id.book_view_book_isbn);
         TextView description = findViewById(R.id.book_view_book_description);
+        TextView collapseButton = findViewById(R.id.book_view_book_description_toggle);
 
         title.setText(String.format("%s %s", title.getText(), bookTitle));
         author.setText(String.format("%s %s", author.getText(), bookAuthor));
@@ -45,10 +47,17 @@ public class BookView_ViewHandler extends AppCompatActivity {
         isbn.setText(String.format("%s %s", isbn.getText(), bookIsbn));
         description.setText(String.format("%s %s", description.getText(), bookDescription));
 
+        description.post(new Runnable() {
+            @Override
+            public void run() {
+                if(description.getLineCount()<=MIN){
+                    collapseButton.setVisibility(View.GONE);
+                }
+            }
+        });
+
         String url = String.format("https://www.amazon.ca/s?k=%s", bookTitle.toLowerCase().replaceAll(" ", "+"));
         createPurchaseButtonViewListener(url);
-        Log.d("URL TAG: ", url);
-
     }
 
     private void createPurchaseButtonViewListener(String url) {
@@ -63,4 +72,17 @@ public class BookView_ViewHandler extends AppCompatActivity {
         });
     }
 
+    public void expandCollapseDescription(View v) {
+        TextView toggleText = (TextView) v;
+        TextView description = findViewById(R.id.book_view_book_description);
+
+        if(description.getMaxLines()<=MIN){
+            description.setMaxLines(Integer.MAX_VALUE);
+            toggleText.setText("[Collapse]");
+        }else{
+            description.setMaxLines(MIN);
+            toggleText.setText("[Expand]");
+        }
+
+    }
 }
