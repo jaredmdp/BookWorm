@@ -29,7 +29,7 @@ public class AccessBooks {
         if(bookTitle.length()> MAX_BOOK_TITLE_LENGTH){
             if(bookTitle.split(" ").length>2) {
                 first = bookTitle.substring(0, bookTitle.indexOf(" ", 10));
-                last = bookTitle.substring(bookTitle.lastIndexOf(" ") + 1, bookTitle.length()-1);
+                last = bookTitle.substring(bookTitle.lastIndexOf(" ") + 1, bookTitle.length());
             }else{
                 first = bookTitle.substring(0, 10);
                 last = bookTitle.substring(bookTitle.length()-10);

@@ -49,7 +49,7 @@ public class Home_ViewHandler extends AppCompatActivity {
         User activeUser = accessUsers.getActiveUser();
         TextView userName = findViewById(R.id.home_username);
         if (activeUser != null) {
-            userName.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
+            userName.setText(activeUser.getUsername());
             userName.setVisibility(View.VISIBLE);
         }
     }
