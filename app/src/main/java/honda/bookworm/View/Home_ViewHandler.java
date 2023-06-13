@@ -124,7 +124,7 @@ public class Home_ViewHandler extends AppCompatActivity {
     private View createBookCard(Book book) {
         View bookCardView = getLayoutInflater().inflate(R.layout.sub_view_book_card, null, false);
         TextView bookName = (TextView) bookCardView.findViewById(R.id.book_card_title);
-        bookName.setText(book.getName());
+        bookName.setText(accessBooks.getTrimmedBookName(book));
 
         bookCardView.setTag(book);
         addClickListenerToBookCard(bookCardView);
