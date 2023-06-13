@@ -49,4 +49,26 @@ public class AccessBooksTest {
 
     }
 
+    @Test
+    public void testGetTrimmedBookTitles(){
+        Book testBook = new Book("Super Dooper Ginormous Fungus Amoung Us","",Genre.Fiction, "123123");
+        String trimmed;
+
+        System.out.println("\nTesting getTrimmedBookTitles");
+        assertTrue(testBook.getName().length()>30);
+
+        trimmed = accessBooks.getTrimmedBookName(testBook);
+        assertTrue("Trimmed title must be shorter than actual book title", testBook.getName().length()>trimmed.length() );
+
+        testBook.setName("Superdooperlongwordthathasmorethan40character"); //huge title less than 3 words
+        trimmed = accessBooks.getTrimmedBookName(testBook);
+        assertTrue("Trimmed title must be shorter than actual book title", testBook.getName().length()>trimmed.length() );
+
+        testBook.setName("A short title that is nice"); //huge title less than 3 words
+        trimmed = accessBooks.getTrimmedBookName(testBook);
+        assertTrue("Trimmed title must be equal to actual book title", testBook.getName().length()==trimmed.length() );
+
+        System.out.println("\nFinished getTrimmedBookTitles Test");
+    }
+
 }

@@ -9,7 +9,7 @@ import honda.bookworm.Object.Genre;
 
 public class AccessBooks {
     private IBookPersistence bookPersistence;
-
+    private final int MAX_BOOK_TITLE_LENGTH = 30;
     public AccessBooks() {
         bookPersistence = Services.getBookPersistence();
     }
@@ -20,6 +20,24 @@ public class AccessBooks {
         } else {
             throw new NullPointerException("genre input can't be null");
         }
+    }
+
+    public String getTrimmedBookName(Book b){
+        String bookTitle = b.getName();
+        String first,last;
+
+        if(bookTitle.length()> MAX_BOOK_TITLE_LENGTH){
+            if(bookTitle.split(" ").length>2) {
+                first = bookTitle.substring(0, bookTitle.indexOf(" ", 10));
+                last = bookTitle.substring(bookTitle.lastIndexOf(" ") + 1, bookTitle.length()-1);
+            }else{
+                first = bookTitle.substring(0, 10);
+                last = bookTitle.substring(bookTitle.length()-10);
+            }
+            bookTitle = first+"..."+last;
+        }
+
+        return  bookTitle;
     }
 
 }
