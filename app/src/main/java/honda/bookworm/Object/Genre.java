@@ -1,7 +1,5 @@
 package honda.bookworm.Object;
 
-import androidx.annotation.NonNull;
-
 public enum Genre {
     Fiction,
     NonFiction,
@@ -23,7 +21,6 @@ public enum Genre {
     Manga;
 
     //creating a nicer default output format for certain genres
-    @NonNull
     @Override
     public String toString() {
         String formattedName;
