@@ -9,7 +9,7 @@ import honda.bookworm.Object.Genre;
 
 public class AccessBooks {
     private IBookPersistence bookPersistence;
-    private final int MAX_BOOK_TITLE_LENGTH = 30;
+    private final int MAX_BOOK_TITLE_LENGTH = 40;
     public AccessBooks() {
         bookPersistence = Services.getBookPersistence();
     }
@@ -22,22 +22,56 @@ public class AccessBooks {
         }
     }
 
-    public String getTrimmedBookName(Book b){
-        String bookTitle = b.getName();
-        String first,last;
+    public String getTrimmedBookName(Book b) {
+        String trimmedTitle = b.getName().trim();
+        String [] words;
 
-        if(bookTitle.length()> MAX_BOOK_TITLE_LENGTH){
-            if(bookTitle.split(" ").length>2) {
-                first = bookTitle.substring(0, bookTitle.indexOf(" ", 10));
-                last = bookTitle.substring(bookTitle.lastIndexOf(" ") + 1, bookTitle.length());
-            }else{
-                first = bookTitle.substring(0, 10);
-                last = bookTitle.substring(bookTitle.length()-10);
+        if (trimmedTitle.length() > MAX_BOOK_TITLE_LENGTH) {
+            words = trimmedTitle.split(" ");
+            if(words.length>1) {
+                trimmedTitle = titleTrimHelper(words);
+            }else {
+                trimmedTitle= titleTrimmer(trimmedTitle,"");
             }
-            bookTitle = first+"..."+last;
         }
 
-        return  bookTitle;
+        return trimmedTitle;
+    }
+
+    private String titleTrimHelper(String [] words){
+        String first = words[0];
+        String middle = " ";
+        String last = words [words.length-1];
+        int i = 1;
+
+        while((first+middle+last).length()< MAX_BOOK_TITLE_LENGTH && i < words.length-1){
+            middle= middle+words[i]+" ";
+            i++;
+        }
+
+        return titleTrimmer(first+middle,last);
+    }
+
+    private String titleTrimmer(String first, String last) {
+        StringBuilder trimmedTitle = new StringBuilder();
+        int firstLength = first.length();
+        int lastLength = last.length();
+
+        if (last.isEmpty()) {
+            trimmedTitle.append(first, 0, (firstLength / 2));
+            trimmedTitle.append("...");
+            trimmedTitle.append(first, (int) (firstLength * 0.85), firstLength);
+        } else if (firstLength < lastLength) {
+            trimmedTitle.append(first.trim());
+            trimmedTitle.append("...");
+            trimmedTitle.append(last, (int) (lastLength * 0.85), lastLength);
+        } else {
+            trimmedTitle.append(first, 0, (int) (firstLength * 0.55));
+            trimmedTitle.append("...");
+            trimmedTitle.append(last);
+        }
+
+        return trimmedTitle.toString();
     }
 
 }
