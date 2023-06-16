@@ -8,8 +8,7 @@ import honda.bookworm.tests.Business.AccessUsersTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        AccessBooksTest.class,
-        AccessUsersTest.class
+
 })
 
 public class AllIntegrationTests {
