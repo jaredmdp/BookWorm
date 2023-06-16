@@ -51,20 +51,27 @@ public class AccessBooksTest {
 
     @Test
     public void testGetTrimmedBookTitles(){
-        Book testBook = new Book("Super Dooper Ginormous Fungus Amoung Us","",Genre.Fiction, "123123");
+        Book testBook = new Book("Super Dooper Ginormous Fungus Amoung Us Volume Three","",Genre.Fiction, "123123");
         String trimmed;
 
         System.out.println("\nTesting getTrimmedBookTitles");
-        assertTrue(testBook.getName().length()>30);
+        assertTrue(testBook.getName().length()>40);
 
         trimmed = accessBooks.getTrimmedBookName(testBook);
         assertTrue("Trimmed title must be shorter than actual book title", testBook.getName().length()>trimmed.length() );
+        assertTrue(trimmed.contains("Super") && trimmed.contains("Three"));
+        assertFalse(trimmed.contains("Amoung Us Volume"));
 
-        testBook.setName("Superdooperlongwordthathasmorethan40character"); //huge title less than 3 words
+        testBook.setName("Superdooperlongwordthathasmorethan40character"); //huge one word title
         trimmed = accessBooks.getTrimmedBookName(testBook);
         assertTrue("Trimmed title must be shorter than actual book title", testBook.getName().length()>trimmed.length() );
 
-        testBook.setName("A short title that is nice"); //huge title less than 3 words
+        testBook.setName("Not the longest word supercalifragilisticexpialidocious");
+        trimmed = accessBooks.getTrimmedBookName(testBook);
+        assertFalse(trimmed.contains("supercalifragilisticexpialidocious"));
+        assertTrue("Trimmed title must be shorter than actual book title", testBook.getName().length()>trimmed.length() );
+
+        testBook.setName("A short title that is nice");
         trimmed = accessBooks.getTrimmedBookName(testBook);
         assertTrue("Trimmed title must be equal to actual book title", testBook.getName().length()==trimmed.length() );
 
