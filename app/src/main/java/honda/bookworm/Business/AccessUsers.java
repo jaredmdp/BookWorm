@@ -66,22 +66,24 @@ public class AccessUsers {
 
     //Validator functions----------------------------------------------------------------------------
     public void validateUserInput(String first, String last, String username, String password) {
-        validateNames(first, last);
+        validateName(first);
+        validateName(last);
         validateUsername(username);
         validatePassword(password);
     }
-    public static void validateNames(String first, String last) {
-        if (StringValidator.isEmpty(first) || StringValidator.isEmpty(last)) {
-            throw new IllegalStateException("First name and last name must not be empty");
+
+    public static void validateName(String name) {
+        if (StringValidator.isEmpty(name)) {
+            throw new IllegalStateException("Name must not be empty");
         }
-        if (!StringValidator.isAlphaOnly(first) || !StringValidator.isAlphaOnly(last)) {
-            throw new IllegalStateException("First name and last name can only contain alphabets");
+        if (!StringValidator.isAlphaOnly(name)) {
+            throw new IllegalStateException("Name can only contain alphabets");
         }
-        if (StringValidator.isTooLong(first) || StringValidator.isTooLong(last)) {
-            throw new IllegalStateException("First name and last name cannot exceed 16 characters");
+        if (StringValidator.isTooLong(name)) {
+            throw new IllegalStateException("Name cannot exceed 16 characters");
         }
-        if (StringValidator.isTooShort(first) || StringValidator.isTooShort(last)) {
-            throw new IllegalStateException("First name and last name must be greater than 2 characters");
+        if (StringValidator.isTooShort(name)) {
+            throw new IllegalStateException("Name must be greater than 2 characters");
         }
     }
 

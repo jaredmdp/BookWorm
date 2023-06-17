@@ -203,7 +203,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("", "Doe", "johndoe", "password1");
             assertTrue("Empty first name should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("First name and last name must not be empty", e.getMessage());
+            assertEquals("Name must not be empty", e.getMessage());
         }
 
         //Test invalid characters in first name
@@ -211,7 +211,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("John123", "Doe", "johndoe", "password1");
             assertTrue("Invalid characters in first name should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("First name and last name can only contain alphabets", e.getMessage());
+            assertEquals("Name can only contain alphabets", e.getMessage());
         }
 
         //Test too long first name
@@ -219,7 +219,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("Johnathonathonathonathon", "Doe", "johndoe", "password1");
             assertTrue("Too long first name should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("First name and last name cannot exceed 16 characters", e.getMessage());
+            assertEquals("Name cannot exceed 16 characters", e.getMessage());
         }
 
         //Test too short first name
@@ -227,7 +227,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("J", "Doe", "johndoe", "password1");
             assertTrue("Too short first name should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("First name and last name must be greater than 2 characters", e.getMessage());
+            assertEquals("Name must be greater than 2 characters", e.getMessage());
         }
 
         //Test empty username
