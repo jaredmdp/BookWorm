@@ -5,7 +5,7 @@ import java.util.List;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
-public interface BookPersistence {
+public interface IBookPersistence {
     List<Book> getAllBooks();
     Book getBookByISBN(String ISBN); //All ISBNS are 13 digits
     Book getBookByTitle(String title);

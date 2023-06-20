@@ -3,11 +3,11 @@ package honda.bookworm.Data.Stubs;
 import java.util.ArrayList;
 import java.util.List;
 
-import honda.bookworm.Data.BookPersistence;
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
-public class BookPersistenceStub implements BookPersistence {
+public class BookPersistenceStub implements IBookPersistence {
     private List<Book> books;
 
     public BookPersistenceStub() {

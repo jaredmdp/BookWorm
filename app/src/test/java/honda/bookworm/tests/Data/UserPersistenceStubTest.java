@@ -5,9 +5,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.Stubs.UserPersistenceStub;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
@@ -15,7 +15,7 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 public class UserPersistenceStubTest {
-    private UserPersistenceStub userStub;
+    private IUserPersistence userStub;
     @Before
     public void setup(){
         userStub = new UserPersistenceStub();

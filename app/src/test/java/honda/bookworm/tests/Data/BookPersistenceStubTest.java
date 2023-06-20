@@ -7,12 +7,13 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
 public class BookPersistenceStubTest {
-    private BookPersistenceStub bookStub;
+    private IBookPersistence bookStub;
     @Before
     public void setup(){
         bookStub = new BookPersistenceStub();

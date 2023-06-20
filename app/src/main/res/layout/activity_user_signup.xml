@@ -68,7 +68,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_signup_heading"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        android:maxLength="16"/>
 
     <EditText
         android:id="@+id/signup_lastname_input"
@@ -84,7 +85,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_firstname_input"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        android:maxLength="16"/>
 
 
     <EditText
@@ -102,7 +104,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_lastname_input"
         android:maxLines="1"
-        android:maxLength="18"/>
+        android:maxLength="16"/>
 
     <EditText
         android:id="@+id/signup_password_input"

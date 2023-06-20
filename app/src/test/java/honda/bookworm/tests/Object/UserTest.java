@@ -23,7 +23,6 @@ public class UserTest {
 
         assertTrue(user1.getFavoriteGenres().isEmpty());
         assertTrue(user1.getFavoriteBooks().isEmpty());
-        assertTrue(user1.getWishlist().isEmpty());
 
         System.out.println("\nFinished NewUser");
     }
@@ -65,59 +64,19 @@ public class UserTest {
 
     //Test Arraylists: Adding and Subtracting books
     @Test
-    public void testAddToWishlist() {
-        System.out.println("\nStarting AddToWishList");
-
-        User user = new User("John", "Doe", "johndoe", "hunter2");
-
-        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
-        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
-
-        user.addToWishlist(book1);
-        user.addToWishlist(book2);
-
-        assertEquals(2, user.getWishlist().size());
-        assertTrue(user.getWishlist().contains(book1));
-        assertTrue(user.getWishlist().contains(book2));
-
-        System.out.println("\nFinished AddToWishList");
-    }
-
-    @Test
-    public void testRemoveFromWishlist() {
-        System.out.println("\nStarting RemoveFromWishList");
-
-        User user = new User("John", "Doe", "johndoe", "hunter2");
-
-        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
-        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
-
-        user.addToWishlist(book1);
-        user.addToWishlist(book2);
-
-        user.removeFromWishlist(book1);
-
-        assertEquals(1, user.getWishlist().size());
-        assertFalse(user.getWishlist().contains(book1));
-        assertTrue(user.getWishlist().contains(book2));
-
-        System.out.println("\nFinished RemoveFromWishList");
-    }
-
-    @Test
     public void testAddToFavoriteGenres() {
-        System.out.println("\nStarting AddToFavoriteGenres");
+        System.out.println("\nStarting testAddToFavoriteGenres");
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        user.addToFavoriteGenres("Genre 1");
-        user.addToFavoriteGenres("Genre 2");
+        user.addToFavoriteGenres(Genre.Fiction);
+        user.addToFavoriteGenres(Genre.Fantasy);
 
         assertEquals(2, user.getFavoriteGenres().size());
-        assertTrue(user.getFavoriteGenres().contains("Genre 1"));
-        assertTrue(user.getFavoriteGenres().contains("Genre 2"));
+        assertTrue(user.getFavoriteGenres().contains(Genre.Fiction));
+        assertTrue(user.getFavoriteGenres().contains(Genre.Fantasy));
 
-        System.out.println("\nFinished AddToFavoriteGenres");
+        System.out.println("\nFinished testAddToFavoriteGenres");
     }
 
     @Test
@@ -126,14 +85,14 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        user.addToFavoriteGenres("Genre 1");
-        user.addToFavoriteGenres("Genre 2");
+        user.addToFavoriteGenres(Genre.Fiction);
+        user.addToFavoriteGenres(Genre.Fantasy);
 
-        user.removeFromFavoriteGenres("Genre 1");
+        user.removeFromFavoriteGenres(Genre.Fiction);
 
         assertEquals(1, user.getFavoriteGenres().size());
-        assertFalse(user.getFavoriteGenres().contains("Genre 1"));
-        assertTrue(user.getFavoriteGenres().contains("Genre 2"));
+        assertFalse(user.getFavoriteGenres().contains(Genre.Fiction));
+        assertTrue(user.getFavoriteGenres().contains(Genre.Fantasy));
 
         System.out.println("\nFinished testRemoveFromFavoriteGenres");
     }
@@ -177,6 +136,27 @@ public class UserTest {
 
         System.out.println("\nFinished RemoveFromFavoriteBooks");
     }
+
+
+    @Test
+    public void testIsFavoriteBook() {
+        System.out.println("\nStarting isFavoriteBook");
+
+        User user = new User("John", "Doe", "johndoe", "hunter2");
+
+        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
+
+        user.addToFavoriteBooks(book1);
+
+        assertEquals(1, user.getFavoriteBooks().size());
+        assertFalse(user.isFavouriteBook(book2));
+        assertTrue(user.isFavouriteBook(book1));
+
+        System.out.println("\nFinished isFavoriteBook");
+    }
+
+
 
 
 }

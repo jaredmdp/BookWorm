@@ -9,9 +9,9 @@ import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
-import honda.bookworm.Data.UserPersistence;
+import honda.bookworm.Data.IUserPersistence;
 
-public class UserPersistenceStub implements UserPersistence {
+public class UserPersistenceStub implements IUserPersistence {
     private List<User> users;
 
     public UserPersistenceStub(){
