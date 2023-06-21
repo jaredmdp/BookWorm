@@ -96,7 +96,7 @@
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:focusableInTouchMode="false"
-        android:src="@drawable/welcoming_worm"
+        android:src="@drawable/worm_welcoming"
         android:translationX="-25dp"
         android:translationY="-10dp"
         app:layout_constraintBottom_toBottomOf="parent"

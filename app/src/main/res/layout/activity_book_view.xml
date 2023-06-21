@@ -4,122 +4,133 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="honda.bookworm.View.BookView_ViewHandler"
-    >
+    tools:context="honda.bookworm.View.BookView_ViewHandler">
 
     <ScrollView
+        android:id="@+id/book_view_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
-        android:scrollbars="none">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp"
-        android:paddingBottom="25dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:overScrollMode="never">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginBottom="10dp"
-            android:adjustViewBounds="true"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/empty_book"
-            android:foreground="@mipmap/ic_launcher_foreground"
-            android:foregroundGravity="center"
-            android:foregroundTint="#88000000"/>
-
-        <TextView
-            android:id="@+id/book_view_book_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title: "
-            android:textSize="18dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="2dp"
-            android:textIsSelectable="true"/>
-
-        <TextView
-            android:id="@+id/book_view_book_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Author: "
-            android:textSize="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="2dp"
-            android:textIsSelectable="true"/>
-
-        <TextView
-            android:id="@+id/book_view_book_genre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Genre: "
-            android:textSize="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="2dp"
-            android:textIsSelectable="true"/>
-
-        <TextView
-            android:id="@+id/book_view_book_isbn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ISBN: "
-            android:textSize="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="2dp"
-            android:textIsSelectable="true"/>
-
-
-<!--        place holders for description and purchase link-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation= "vertical"
-            android:layout_marginBottom="2dp">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="25dp"
+            android:orientation="vertical"
+            android:paddingBottom="65dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:adjustViewBounds="true"
+                android:foreground="@mipmap/ic_launcher_foreground"
+                android:foregroundGravity="center"
+                android:foregroundTint="#88000000"
+                android:src="@drawable/shape_empty_book" />
 
             <TextView
-                android:id="@+id/book_view_book_description"
+                android:id="@+id/book_view_book_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description: "
+                android:layout_marginBottom="2dp"
+                android:text="Title: "
+                android:textIsSelectable="true"
+                android:textSize="18dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/book_view_book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="Author: "
+                android:textIsSelectable="true"
                 android:textSize="16dp"
-                android:maxLines="7"
-                 />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/book_view_book_description_toggle"
+                android:id="@+id/book_view_book_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[Expand]"
-                android:textColor="@color/text_link_blue"
-                android:clickable="true"
-                android:paddingVertical="2dp"
-                android:onClick="expandCollapseDescription"/>
+                android:layout_marginBottom="2dp"
+                android:text="Genre: "
+                android:textIsSelectable="true"
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/book_view_book_isbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="ISBN: "
+                android:textIsSelectable="true"
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <!--        place holders for description and purchase link-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/book_view_book_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="7"
+                    android:text="Description: "
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/book_view_book_description_toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:onClick="expandCollapseDescription"
+                    android:paddingBottom="6dp"
+                    android:text="[Expand]"
+                    android:textColor="@color/text_link_blue" />
+
+            </LinearLayout>
 
         </LinearLayout>
+    </ScrollView>
 
 
+    <LinearLayout
+        android:id="@+id/book_view_floating_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/book_view_book_purchase_link"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Purchase Book"
             android:layout_marginTop="10dp"
-            app:backgroundTint="@color/grass_green"
             android:autoLink="web"
-            android:visibility="visible"/>
+            android:text="Purchase Book"
+            android:visibility="visible"
+            app:backgroundTint="@color/grass_green" />
 
     </LinearLayout>
-    </ScrollView>
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

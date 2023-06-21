@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -30,6 +32,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
         String description = bookInfo.getString("description", "[Empty]");
 
         assignValues(title, author, genre, isbn, description);
+        applyHideOnScroll();
     }
 
     //need to figure out image
@@ -75,14 +78,35 @@ public class BookView_ViewHandler extends AppCompatActivity {
     public void expandCollapseDescription(View v) {
         TextView toggleText = (TextView) v;
         TextView description = findViewById(R.id.book_view_book_description);
+        LinearLayout floatContent = findViewById(R.id.book_view_floating_content);
 
         if(description.getMaxLines()<=MIN){
-            description.setMaxLines(Integer.MAX_VALUE);
+            description.setMaxLines(description.getLineCount()+1);
             toggleText.setText("[Collapse]");
         }else{
             description.setMaxLines(MIN);
             toggleText.setText("[Expand]");
+            floatContent.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    public void applyHideOnScroll(){
+        LinearLayout hideOnScroll = findViewById(R.id.book_view_floating_content);
+        ScrollView scrollView = findViewById(R.id.book_view_scrollview);
+
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Log.i("Curr Y",""+scrollY);
+                Log.i("Old Y",""+oldScrollY);
+                if(scrollY>oldScrollY) {
+                    hideOnScroll.setVisibility(View.GONE);
+                }else{
+                    hideOnScroll.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
     }
 }
