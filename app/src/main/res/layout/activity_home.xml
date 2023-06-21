@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:background="@drawable/fading_gradient"
+        android:background="@drawable/shape_fading_gradient"
         android:elevation="60dp"
         android:translationZ="40dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
             android:layout_marginRight="15dp"
             android:background="#00000000"
             android:contentDescription="search bar"
-            android:foreground="@drawable/person_icon"
+            android:foreground="@drawable/icon_person"
             android:foregroundTint="#61676D"
             android:hapticFeedbackEnabled="true"
             android:onClick="onUserPressed" />
