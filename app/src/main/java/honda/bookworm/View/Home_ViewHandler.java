@@ -45,8 +45,7 @@ public class Home_ViewHandler extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         copyDatabaseToDevice();
         accessUsers = new AccessUsers();
-        //books still using stub, will change later
-        accessBooks = new AccessBooks(new BookPersistenceStub());
+        accessBooks = new AccessBooks();
         customizeToUser();
         buildBookView();
     }

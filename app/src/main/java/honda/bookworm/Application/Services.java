@@ -13,17 +13,25 @@ public class Services {
     private static IUserPersistence userPersistence = null;
 
     private static User activeUser = null;
-
-    public static synchronized IBookPersistence getBookPersistence(){
+    
+    public static synchronized IBookPersistence getBookPersistence(boolean forProduction){
         if (bookPersistence == null){
-            bookPersistence = new BookPersistenceHSQLDB(Main.getDBPathName());
+            if(forProduction){
+                bookPersistence = new BookPersistenceHSQLDB(Main.getDBPathName());
+            } else{
+                bookPersistence = new BookPersistenceStub();
+            }
         }
         return bookPersistence;
     }
 
-    public static synchronized IUserPersistence getUserPersistence(){
+    public static synchronized IUserPersistence getUserPersistence(boolean forProduction){
         if (userPersistence == null){
-            userPersistence = new UserPersistenceHSQLDB(Main.getDBPathName());
+            if(forProduction){
+                userPersistence = new UserPersistenceHSQLDB(Main.getDBPathName());
+            } else{
+                userPersistence = new UserPersistenceStub();
+            }
         }
         return userPersistence;
     }
