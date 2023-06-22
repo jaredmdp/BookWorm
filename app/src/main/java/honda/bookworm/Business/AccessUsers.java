@@ -13,7 +13,7 @@ public class AccessUsers {
 
     public AccessUsers()
     {
-        userPersistence = Services.getUserPersistence();
+        userPersistence = Services.getUserPersistence(true);
     }
 
     public AccessUsers(IUserPersistence userPersistence){

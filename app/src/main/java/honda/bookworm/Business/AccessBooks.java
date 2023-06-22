@@ -12,7 +12,7 @@ public class AccessBooks {
     private final int MAX_BOOK_TITLE_LENGTH = 40;
 
     public AccessBooks() {
-        bookPersistence = Services.getBookPersistence();
+        bookPersistence = Services.getBookPersistence(false);
     }
 
     public AccessBooks(IBookPersistence bookPersistence){
