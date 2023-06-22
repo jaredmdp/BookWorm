@@ -1,7 +1,9 @@
 package honda.bookworm.Application;
 
 import honda.bookworm.Data.IBookPersistence;
+import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
 import honda.bookworm.Data.Stubs.BookPersistenceStub;
+import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
 import honda.bookworm.Data.Stubs.UserPersistenceStub;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.User;
@@ -14,14 +16,14 @@ public class Services {
 
     public static synchronized IBookPersistence getBookPersistence(){
         if (bookPersistence == null){
-            bookPersistence = new BookPersistenceStub();
+            bookPersistence = new BookPersistenceHSQLDB(Main.getDBPathName());
         }
         return bookPersistence;
     }
 
     public static synchronized IUserPersistence getUserPersistence(){
         if (userPersistence == null){
-            userPersistence = new UserPersistenceStub();
+            userPersistence = new UserPersistenceHSQLDB(Main.getDBPathName());
         }
         return userPersistence;
     }

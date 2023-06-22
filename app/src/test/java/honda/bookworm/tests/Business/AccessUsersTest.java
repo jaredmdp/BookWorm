@@ -11,6 +11,8 @@ import org.junit.Test;
 
 import honda.bookworm.Business.AccessUsers;
 
+import honda.bookworm.Data.IUserPersistence;
+import honda.bookworm.Data.Stubs.UserPersistenceStub;
 import honda.bookworm.Object.User;
 
 public class AccessUsersTest {
@@ -19,7 +21,7 @@ public class AccessUsersTest {
     @Before
     public void setup(){
         System.out.println("Starting for signUpHandler");
-        signUp = new AccessUsers();
+        signUp = new AccessUsers(new UserPersistenceStub());
     }
 
     @Test

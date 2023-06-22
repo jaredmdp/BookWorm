@@ -1,20 +1,22 @@
 package honda.bookworm.View;
 
+import honda.bookworm.Application.Main;
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.AccessBooks;
 import honda.bookworm.Business.AccessUsers;
+import honda.bookworm.Data.Stubs.BookPersistenceStub;
+import honda.bookworm.Data.Stubs.UserPersistenceStub;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +25,10 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
-import java.text.AttributedCharacterIterator;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class Home_ViewHandler extends AppCompatActivity {
@@ -38,9 +43,10 @@ public class Home_ViewHandler extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        copyDatabaseToDevice();
         accessUsers = new AccessUsers();
-        accessBooks = new AccessBooks();
+        //books still using stub, will change later
+        accessBooks = new AccessBooks(new BookPersistenceStub());
         customizeToUser();
         buildBookView();
     }
@@ -166,6 +172,58 @@ public class Home_ViewHandler extends AppCompatActivity {
             TextView userName = findViewById(R.id.home_username);
             userName.setVisibility(View.GONE);
             viewVisibilityToggle(view);
+        }
+    }
+
+    private void copyDatabaseToDevice() {
+        final String DB_PATH = "db";
+
+        String[] assetNames;
+        Context context = getApplicationContext();
+        File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
+        AssetManager assetManager = getAssets();
+
+        try {
+
+            assetNames = assetManager.list(DB_PATH);
+            for (int i = 0; i < assetNames.length; i++) {
+                assetNames[i] = DB_PATH + "/" + assetNames[i];
+            }
+
+            copyAssetsToDirectory(assetNames, dataDirectory);
+
+            Main.setDBPathName(dataDirectory.toString() + "/" + Main.getDBPathName());
+
+        } catch (final IOException ioe) {
+            Messages.warning(this, "Unable to access application data: " + ioe.getMessage());
+        }
+    }
+
+    public void copyAssetsToDirectory(String[] assets, File directory) throws IOException {
+        AssetManager assetManager = getAssets();
+
+        for (String asset : assets) {
+            String[] components = asset.split("/");
+            String copyPath = directory.toString() + "/" + components[components.length - 1];
+
+            char[] buffer = new char[1024];
+            int count;
+
+            File outFile = new File(copyPath);
+
+            if (!outFile.exists()) {
+                InputStreamReader in = new InputStreamReader(assetManager.open(asset));
+                FileWriter out = new FileWriter(outFile);
+
+                count = in.read(buffer);
+                while (count != -1) {
+                    out.write(buffer, 0, count);
+                    count = in.read(buffer);
+                }
+
+                out.close();
+                in.close();
+            }
         }
     }
 

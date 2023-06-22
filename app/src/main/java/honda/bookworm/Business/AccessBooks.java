@@ -10,8 +10,13 @@ import honda.bookworm.Object.Genre;
 public class AccessBooks {
     private IBookPersistence bookPersistence;
     private final int MAX_BOOK_TITLE_LENGTH = 40;
+
     public AccessBooks() {
         bookPersistence = Services.getBookPersistence();
+    }
+
+    public AccessBooks(IBookPersistence bookPersistence){
+        this.bookPersistence = bookPersistence;
     }
 
     public List<Book> getBooksGenre(Genre genre) {
@@ -19,6 +24,15 @@ public class AccessBooks {
             return bookPersistence.getBooksByGenre(genre);
         } else {
             throw new NullPointerException("genre input can't be null");
+        }
+    }
+
+    public Book addBook(Book newBook){
+        //will do validation of book in another dev task
+        if(newBook != null){
+            return bookPersistence.addBook(newBook);
+        } else {
+            throw new NullPointerException("new book can't be empty");
         }
     }
 

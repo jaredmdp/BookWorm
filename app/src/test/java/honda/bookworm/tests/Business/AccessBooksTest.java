@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import honda.bookworm.Business.AccessBooks;
+import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
@@ -18,7 +19,7 @@ public class AccessBooksTest {
     @Before
     public void setup() {
         System.out.println("\nStarting test for AccessBooks");
-        accessBooks = new AccessBooks();
+        accessBooks = new AccessBooks(new BookPersistenceStub());
     }
 
     @Test
@@ -27,7 +28,6 @@ public class AccessBooksTest {
 
         List<Book> books = accessBooks.getBooksGenre(Genre.Fantasy);
         assertEquals(books.size(), 5);
-
         System.out.println("\nFinished testGetBooksGenreFound");
 
     }

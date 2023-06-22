@@ -3,6 +3,7 @@ package honda.bookworm.Business;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.User;
@@ -10,8 +11,13 @@ import honda.bookworm.Object.User;
 public class AccessUsers {
     private IUserPersistence userPersistence;
 
-    public AccessUsers(){
+    public AccessUsers()
+    {
         userPersistence = Services.getUserPersistence();
+    }
+
+    public AccessUsers(IUserPersistence userPersistence){
+        this.userPersistence = userPersistence;
     }
 
     public User addNewUser(String first, String last, String username, String password, boolean isAuthor){
