@@ -1,13 +1,14 @@
-package honda.bookworm.Business;
+package honda.bookworm.Business.Managers;
 
 import java.util.List;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
-public class AccessBooks {
+public class AccessBooks implements IAccessBooks {
     private IBookPersistence bookPersistence;
     private final int MAX_BOOK_TITLE_LENGTH = 40;
 

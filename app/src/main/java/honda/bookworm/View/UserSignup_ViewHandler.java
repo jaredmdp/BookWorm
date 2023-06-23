@@ -12,7 +12,8 @@ import android.widget.Toast;
 
 import com.honda.bookworm.R;
 
-import honda.bookworm.Business.AccessUsers;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.Managers.AccessUsers;
 
 public class UserSignup_ViewHandler extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private CheckBox isAuthorCheckbox;
-    private AccessUsers accessUsers;
+    private IAccessUsers accessUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

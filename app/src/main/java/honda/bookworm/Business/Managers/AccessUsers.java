@@ -1,14 +1,11 @@
-package honda.bookworm.Business;
-
-import java.util.List;
-
+package honda.bookworm.Business.Managers;
 import honda.bookworm.Application.Services;
-import honda.bookworm.Data.IBookPersistence;
+import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.User;
 
-public class AccessUsers {
+public class AccessUsers implements IAccessUsers {
     private IUserPersistence userPersistence;
 
     public AccessUsers()
@@ -57,17 +54,6 @@ public class AccessUsers {
         } else {
             throw new IllegalStateException(String.format("User '%s' not found",username));
         }
-    }
-
-    public User getActiveUser(){
-        return Services.getActiveUser();
-    }
-    public void logOutActiveUser(){
-        Services.setActiveUser(null);
-    }
-
-    public List<User> getAllUser(){
-        return userPersistence.getAllUsers();
     }
 
     //Validator functions----------------------------------------------------------------------------

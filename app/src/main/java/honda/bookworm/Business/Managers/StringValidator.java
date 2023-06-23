@@ -1,4 +1,4 @@
-package honda.bookworm.Business;
+package honda.bookworm.Business.Managers;
 
 public class StringValidator {
 

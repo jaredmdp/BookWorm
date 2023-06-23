@@ -15,9 +15,6 @@ import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
 import honda.bookworm.Application.Services;
-import honda.bookworm.Business.AccessBooks;
-import honda.bookworm.Data.IBookPersistence;
-import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Object.Book;
 
 public class BookView_ViewHandler extends AppCompatActivity {

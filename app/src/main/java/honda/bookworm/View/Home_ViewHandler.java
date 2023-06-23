@@ -2,10 +2,12 @@ package honda.bookworm.View;
 
 import honda.bookworm.Application.Main;
 import honda.bookworm.Application.Services;
-import honda.bookworm.Business.AccessBooks;
-import honda.bookworm.Business.AccessUsers;
-import honda.bookworm.Data.Stubs.BookPersistenceStub;
-import honda.bookworm.Data.Stubs.UserPersistenceStub;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.IAccessBooks;
+import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.Managers.AccessBooks;
+import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
@@ -18,7 +20,6 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -39,9 +40,10 @@ public class Home_ViewHandler extends AppCompatActivity {
     private final int CARD_WIDTH = 400; // bookCard Width
     private final int CARD_HEIGHT = 525; // bookCard Height
 
-    private AccessUsers accessUsers;
+    private IAccessUsers accessUsers;
 
-    private AccessBooks accessBooks;
+    private IAccessBooks accessBooks;
+    private IUserManager userManager;
     private Vibrator sysVibrator;
 
     @Override
@@ -51,13 +53,15 @@ public class Home_ViewHandler extends AppCompatActivity {
         copyDatabaseToDevice();
         accessUsers = new AccessUsers();
         accessBooks = new AccessBooks();
+        userManager = new UserManager();
+
         sysVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         customizeToUser();
         buildBookView();
     }
 
     private void customizeToUser() {
-        User activeUser = accessUsers.getActiveUser();
+        User activeUser = userManager.getActiveUser();
         TextView userFullname = findViewById(R.id.home_user_fullname);
         TextView userName = findViewById(R.id.home_username);
         ImageButton profile = findViewById(R.id.home_userProfile_button);
@@ -107,7 +111,7 @@ public class Home_ViewHandler extends AppCompatActivity {
     public void onUserPressed(View view) {
         LinearLayout profileView = findViewById(R.id.home_userProfile_options);
         Intent intent;
-        if (accessUsers.getActiveUser() != null) {
+        if (userManager.getActiveUser() != null) {
             viewVisibilityToggle(profileView);
         } else {
             intent = new Intent(getApplicationContext(), UserLogin_ViewHandler.class);
@@ -179,7 +183,7 @@ public class Home_ViewHandler extends AppCompatActivity {
         LinearLayout profileView = findViewById(R.id.home_userProfile_options);
         ImageButton profile = findViewById(R.id.home_userProfile_button);
         if (Services.getActiveUser() != null) {
-            accessUsers.logOutActiveUser();
+            userManager.logOutActiveUser();
             TextView userName = findViewById(R.id.home_username);
             userName.setText("");
             viewVisibilityToggle(profileView);

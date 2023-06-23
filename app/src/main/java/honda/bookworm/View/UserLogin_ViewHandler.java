@@ -1,12 +1,10 @@
 package honda.bookworm.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Intent;
@@ -14,11 +12,12 @@ import android.widget.Toast;
 
 import com.honda.bookworm.R;
 
-import honda.bookworm.Business.AccessUsers;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.Managers.AccessUsers;
 
 public class UserLogin_ViewHandler extends AppCompatActivity {
 
-    private AccessUsers accessUsers;
+    private IAccessUsers accessUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
