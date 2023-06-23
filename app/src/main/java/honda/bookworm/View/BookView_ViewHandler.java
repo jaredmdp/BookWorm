@@ -14,6 +14,12 @@ import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
+import honda.bookworm.Application.Services;
+import honda.bookworm.Business.AccessBooks;
+import honda.bookworm.Data.IBookPersistence;
+import honda.bookworm.Data.Stubs.BookPersistenceStub;
+import honda.bookworm.Object.Book;
+
 public class BookView_ViewHandler extends AppCompatActivity {
 
     private final int MIN = 7;
@@ -24,14 +30,10 @@ public class BookView_ViewHandler extends AppCompatActivity {
         setContentView(R.layout.activity_book_view);
 
         Bundle bookInfo = getIntent().getExtras();
-
-        String title = bookInfo.getString("title");
-        String author = bookInfo.getString("author");
-        String genre = bookInfo.getString("genre");
         String isbn = bookInfo.getString("isbn");
-        String description = bookInfo.getString("description", "[Empty]");
+        Book bk = Services.getBookPersistence(false).getBookByISBN(isbn); //TEMPORARY
 
-        assignValues(title, author, genre, isbn, description);
+        assignValues(bk.getName(), bk.getAuthor(), bk.getGenreAsString(), isbn, bk.getDescription());
         applyHideOnScroll();
     }
 

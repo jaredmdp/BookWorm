@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    app:cardElevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp">
+
+        <ImageView
+            android:id="@+id/recycler_book_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:adjustViewBounds="true"
+            android:foreground="@mipmap/ic_launcher_foreground"
+            android:foregroundGravity="center"
+            android:foregroundTint="#88000000"
+            android:maxHeight="115dp"
+            android:src="@drawable/shape_empty_book"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/recycler_booktitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:maxLines="3"
+            android:maxWidth="235dp"
+            android:text="Operating Systems: Three Easy Pieces"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@id/recycler_book_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/recycler_book_genre"
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="3dp"
+            android:maxLines="1"
+            android:text="Genre: Fiction"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/recycler_book_image"
+            app:layout_constraintTop_toBottomOf="@id/recycler_booktitle" />
+
+        <TextView
+            android:id="@+id/recycler_book_author"
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="2dp"
+            android:maxLines="1"
+            android:text="By maxCharfirstname maxCharfirstname"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/recycler_book_image"
+            app:layout_constraintTop_toBottomOf="@id/recycler_book_genre" />
+
+        <TextView
+            android:id="@+id/recycler_book_isbn"
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="2dp"
+            android:maxLines="1"
+            android:text="ISBN : 12345678912"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/recycler_book_image"
+            app:layout_constraintTop_toBottomOf="@id/recycler_book_author" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

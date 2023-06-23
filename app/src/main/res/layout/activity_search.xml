@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:orientation="vertical"
+    tools:context="honda.bookworm.View.Search_ViewHandler">
+
+    <SearchView
+        android:id="@+id/search_search_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_pill"
+        android:iconifiedByDefault="false"
+        android:paddingHorizontal="2dp"
+        android:queryBackground="@android:color/transparent"
+        android:queryHint="Search By Genre"
+        android:layout_alignParentTop="true"
+        android:elevation="12dp"
+        android:layout_marginHorizontal="5dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/search_category_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="7dp"
+            android:text="Search By:"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <RadioGroup
+                android:id="@+id/search_category_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:checkedButton="@id/search_for_genre"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/search_for_genre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@drawable/selector_selected_pill"
+                    android:button="@android:color/transparent"
+                    android:elevation="2dp"
+                    android:maxWidth="200dp"
+                    android:minWidth="70dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="Genre"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_selected_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/search_for_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@drawable/selector_selected_pill"
+                    android:button="@android:color/transparent"
+                    android:elevation="2dp"
+                    android:minWidth="70dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="Author"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_selected_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/search_for_book_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@drawable/selector_selected_pill"
+                    android:button="@android:color/transparent"
+                    android:elevation="2dp"
+                    android:minWidth="70dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="Book Title"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_selected_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/search_for_isbn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@drawable/selector_selected_pill"
+                    android:button="@android:color/transparent"
+                    android:elevation="2dp"
+                    android:minWidth="70dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="ISBN"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_selected_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </RadioGroup>
+
+        </HorizontalScrollView>
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/inactive_grey" />
+
+    <TextView
+        android:id="@+id/search_result_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/searchResultHeading"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/search_result_p"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/searchError"
+        android:textSize="12sp"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_book_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="1dp"
+         />
+
+
+
+</LinearLayout>

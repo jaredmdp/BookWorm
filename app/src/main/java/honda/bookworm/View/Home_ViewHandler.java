@@ -11,18 +11,22 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
+
 import com.honda.bookworm.R;
 
 import java.io.File;
@@ -38,6 +42,7 @@ public class Home_ViewHandler extends AppCompatActivity {
     private AccessUsers accessUsers;
 
     private AccessBooks accessBooks;
+    private Vibrator sysVibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +51,26 @@ public class Home_ViewHandler extends AppCompatActivity {
         copyDatabaseToDevice();
         accessUsers = new AccessUsers();
         accessBooks = new AccessBooks();
+        sysVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         customizeToUser();
         buildBookView();
     }
 
     private void customizeToUser() {
         User activeUser = accessUsers.getActiveUser();
+        TextView userFullname = findViewById(R.id.home_user_fullname);
         TextView userName = findViewById(R.id.home_username);
+        ImageButton profile = findViewById(R.id.home_userProfile_button);
+        String username;
+        String fullname;
+
         if (activeUser != null) {
-            userName.setText(activeUser.getUsername());
-            userName.setVisibility(View.VISIBLE);
-        }
+            username = activeUser.getUsername();
+            fullname = activeUser.getFirstName()+" "+activeUser.getLastName();
+            profile.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.worm_skin));
+            userFullname.setText(fullname);
+            userName.setText("@"+username);
+        }else{profile.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.inactive_grey));}
     }
 
     private void buildBookView() {
@@ -91,10 +105,10 @@ public class Home_ViewHandler extends AppCompatActivity {
     }
 
     public void onUserPressed(View view) {
-        MaterialButton logoutBtn = findViewById(R.id.home_userProfile_logoutButton);
+        LinearLayout profileView = findViewById(R.id.home_userProfile_options);
         Intent intent;
         if (accessUsers.getActiveUser() != null) {
-            viewVisibilityToggle(logoutBtn);
+            viewVisibilityToggle(profileView);
         } else {
             intent = new Intent(getApplicationContext(), UserLogin_ViewHandler.class);
             startActivity(intent);
@@ -143,12 +157,7 @@ public class Home_ViewHandler extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BookView_ViewHandler.class);
                 Book book = (Book) v.getTag();
-                intent.putExtra("title", book.getName());
-                intent.putExtra("author", book.getAuthor());
-                intent.putExtra("genre", book.getGenreAsString());
                 intent.putExtra("isbn", book.getISBN());
-                intent.putExtra("description", book.getDescription());
-
                 startActivity(intent);
             }
         });
@@ -166,13 +175,31 @@ public class Home_ViewHandler extends AppCompatActivity {
     }
 
     public void onLogoutPressed(View view) {
+        sysVibrator.vibrate(250);
+        LinearLayout profileView = findViewById(R.id.home_userProfile_options);
+        ImageButton profile = findViewById(R.id.home_userProfile_button);
         if (Services.getActiveUser() != null) {
             accessUsers.logOutActiveUser();
             TextView userName = findViewById(R.id.home_username);
-            userName.setVisibility(View.GONE);
-            viewVisibilityToggle(view);
+            userName.setText("");
+            viewVisibilityToggle(profileView);
+            profile.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.inactive_grey));
         }
     }
+
+
+    public void onSearchPressed(View view) {
+        Intent intent = new Intent(this,Search_ViewHandler.class);
+        startActivity(intent);
+    }
+
+    public void onViewProfilePressed(View view) {
+        //place holder for the User profile view intent
+        sysVibrator.vibrate(5);
+    }
+
+
+
 
     private void copyDatabaseToDevice() {
         final String DB_PATH = "db";
@@ -225,5 +252,4 @@ public class Home_ViewHandler extends AppCompatActivity {
             }
         }
     }
-
 }

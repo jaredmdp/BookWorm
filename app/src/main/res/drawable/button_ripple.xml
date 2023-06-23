@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/worm_skin_light">
+
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="?android:colorAccent" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <!-- put your background color here-->
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+
+</ripple>
