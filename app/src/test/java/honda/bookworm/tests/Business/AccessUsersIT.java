@@ -14,14 +14,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import honda.bookworm.Business.AccessUsers;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
 import honda.bookworm.Object.User;
 import honda.bookworm.tests.utils.TestUtils;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.Managers.UserManager;
 
 public class AccessUsersIT {
-    private AccessUsers accessUsers;
+    private IAccessUsers accessUsers;
+    private IUserManager manager;
     private File tempDB;
 
     @Before
@@ -29,6 +33,7 @@ public class AccessUsersIT {
         this.tempDB = TestUtils.copyDB();
         final IUserPersistence persistence = new UserPersistenceHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
         this.accessUsers = new AccessUsers(persistence);
+        this.manager = new UserManager(persistence);
     }
 
     @Test
@@ -38,7 +43,7 @@ public class AccessUsersIT {
         accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
         accessUsers.addNewUser("John", "Depp", "jondepp", "password2", false);
 
-        List<User> users = accessUsers.getAllUser();
+        List<User> users = manager.getAllUsers();
 
         assertNotNull(users);
         assertEquals(2, users.size());
@@ -50,18 +55,18 @@ public class AccessUsersIT {
     @Test
     public void testAddNewUser(){
         System.out.println("\nStarting addNewUser");
-        int initialSize = accessUsers.getAllUser().size();
+        int initialSize = manager.getAllUsers().size();
         int expectedSize = initialSize + 1;
 
         accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
 
-        assertEquals(expectedSize, accessUsers.getAllUser().size());
+        assertEquals(expectedSize, manager.getAllUsers().size());
 
         //adds author variant
         accessUsers.addNewUser("hello", "test", "hellotest2", "password1", true);
         expectedSize = expectedSize + 1;
 
-        assertEquals(expectedSize, accessUsers.getAllUser().size());
+        assertEquals(expectedSize, manager.getAllUsers().size());
 
         System.out.println("\nFinished addNewUser");
     }
@@ -132,7 +137,7 @@ public class AccessUsersIT {
             assertNotEquals(result, newUser);
         } catch (Exception e){
             System.out.println("Failed to insert user: " + e.getMessage());
-            assertTrue(accessUsers.getAllUser().contains(newUser)); //check if its actually a duplicate username
+            assertTrue(manager.getAllUsers().contains(newUser)); //check if its actually a duplicate username
         }
 
         System.out.println("Finished testAddUserFailDuplicateUser");

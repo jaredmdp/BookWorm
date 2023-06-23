@@ -9,36 +9,44 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import honda.bookworm.Business.AccessUsers;
-
-import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.Stubs.UserPersistenceStub;
+import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.User;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.Managers.UserManager;
 
 public class AccessUsersTest {
 
-    private AccessUsers signUp;
+    private IAccessUsers signUp;
+    private IUserManager manager;
+    private IUserPersistence userPersistence;
+
     @Before
     public void setup(){
         System.out.println("Starting for signUpHandler");
-        signUp = new AccessUsers(new UserPersistenceStub());
+
+        userPersistence = new UserPersistenceStub();
+        signUp = new AccessUsers(userPersistence );
+        manager = new UserManager(userPersistence);
     }
 
     @Test
     public void addNewUser(){
         System.out.println("Starting addNewUser");
-        int initialSize = signUp.getAllUser().size();
+        int initialSize = manager.getAllUsers().size();
         int expectedSize = initialSize + 1;
 
         signUp.addNewUser("hello", "test", "hellotest", "password1", false);
 
-        assertEquals(expectedSize, signUp.getAllUser().size());
+        assertEquals(expectedSize, manager.getAllUsers().size());
 
         //adds author variant
         signUp.addNewUser("hello", "test", "hellotest2", "password1", true);
         expectedSize = expectedSize + 1;
 
-        assertEquals(expectedSize, signUp.getAllUser().size());
+        assertEquals(expectedSize, manager.getAllUsers().size());
 
         System.out.println("Finished addNewUser");
     }
@@ -105,7 +113,7 @@ public class AccessUsersTest {
             assertNotEquals(result, newUser);
         } catch (Exception e){
             System.out.println("Failed to insert user: " + e.getMessage());
-            assertTrue(signUp.getAllUser().contains(newUser)); //check if its actually a duplicate username
+            assertTrue(manager.getAllUsers().contains(newUser)); //check if its actually a duplicate username
         }
 
         System.out.println("Finished testAddUserFailDuplicateUser");
@@ -118,13 +126,13 @@ public class AccessUsersTest {
         User newUser = new User("Johnathon", "Doe the Third", "johnthe3", "123");
 
         try{
-            assertFalse(signUp.getAllUser().contains(newUser)); //not inserting a duplicate user
+            assertFalse(manager.getAllUsers().contains(newUser)); //not inserting a duplicate user
             User result = signUp.addNewUser("Johnathon", "Doe the Third", "johnthe3", "123", false);
         } catch(Exception e){
             System.out.println("Failed to insert user: " + e.getMessage());
         }
 
-        assertFalse(signUp.getAllUser().contains(newUser)); //user still not inserted
+        assertFalse(manager.getAllUsers().contains(newUser)); //user still not inserted
 
         System.out.println("Finished testAddUserFailPasswordBad");
     }
@@ -144,7 +152,7 @@ public class AccessUsersTest {
         }
 
         //check if user was placed in the stubs
-        assertTrue(signUp.getAllUser().contains(newUser));
+        assertTrue(manager.getAllUsers().contains(newUser));
 
         System.out.println("Finished testAddUserSuccess");
     }
@@ -164,7 +172,7 @@ public class AccessUsersTest {
         }
 
         //check if user was placed in the stubs
-        assertFalse(signUp.getAllUser().contains(newUser));
+        assertFalse(manager.getAllUsers().contains(newUser));
 
         System.out.println("Finished testAddUserFailEmptyStrings");
     }
@@ -184,7 +192,7 @@ public class AccessUsersTest {
         }
 
         //check if user was placed in the stubs
-        assertFalse(signUp.getAllUser().contains(newUser));
+        assertFalse(manager.getAllUsers().contains(newUser));
 
         System.out.println("Finished testAddUserFailShortUserName");
     }
