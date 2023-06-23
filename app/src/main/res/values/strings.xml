@@ -4,7 +4,12 @@
     <string name="sign_up">Sign Up</string>
     <string name="user_name">Username</string>
     <string name="password">Password</string>
+
     <string name="fatalError">Fatal error</string>
     <string name="warning">Warning</string>
+
+    <string name="searchBy">Search By </string>
+    <string name="searchResultHeading">Search Results for: </string>
+    <string name="searchError">Search error message goes as follows and requires to be edited</string>
 
 </resources>
