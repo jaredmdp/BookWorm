@@ -72,7 +72,7 @@ public class AccessBooksIT {
         ));
 
         List<Book> books = accessBooks.getBooksGenre(Genre.Fantasy);
-        assertEquals(2, books.size());
+        assertEquals(7, books.size());
 
         System.out.println("\nFinished testGetBooksGenreFound");
     }

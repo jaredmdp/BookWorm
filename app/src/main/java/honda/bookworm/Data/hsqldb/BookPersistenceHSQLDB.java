@@ -42,12 +42,19 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     @Override
     public Book addBook(Book newBook) {
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement("INSERT INTO books VALUES(?, ?, ?, ?, ?)");
-            statement.setString(1, newBook.getName());
-            statement.setString(2, newBook.getAuthor());
-            statement.setString(3, newBook.getGenreAsString());
-            statement.setString(4, newBook.getISBN());
+            //CREATE MEMORY TABLE PUBLIC.Book (ISBN VARCHAR(13) NOT NULL PRIMARY KEY, book_name VARCHAR(150), author_id INTEGER, genre_id INTEGER, description VARCHAR(5000), isPurchaseable BOOLEAN, FOREIGN KEY (author_id) REFERENCES PUBLIC.Author(author_id), FOREIGN KEY (genre_id) REFERENCES PUBLIC.Genre(genre_id));
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO Book (ISBN, book_name, author_id, genre_id, description, isPurchaseable) VALUES (?, ?, ?, ?, ?, ?)");
+            statement.setString(1, newBook.getISBN());
+            statement.setString(2, newBook.getName());
+
+            //TODO fix after adding authorid to book
+            statement.setObject(3, 0);
+
+            //TODO fix after removing genre arraylist in book
+            statement.setObject(4, newBook.getGenre().get(0).ordinal());
+
             statement.setString(5, newBook.getDescription());
+            statement.setBoolean(6, true);
 
             statement.executeUpdate();
 
@@ -56,6 +63,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             throw new RuntimeException(e);
         }
     }
+
+
 
     @Override
     public void removeBookByISBN(String ISBN) {
@@ -76,8 +85,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     public List<Book> getBooksByGenre(Genre genre) {
         List<Book> booksByGenre = new ArrayList<>();
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement ("SELECT * FROM books where genre = ?");
-            statement.setString(1, genre.toString());
+            final PreparedStatement statement = c.prepareStatement ("SELECT * FROM Book where genre_id = ?");
+            statement.setInt(1, genre.ordinal());
 
             final ResultSet result = statement.executeQuery();
             while (result.next()){
@@ -94,9 +103,9 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     }
 
     private Book fromResultSet(final ResultSet result) throws SQLException{
-        final String bookName = result.getString("bookname");
-        final String bookAuthor = result.getString("authorname");
-        final Genre bookGenre = Genre.valueOf(result.getString("genre"));
+        final String bookName = result.getString("book_name");
+        final String bookAuthor = result.getString("author_id");
+        final Genre bookGenre = Genre.values()[Integer.parseInt(result.getString("genre_id"))];
         final String ISBN = result.getString("ISBN");
         final String description = result.getString("description");
 

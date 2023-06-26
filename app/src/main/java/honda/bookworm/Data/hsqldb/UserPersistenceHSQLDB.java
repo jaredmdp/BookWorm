@@ -29,7 +29,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement ("SELECT * FROM users");
+            final PreparedStatement statement = c.prepareStatement ("SELECT * FROM user");
             final ResultSet result = statement.executeQuery();
 
             while (result.next()){
@@ -59,7 +59,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     public User getUserByUsername(String currentUsername) {
         User user = null;
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement ("SELECT * FROM users where username = ?");
+            final PreparedStatement statement = c.prepareStatement ("SELECT * FROM User where username = ?");
             statement.setString(1, currentUsername);
 
             final ResultSet result = statement.executeQuery();
@@ -79,10 +79,10 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     @Override
     public User addUser(User currentUser) {
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement("INSERT INTO users VALUES(?, ?, ?, ?)");
-            statement.setString(1, currentUser.getFirstName());
-            statement.setString(2, currentUser.getLastName());
-            statement.setString(3, currentUser.getUsername());
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO user VALUES(?, ?, ?, ?)");
+            statement.setString(1, currentUser.getUsername());
+            statement.setString(2, currentUser.getFirstName());
+            statement.setString(3, currentUser.getLastName());
             statement.setString(4, currentUser.getPassword());
 
             statement.executeUpdate();
@@ -99,8 +99,8 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     }
 
     private User fromResultSet(final ResultSet result) throws SQLException{
-        final String firstName = result.getString("firstname");
-        final String lastName = result.getString("lastname");
+        final String firstName = result.getString("first_name");
+        final String lastName = result.getString("last_name");
         final String username = result.getString("username");
         final String password = result.getString("password");
 
