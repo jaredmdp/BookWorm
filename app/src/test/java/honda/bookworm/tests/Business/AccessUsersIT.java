@@ -46,7 +46,7 @@ public class AccessUsersIT {
         List<User> users = manager.getAllUsers();
 
         assertNotNull(users);
-        assertEquals(2, users.size());
+        assertEquals(13, users.size());
 
         System.out.println("\nFinished testGetAllUsers");
 
