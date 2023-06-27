@@ -32,7 +32,7 @@ public class AccessBooksIT {
     @Test
     public void testGetBooksGenreFound(){
         System.out.println("\nStarting testGetBooksGenreFound");
-        accessBooks.addBook(new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355",
+        accessBooks.addBook(new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355",
                 "From #1 New York Times bestselling author Brandon Sanderson, The Way of Kings, book one of The Stormlight Archive begins an incredible new saga of epic proportion.\n" +
                         "\n" +
                         "Roshar is a world of stone and storms. Uncanny tempests of incredible power sweep across the rocky terrain so frequently that they have shaped ecology and civilization alike. Animals hide in shells, trees pull in branches, and grass retracts into the soilless ground. Cities are built only where the topography offers shelter.\n" +
@@ -58,7 +58,7 @@ public class AccessBooksIT {
                         "The Knights Radiant must stand again."
         ));
 
-        accessBooks.addBook(new Book("Mistborn", "Brandon Sanderson", Genre.Fantasy, "9780765350381",
+        accessBooks.addBook(new Book("Mistborn", "Brandon Sanderson", 0, Genre.Fantasy, "9780765350381",
                 "What if the whole world were a dead, blasted wasteland?\n" +
                         "\n" +
                         "Mistborn\n" +
@@ -81,7 +81,7 @@ public class AccessBooksIT {
     public void testAddBook(){
         System.out.println("\nStarting testAddBook");
 
-        Book book = new Book("Sword of Destiny", "Andrzej Sapkowski", Genre.Adult, "970575077832",
+        Book book = new Book("Sword of Destiny", "Andrzej Sapkowski", 0, Genre.Adult, "970575077832",
                 "Geralt is a witcher, a man whose magic powers, enhanced by long training and a mysterious elixir, have made him a brilliant fighter and a merciless assassin. Yet he is no ordinary murderer: his targets are the multifarious monsters and vile fiends that ravage the land and attack the innocent.\n" +
                         "\n" +
                         "This is a collection of short stories, following the adventures of the hit collection THE LAST WISH. Join Geralt as he battles monsters, demons and prejudices alike..."

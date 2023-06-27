@@ -31,8 +31,8 @@ public class UserPersistenceStubTest {
         usersTest.add(new User("John", "Doe", "johndoe", "password1"));
         usersTest.add(new User("Jane", "Smith", "janesmith", "password2"));
         usersTest.add(new User("John", "Wick", "johnwick", "password3"));
-        usersTest.add(new Author("Joe", "Mama", "joemama", "password4"));
-        usersTest.add(new Author("Brandon", "Sanderson", "BrandonSanderson", "password4"));
+        usersTest.add(new Author("Joe", "Mama", "joemama", "password4", 1));
+        usersTest.add(new Author("Brandon", "Sanderson", "BrandonSanderson", "password4", 0));
 
         assertNotNull(users);
         assertNotNull(usersTest);
@@ -49,8 +49,8 @@ public class UserPersistenceStubTest {
         List <Author> authors = userStub.getAllAuthors();
         List <Author> authorsTest = new ArrayList<>();
 
-        authorsTest.add(new Author("Joe", "Mama", "joemama", "password4"));
-        authorsTest.add(new Author("Brandon", "Sanderson", "BrandonSanderson", "password4"));
+        authorsTest.add(new Author("Joe", "Mama", "joemama", "password4", 1));
+        authorsTest.add(new Author("Brandon", "Sanderson", "BrandonSanderson", "password4", 0));
 
         assertNotNull(authors);
         assertNotNull(authorsTest);
@@ -69,11 +69,11 @@ public class UserPersistenceStubTest {
         List<Book> books = userStub.getAllWrittenBooks("Brandon Sanderson");
         List<Book> booksTest = new ArrayList<>();
 
-        booksTest.add(new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355"));
-        booksTest.add(new Book("Mistborn", "Brandon Sanderson", Genre.Fantasy, "9780765350381"));
-        booksTest.add(new Book("Words of Radiance", "Brandon Sanderson", Genre.Fantasy, "9780765326362"));
-        booksTest.add(new Book("Elantris", "Brandon Sanderson", Genre.Fantasy, "9780765311788"));
-        booksTest.add(new Book("The Alloy of Law", "Brandon Sanderson", Genre.Fantasy, "9780765368546"));
+        booksTest.add(new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355"));
+        booksTest.add(new Book("Mistborn", "Brandon Sanderson", 0, Genre.Fantasy, "9780765350381"));
+        booksTest.add(new Book("Words of Radiance", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326362"));
+        booksTest.add(new Book("Elantris", "Brandon Sanderson", 0, Genre.Fantasy, "9780765311788"));
+        booksTest.add(new Book("The Alloy of Law", "Brandon Sanderson", 0, Genre.Fantasy, "9780765368546"));
 
         assertNotNull(books);
         assertNotNull(booksTest);
@@ -138,7 +138,7 @@ public class UserPersistenceStubTest {
     @Test
     public void testRemoveUser(){
         System.out.println("\nStarting RemoveUser");
-        User user = userStub.removeUser(new Author("Joe", "Mama", "joemama", "password4"));
+        User user = userStub.removeUser(new Author("Joe", "Mama", "joemama", "password4", 1));
 
         assertNotNull(user);
 
