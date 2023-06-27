@@ -46,13 +46,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             final PreparedStatement statement = c.prepareStatement("INSERT INTO Book (ISBN, book_name, author_id, genre_id, description, isPurchaseable) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setString(1, newBook.getISBN());
             statement.setString(2, newBook.getName());
-
-            //TODO fix after adding authorid to book
-            statement.setObject(3, 0);
-
-            //TODO fix after removing genre arraylist in book
-            statement.setObject(4, newBook.getGenre().get(0).ordinal());
-
+            statement.setObject(3, newBook.getAuthorID());
+            statement.setObject(4, newBook.getGenre().ordinal());
             statement.setString(5, newBook.getDescription());
             statement.setBoolean(6, true);
 
@@ -85,7 +80,10 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     public List<Book> getBooksByGenre(Genre genre) {
         List<Book> booksByGenre = new ArrayList<>();
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement ("SELECT * FROM Book where genre_id = ?");
+            final PreparedStatement statement = c.prepareStatement ("SELECT b.*, u.first_name, u.last_name FROM Book b "
+                    + "join author a on a.author_id=b.author_id "
+                    + "join user u on u.username=a.username "
+                    + "where b.genre_id= ?");
             statement.setInt(1, genre.ordinal());
 
             final ResultSet result = statement.executeQuery();
@@ -104,12 +102,13 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
 
     private Book fromResultSet(final ResultSet result) throws SQLException{
         final String bookName = result.getString("book_name");
-        final String bookAuthor = result.getString("author_id");
+        final String bookAuthor = result.getString("first_name") + " " + result.getString("last_name");
+        final int bookAuthorID = Integer.parseInt(result.getString("author_id"));
         final Genre bookGenre = Genre.values()[Integer.parseInt(result.getString("genre_id"))];
         final String ISBN = result.getString("ISBN");
         final String description = result.getString("description");
 
-        return new Book(bookName,bookAuthor,bookGenre,ISBN, description);
+        return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description);
 
     }
 }

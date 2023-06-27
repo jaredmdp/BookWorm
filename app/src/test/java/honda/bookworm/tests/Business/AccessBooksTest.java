@@ -49,7 +49,7 @@ public class AccessBooksTest {
 
     @Test
     public void testGetTrimmedBookTitles(){
-        Book testBook = new Book("Super Dooper Ginormous Fungus Amoung Us Volume Three","",Genre.Fiction, "123123");
+        Book testBook = new Book("Super Dooper Ginormous Fungus Amoung Us Volume Three","", 0, Genre.Fiction, "123123");
         String trimmed;
 
         System.out.println("\nTesting getTrimmedBookTitles");

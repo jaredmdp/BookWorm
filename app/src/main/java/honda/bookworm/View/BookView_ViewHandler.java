@@ -30,7 +30,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
         String isbn = bookInfo.getString("isbn");
         Book bk = Services.getBookPersistence(false).getBookByISBN(isbn); //TEMPORARY
 
-        assignValues(bk.getName(), bk.getAuthor(), bk.getGenreAsString(), isbn, bk.getDescription());
+        assignValues(bk.getName(), bk.getAuthor(), bk.getGenre().toString(), isbn, bk.getDescription());
         applyHideOnScroll();
     }
 

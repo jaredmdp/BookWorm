@@ -15,20 +15,20 @@ public class UserPersistenceStub implements IUserPersistence {
     private List<User> users;
 
     public UserPersistenceStub(){
-        Author authorBrandon = new Author("Brandon", "Sanderson", "BrandonSanderson", "password4");
+        Author authorBrandon = new Author("Brandon", "Sanderson", "BrandonSanderson", "password4", 0);
         this.users = new ArrayList<>();
 
         users.add(new User("John", "Doe", "johndoe", "password1"));
         users.add(new User("Jane", "Smith", "janesmith", "password2"));
         users.add(new User("John", "Wick", "johnwick", "password3"));
-        users.add(new Author("Joe", "Mama", "joemama", "password4"));
+        users.add(new Author("Joe", "Mama", "joemama", "password4", 1));
         users.add(authorBrandon);
 
-        authorBrandon.addWrittenBook(new Book("The Way of Kings", "Brandon Sanderson", Genre.Fantasy, "9780765326355"));
-        authorBrandon.addWrittenBook(new Book("Mistborn", "Brandon Sanderson", Genre.Fantasy, "9780765350381"));
-        authorBrandon.addWrittenBook(new Book("Words of Radiance", "Brandon Sanderson", Genre.Fantasy, "9780765326362"));
-        authorBrandon.addWrittenBook(new Book("Elantris", "Brandon Sanderson", Genre.Fantasy, "9780765311788"));
-        authorBrandon.addWrittenBook(new Book("The Alloy of Law", "Brandon Sanderson", Genre.Fantasy, "9780765368546"));
+        authorBrandon.addWrittenBook(new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355"));
+        authorBrandon.addWrittenBook(new Book("Mistborn", "Brandon Sanderson", 0, Genre.Fantasy, "9780765350381"));
+        authorBrandon.addWrittenBook(new Book("Words of Radiance", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326362"));
+        authorBrandon.addWrittenBook(new Book("Elantris", "Brandon Sanderson", 0, Genre.Fantasy, "9780765311788"));
+        authorBrandon.addWrittenBook(new Book("The Alloy of Law", "Brandon Sanderson", 0, Genre.Fantasy, "9780765368546"));
 
 
     }

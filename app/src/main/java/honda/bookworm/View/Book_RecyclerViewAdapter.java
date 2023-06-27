@@ -40,7 +40,7 @@ public class Book_RecyclerViewAdapter extends RecyclerView.Adapter<Book_Recycler
         //update data for the recycler view
         holder.bookTitle.setText(bookList.get(position).getName());
         holder.bookAuthor.setText("By " + bookList.get(position).getAuthor());
-        holder.bookGenre.setText("Genre: " + bookList.get(position).getGenreAsString());
+        holder.bookGenre.setText("Genre: " + bookList.get(position).getGenre().toString());
         holder.bookISBN.setText("ISBN: " + bookList.get(position).getISBN());
     }
 

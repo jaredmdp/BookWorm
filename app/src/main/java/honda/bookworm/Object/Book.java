@@ -6,24 +6,25 @@ import java.util.ArrayList;
 public class Book {
     private String name;
     private String author;
+    private int authorID;
     private String ISBN;
     private String description;
-    private ArrayList<Genre> genre;
+    private Genre genre;
 
-    public Book(String name, String author, Genre genre, String ISBN) {
+    public Book(String name, String author, int authorID, Genre genre, String ISBN) {
         this.name = name;
         this.author = author;
-        this.genre = new ArrayList<Genre>();
-        this.genre.add(genre);
+        this.authorID = authorID;
+        this.genre = genre;
         this.ISBN = ISBN;
         description = "";
     }
 
-    public Book(String name, String author, Genre genre, String ISBN, String description) {
+    public Book(String name, String author, int authorID, Genre genre, String ISBN, String description) {
         this.name = name;
         this.author = author;
-        this.genre = new ArrayList<Genre>();
-        this.genre.add(genre);
+        this.authorID = authorID;
+        this.genre = genre;
         this.ISBN = ISBN;
         this.description = description;
     }
@@ -45,6 +46,10 @@ public class Book {
         this.author = author;
     }
 
+    public int getAuthorID() {return authorID;}
+
+    public void setAuthorID(int authorID) {this.authorID = authorID;}
+
     public String getISBN() {
         return ISBN;
     }
@@ -61,31 +66,16 @@ public class Book {
         this.description = description;
     }
 
-    public ArrayList<Genre> getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void addGenre(Genre genre) {this.genre.add(genre);}
-
-    public void removeGenre(Genre genre){this.genre.remove(genre);}
-
-    public String getGenreAsString(){
-        String genres = "";
-        for(int i=0; i<this.genre.size()-1; i++) {
-            genres = genres + this.genre.get(i).toString() + ", ";
-        }
-        genres = genres + this.genre.get(this.genre.size()-1).toString();
-
-        return genres;
-    }
+    public void setGenre(Genre genre) {this.genre = genre;}
 
     public String toString() {
-        //create string list of genres for output
-        String genres = getGenreAsString();
-
         return "Book name:'" + name + '\'' +
                 ", author:'" + author + '\'' +
-                ", genre:'" + genres + '\'' +
+                ", genre:'" + genre + '\'' +
                 ", ISBN:'" + ISBN + '\''
                 ;
     }
@@ -104,7 +94,7 @@ public class Book {
         return  Objects.equals(name, book.name) &&
                 Objects.equals(author, book.author) &&
                 Objects.equals(genre, book.genre) &&
-                Objects.equals(ISBN, book.ISBN)
-                ;
+                Objects.equals(ISBN, book.ISBN) &&
+                (authorID == book.getAuthorID());
     }
 }
