@@ -24,7 +24,7 @@ public class AccessBooks implements IAccessBooks {
         if (genre != null) {
             return bookPersistence.getBooksByGenre(genre);
         } else {
-            throw new NullPointerException("genre input can't be null");
+            throw new NullPointerException("Genre input can't be null");
         }
     }
 

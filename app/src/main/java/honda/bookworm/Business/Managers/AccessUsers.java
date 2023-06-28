@@ -30,30 +30,35 @@ public class AccessUsers implements IAccessUsers {
             newUser = new User(first, last, username, password);
         }
 
-        result = userPersistence.addUser(newUser);
-
-        if(result == null){
-            throw new IllegalStateException("Username taken.");
+        try {
+            result = userPersistence.addUser(newUser);
+        } catch (RuntimeException e) {
+            throw new IllegalStateException("Username " + username + " taken.");
         }
 
-        Services.setActiveUser(result);
+        if (result != null) {
+            Services.setActiveUser(result);
+        }
 
         return result;
     }
 
     public boolean verifyUser(String username, String password) {
-        User user = userPersistence.getUserByUsername(username);
+        try {
+            User user = userPersistence.getUserByUsername(username);
 
-        if (user != null) {
-            if( user.getPassword().equals(password) ){
+            if (user != null && user.getPassword().equals(password)) {
                 Services.setActiveUser(user);
                 return true;
-            }else {
-                throw new IllegalStateException("Incorrect password provided.");
+            } else {
+                throw new IllegalStateException("Incorrect password provided");
             }
-        } else {
-            throw new IllegalStateException(String.format("User '%s' not found",username));
+        } catch (IllegalStateException x) {
+            throw x; //TODO Refactor when custom exceptions. Temporary
+        } catch (RuntimeException e) {
+            throw new IllegalStateException("User " + username +  " not found");
         }
+
     }
 
     //Validator functions----------------------------------------------------------------------------

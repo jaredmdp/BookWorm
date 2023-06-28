@@ -71,6 +71,11 @@ public class UserPersistenceStub implements IUserPersistence {
                 user = users.get(i);
             }
         }
+
+        if (user == null) {
+            throw new IllegalStateException("Invalid username");
+        }
+
         return user;
     }
 
@@ -79,7 +84,7 @@ public class UserPersistenceStub implements IUserPersistence {
         String username = currentUser.getUsername();
 
             if (isDuplicateUsername(username)) {
-                return null;
+                throw new IllegalStateException("Username " + username +  " is taken");
             } else {
                 users.add(currentUser);
                 return currentUser;
