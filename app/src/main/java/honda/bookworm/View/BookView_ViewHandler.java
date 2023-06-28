@@ -10,27 +10,35 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Object.Book;
 
 public class BookView_ViewHandler extends AppCompatActivity {
 
     private final int MIN = 7;
+    private String thisBookISBN;
+    private IUserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_view);
 
+        userManager = new UserManager();
         Bundle bookInfo = getIntent().getExtras();
-        String isbn = bookInfo.getString("isbn");
-        Book bk = Services.getBookPersistence(false).getBookByISBN(isbn); //TEMPORARY
+        thisBookISBN = bookInfo.getString("isbn");
 
-        assignValues(bk.getName(), bk.getAuthor(), bk.getGenre().toString(), isbn, bk.getDescription());
+        /** TODO: apply the proper logic for fetch bookByISBN **/
+        Book bk = Services.getBookPersistence(false).getBookByISBN(thisBookISBN);
+
+        assignValues(bk.getName(), bk.getAuthor(), bk.getGenre().toString(), bk.getISBN(), bk.getDescription());
         applyHideOnScroll();
     }
 
@@ -60,6 +68,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
 
         String url = String.format("https://www.amazon.ca/s?k=%s", bookTitle.toLowerCase().replaceAll(" ", "+"));
         createPurchaseButtonViewListener(url);
+        setUpFavoriting();
     }
 
     private void createPurchaseButtonViewListener(String url) {
@@ -108,4 +117,15 @@ public class BookView_ViewHandler extends AppCompatActivity {
         });
 
     }
+
+    private void setUpFavoriting(){
+        ToggleButton favButton = findViewById(R.id.book_view_fav_book_toggle);
+        if(userManager.isUserLoggedIn()){
+            favButton.setVisibility(View.VISIBLE);
+        }
+    }
+    public void isFavoriteClicked(View view) {
+        /** Favorting process goes below**/
+    }
+
 }

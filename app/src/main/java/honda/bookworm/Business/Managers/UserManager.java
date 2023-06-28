@@ -26,6 +26,7 @@ public class UserManager implements IUserManager {
     public void logOutActiveUser(){
         Services.setActiveUser(null);
     }
+    public boolean isUserLoggedIn(){return Services.getActiveUser()!=null;}
     public List<User> getAllUsers(){
         return userPersistence.getAllUsers();
     }
