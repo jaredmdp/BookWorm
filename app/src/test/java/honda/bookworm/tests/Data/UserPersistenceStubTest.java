@@ -102,8 +102,12 @@ public class UserPersistenceStubTest {
     public void testGetUserByUsernameNotFound(){
         System.out.println("\nStarting GetUserByUsernameNotFound");
 
-        User user = userStub.getUserByUsername("FindME");
-        assertNull(user);
+        try {
+            User user = userStub.getUserByUsername("FindME");
+            assertFalse(true);
+        } catch (IllegalStateException e) {
+            System.out.println("Success: user is not found");
+        }
 
         System.out.println("\nFinished GetUserByUsernameNotFound");
     }

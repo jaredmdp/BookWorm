@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import honda.bookworm.Data.IUserPersistence;
@@ -69,6 +70,26 @@ public class AccessUsersIT {
         assertEquals(expectedSize, manager.getAllUsers().size());
 
         System.out.println("\nFinished addNewUser");
+    }
+
+    @Test
+    public void testAddDupeUser() {
+        System.out.println("\nStarting testAddDupeUser");
+
+        int initialSize = manager.getAllUsers().size();
+        int expectedSize = initialSize + 1;
+        accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
+        assertEquals(expectedSize, manager.getAllUsers().size());
+
+        try {
+            //insert same user
+            accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
+            assertFalse(true);
+        } catch (RuntimeException e) {
+            System.out.println("Success: Duplicate user not inserted");
+        }
+
+        System.out.println("\nFinished testAddDupeUser");
     }
 
     @Test
