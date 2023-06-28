@@ -8,4 +8,5 @@ public interface IUserManager {
     User getActiveUser();
     void logOutActiveUser();
     List<User> getAllUsers();
+    boolean isUserLoggedIn();
 }
