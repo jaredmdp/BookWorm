@@ -25,7 +25,7 @@ public class AccessUsers implements IAccessUsers {
         validateUserInput(first, last, username, password);
 
         if (isAuthor) {
-            newUser = new Author(first, last, username, password, 0);
+            newUser = new Author(first, last, username, password);
         } else {
             newUser = new User(first, last, username, password);
         }

@@ -44,6 +44,7 @@ INSERT INTO USER VALUES('bronte','Emily','Bronte','wuthering')
 INSERT INTO USER VALUES('fitzgerald','F. Scott','Fitzgerald','greatgatsby')
 INSERT INTO USER VALUES('plath','Sylvia','Plath','belljar')
 INSERT INTO USER VALUES('pcoeloh','Paulo','Coelho','alchemist123')
+INSERT INTO USER VALUES('notAuthor','Jane','Doe','abc123')
 INSERT INTO AUTHOR VALUES (0, 'austen');
 INSERT INTO AUTHOR VALUES (1, 'bronte');
 INSERT INTO AUTHOR VALUES (2, 'dickens');
