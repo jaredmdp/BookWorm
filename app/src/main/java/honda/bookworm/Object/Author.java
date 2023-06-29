@@ -7,6 +7,11 @@ public class Author extends User {
     private ArrayList<Book> writtenBooks;
     private int authorID;
 
+    public Author(String firstName, String lastName, String username, String password) {
+        super(firstName, lastName, username, password);
+        writtenBooks = new ArrayList<>();
+    }
+
     public Author(String firstName, String lastName, String username, String password, int authorID) {
         super(firstName, lastName, username, password);
         this.authorID = authorID;

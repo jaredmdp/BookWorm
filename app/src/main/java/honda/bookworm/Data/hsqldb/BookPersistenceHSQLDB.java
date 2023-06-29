@@ -52,6 +52,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.setBoolean(6, true);
 
             statement.executeUpdate();
+            statement.close();
 
             return newBook;
         } catch (final SQLException e) {
@@ -103,8 +104,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     private Book fromResultSet(final ResultSet result) throws SQLException{
         final String bookName = result.getString("book_name");
         final String bookAuthor = result.getString("first_name") + " " + result.getString("last_name");
-        final int bookAuthorID = Integer.parseInt(result.getString("author_id"));
-        final Genre bookGenre = Genre.values()[Integer.parseInt(result.getString("genre_id"))];
+        final int bookAuthorID = result.getInt("author_id");
+        final Genre bookGenre = Genre.values()[result.getInt("genre_id")];
         final String ISBN = result.getString("ISBN");
         final String description = result.getString("description");
 

@@ -47,7 +47,7 @@ public class AccessUsersIT {
         List<User> users = manager.getAllUsers();
 
         assertNotNull(users);
-        assertEquals(13, users.size());
+        assertEquals(14, users.size());
 
         System.out.println("\nFinished testGetAllUsers");
 
@@ -168,6 +168,4 @@ public class AccessUsersIT {
     public void tearDown(){
         this.tempDB.delete();
     }
-
-
 }
