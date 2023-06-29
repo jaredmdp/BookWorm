@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,8 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookWorm"
-        tools:targetApi="31">
-
+        tools:targetApi="31"
+        android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name="honda.bookworm.View.AddBook_ViewHandler"
+            android:exported="true"
+           />
         <activity android:name="honda.bookworm.View.BookView_ViewHandler" />
         <activity
             android:name="honda.bookworm.View.Home_ViewHandler"
@@ -30,7 +35,6 @@
         <activity
             android:name="honda.bookworm.View.UserSignup_ViewHandler"
             android:screenOrientation="portrait" />
-
         <activity android:name="honda.bookworm.View.Search_ViewHandler" />
     </application>
 
