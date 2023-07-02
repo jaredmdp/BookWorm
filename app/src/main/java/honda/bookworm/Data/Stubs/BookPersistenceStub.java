@@ -3,9 +3,12 @@ package honda.bookworm.Data.Stubs;
 import java.util.ArrayList;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Business.Exceptions.*;
 
 public class BookPersistenceStub implements IBookPersistence {
     private List<Book> books;
@@ -310,9 +313,13 @@ public class BookPersistenceStub implements IBookPersistence {
         Book result = null;
 
         //check duplicate ISBN and title
-        if(!isDuplicateISBN(newBook.getISBN()) && !isDuplicateTitle(newBook.getName())) {
+        if(!isDuplicateISBN(newBook.getISBN())) {
             books.add(newBook);
             result = newBook;
+        }
+
+        if (result == null) {
+            throw new DuplicateISBNException("For ISBN: " + newBook.getISBN());
         }
 
         return result;
@@ -326,16 +333,6 @@ public class BookPersistenceStub implements IBookPersistence {
         }
         return false;
     }
-
-    private boolean isDuplicateTitle(String title) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getName().equalsIgnoreCase(title)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     @Override
     public void removeBookByISBN(String ISBN) {

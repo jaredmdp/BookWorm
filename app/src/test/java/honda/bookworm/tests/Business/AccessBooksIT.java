@@ -1,6 +1,7 @@
 package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
@@ -11,12 +12,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.tests.utils.TestUtils;
+import honda.bookworm.Business.Exceptions.*;
 
 public class AccessBooksIT {
     private AccessBooks accessBooks;
@@ -53,6 +56,28 @@ public class AccessBooksIT {
         assertEquals(book, addedBook);
 
         System.out.println("\nFinished testAddBook");
+    }
+
+    @Test
+    public void testAddDuplicateISBNBook(){
+        System.out.println("\nStarting testAddDuplicateISBNBook");
+
+        Book book = new Book("To Kill a Mockingbird", "Harper Lee", 0, Genre.Fiction, "9780061120084",
+                "To Kill a Mockingbird is a novel by Harper Lee published in 1960. It is set in the fictional town of Maycomb, Alabama, during the Great Depression, and follows the story of Scout Finch as she grows up and learns about racial injustice in her community. The book explores themes of morality, compassion, and the loss of innocence. It is widely regarded as a classic of American literature."
+        );
+
+        assertNotNull(book);
+        Book addedBook = accessBooks.addBook(book);
+        assertEquals(book, addedBook);
+
+        try {
+            addedBook = accessBooks.addBook(book);  //add same book
+            assertFalse(true);
+        } catch (DuplicateISBNException e) {
+            System.out.println("Error: Duplicate ISBN found: " + e.getMessage());
+        }
+
+        System.out.println("\nFinished testAddDuplicateISBNBook");
     }
 
     @After

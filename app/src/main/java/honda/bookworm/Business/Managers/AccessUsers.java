@@ -1,9 +1,13 @@
 package honda.bookworm.Business.Managers;
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
+import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.User;
+import honda.bookworm.Business.Exceptions.*;
 
 public class AccessUsers implements IAccessUsers {
     private IUserPersistence userPersistence;
@@ -17,7 +21,7 @@ public class AccessUsers implements IAccessUsers {
         this.userPersistence = userPersistence;
     }
 
-    public User addNewUser(String first, String last, String username, String password, boolean isAuthor){
+    public User addNewUser(String first, String last, String username, String password, boolean isAuthor) throws DuplicateUserException{
         User newUser;
         User result;
 
@@ -30,11 +34,7 @@ public class AccessUsers implements IAccessUsers {
             newUser = new User(first, last, username, password);
         }
 
-        try {
-            result = userPersistence.addUser(newUser);
-        } catch (RuntimeException e) {
-            throw new IllegalStateException("Username " + username + " taken.");
-        }
+        result = userPersistence.addUser(newUser);
 
         if (result != null) {
             Services.setActiveUser(result);
@@ -43,22 +43,22 @@ public class AccessUsers implements IAccessUsers {
         return result;
     }
 
-    public boolean verifyUser(String username, String password) {
+    public boolean verifyUser(String username, String password) throws UserNotFoundException, InvalidPasswordException {
+        User user = null;
         try {
-            User user = userPersistence.getUserByUsername(username);
+            user = userPersistence.getUserByUsername(username);
 
-            if (user != null && user.getPassword().equals(password)) {
+            if (user.getPassword().equals(password)) {
                 Services.setActiveUser(user);
                 return true;
             } else {
-                throw new IllegalStateException("Incorrect password provided");
+                throw new InvalidPasswordException("Incorrect password provided");
             }
-        } catch (IllegalStateException x) {
-            throw x; //TODO Refactor when custom exceptions. Temporary
-        } catch (RuntimeException e) {
-            throw new IllegalStateException("User " + username +  " not found");
+        } catch (GeneralPersistenceException e) {
+            e.printStackTrace();
         }
 
+        return false;
     }
 
     //Validator functions----------------------------------------------------------------------------

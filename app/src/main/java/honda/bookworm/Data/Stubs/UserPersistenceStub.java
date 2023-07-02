@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 import honda.bookworm.Data.IUserPersistence;
+import honda.bookworm.Business.Exceptions.*;
 
 public class UserPersistenceStub implements IUserPersistence {
     private List<User> users;
@@ -73,7 +76,7 @@ public class UserPersistenceStub implements IUserPersistence {
         }
 
         if (user == null) {
-            throw new IllegalStateException("Invalid username");
+            throw new UserNotFoundException("Invalid username");
         }
 
         return user;
@@ -84,7 +87,7 @@ public class UserPersistenceStub implements IUserPersistence {
         String username = currentUser.getUsername();
 
             if (isDuplicateUsername(username)) {
-                throw new IllegalStateException("Username " + username +  " is taken");
+                throw new DuplicateUserException("Username " + username +  " is taken");
             } else {
                 users.add(currentUser);
                 return currentUser;

@@ -11,6 +11,9 @@ import java.util.List;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Business.Exceptions.Books.*;
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 
 public class BookPersistenceHSQLDB implements IBookPersistence {
 
@@ -42,7 +45,6 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     @Override
     public Book addBook(Book newBook) {
         try (final Connection c = connection()) {
-            //CREATE MEMORY TABLE PUBLIC.Book (ISBN VARCHAR(13) NOT NULL PRIMARY KEY, book_name VARCHAR(150), author_id INTEGER, genre_id INTEGER, description VARCHAR(5000), isPurchaseable BOOLEAN, FOREIGN KEY (author_id) REFERENCES PUBLIC.Author(author_id), FOREIGN KEY (genre_id) REFERENCES PUBLIC.Genre(genre_id));
             final PreparedStatement statement = c.prepareStatement("INSERT INTO Book (ISBN, book_name, author_id, genre_id, description, isPurchaseable) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setString(1, newBook.getISBN());
             statement.setString(2, newBook.getName());
@@ -56,11 +58,10 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
 
             return newBook;
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new DuplicateISBNException("For ISBN " + newBook.getISBN());
         }
     }
-
-
 
     @Override
     public void removeBookByISBN(String ISBN) {
@@ -96,7 +97,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new InvalidGenreException("Could not find " + genre + " in system");
         }
         return booksByGenre;
     }
