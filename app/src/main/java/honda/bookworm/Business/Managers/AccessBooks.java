@@ -3,10 +3,13 @@ package honda.bookworm.Business.Managers;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
+import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Business.Exceptions.*;
 
 public class AccessBooks implements IAccessBooks {
     private IBookPersistence bookPersistence;
@@ -20,21 +23,19 @@ public class AccessBooks implements IAccessBooks {
         this.bookPersistence = bookPersistence;
     }
 
-    public List<Book> getBooksGenre(Genre genre) {
-        if (genre != null) {
-            return bookPersistence.getBooksByGenre(genre);
-        } else {
-            throw new NullPointerException("Genre input can't be null");
+    public List<Book> getBooksGenre(Genre genre) throws InvalidGenreException {
+        if (genre == null) {
+            throw new InvalidGenreException("Genre can't be empty");
         }
+            return bookPersistence.getBooksByGenre(genre);
     }
 
-    public Book addBook(Book newBook){
-        //will do validation of book in another dev task
-        if(newBook != null){
-            return bookPersistence.addBook(newBook);
-        } else {
-            throw new NullPointerException("new book can't be empty");
+    //TODO We have to change Exception handling once addBook Parameters change and connected with UI. Ask Jared
+    public Book addBook(Book newBook) throws DuplicateISBNException, InvalidBookException {
+        if (newBook == null) {
+            throw new InvalidBookException("Book can't be empty");
         }
+          return bookPersistence.addBook(newBook);
     }
 
     public String getTrimmedBookName(Book b) {

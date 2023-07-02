@@ -10,6 +10,7 @@ import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Business.Exceptions.*;
 
 public class AccessBooksTest {
     private AccessBooks accessBooks;
@@ -37,7 +38,7 @@ public class AccessBooksTest {
 
         try {
             accessBooks.getBooksGenre(null);
-        } catch (NullPointerException e) {
+        } catch (InvalidGenreException e) {
             caught = true;
         }
 

@@ -12,8 +12,11 @@ import android.widget.Toast;
 
 import com.honda.bookworm.R;
 
+import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.Exceptions.*;
 
 public class UserLogin_ViewHandler extends AppCompatActivity {
 
@@ -39,25 +42,21 @@ public class UserLogin_ViewHandler extends AppCompatActivity {
         proceedToLogin(usernameInput.getText().toString(),passwordInput.getText().toString());
     }
 
-    private void proceedToLogin(String username, String password){
-        String msg;
-        boolean loginState = false;
-
+    private void proceedToLogin(String username, String password) {
         try {
-            //login success
-            loginState = accessUsers.verifyUser(username, password);
+            boolean loginState = accessUsers.verifyUser(username, password);
 
-        } catch (IllegalStateException e) {
-            //login failed
-            msg = String.format("Invalid user credentials: %s" , e.getMessage());
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-        }
-
-        //if valid go to home in loggedin state
-        if (loginState) {
-            Intent intent = new Intent(this, Home_ViewHandler.class);
-            startActivity(intent);
-            finishAffinity();
+            if (loginState) {
+                Intent intent = new Intent(this, Home_ViewHandler.class);
+                startActivity(intent);
+                finishAffinity();
+            } else {
+                Toast.makeText(getApplicationContext(), "Invalid user credentials", Toast.LENGTH_SHORT).show();
+            }
+        } catch (UserNotFoundException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
+        } catch (InvalidPasswordException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
         }
     }
 

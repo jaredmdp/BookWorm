@@ -12,6 +12,8 @@ import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.User;
+import honda.bookworm.Business.Exceptions.Users.*;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 
 public class UserPersistenceHSQLDB implements IUserPersistence {
 
@@ -43,7 +45,8 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new UserNotFoundException("No Users found");
         }
         return allUsers;
     }
@@ -78,8 +81,14 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new GeneralPersistenceException("For Username: " + currentUsername);
         }
+
+        if (user == null) {
+            throw new UserNotFoundException("For user: " + currentUsername);
+        }
+
         return user;
     }
 
@@ -104,7 +113,8 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
             return currentUser;
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new DuplicateUserException("For User " + currentUser);
         }
     }
 
@@ -153,7 +163,8 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             }
 
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
     }
 }

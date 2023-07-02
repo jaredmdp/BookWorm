@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,9 +13,11 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
+import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
 import honda.bookworm.Object.User;
@@ -23,6 +26,8 @@ import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.Managers.AccessUsers;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.UserManager;
+import honda.bookworm.Business.Exceptions.*;
+
 
 public class AccessUsersIT {
     private IAccessUsers accessUsers;
@@ -85,8 +90,8 @@ public class AccessUsersIT {
             //insert same user
             accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
             assertFalse(true);
-        } catch (RuntimeException e) {
-            System.out.println("Success: Duplicate user not inserted");
+        } catch (DuplicateUserException e) {
+            System.out.println("Error: Duplicate user: " + e.getMessage());
         }
 
         System.out.println("\nFinished testAddDupeUser");
@@ -111,15 +116,18 @@ public class AccessUsersIT {
     public void testVerifyUserFalseNotFound() {
         System.out.println("Starting testVerifyUserFalseNotFound");
 
-        //this user doesn't exist in DB
+        // This user doesn't exist in the DB
         String username = "janedoe";
         String password = "password1";
 
         try {
             boolean result = accessUsers.verifyUser(username, password);
             assertFalse(result);
-        } catch (Exception e) {
-            System.out.println("Failed to verify user: " + e.getMessage());
+        } catch (InvalidPasswordException e) {
+            fail("InvalidPasswordException was thrown unexpectedly.");
+        } catch (UserNotFoundException e) {
+            // This block should be executed
+            System.out.println("UserNotFoundException thrown: " + e.getMessage());
         }
 
         System.out.println("Finished testVerifyUserFalseNotFound");
@@ -139,7 +147,7 @@ public class AccessUsersIT {
         try{
             boolean result = accessUsers.verifyUser(username, badPassword);
             assertFalse(result);
-        } catch(Exception e){
+        } catch(InvalidPasswordException e){
             System.out.println("Failed to verify user: " + e.getMessage());
         }
 
@@ -156,7 +164,7 @@ public class AccessUsersIT {
         try {
             User result = accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
             assertNotEquals(result, newUser);
-        } catch (Exception e){
+        } catch (DuplicateUserException e){
             System.out.println("Failed to insert user: " + e.getMessage());
             assertTrue(manager.getAllUsers().contains(newUser)); //check if its actually a duplicate username
         }
