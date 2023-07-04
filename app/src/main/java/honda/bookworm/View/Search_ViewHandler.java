@@ -39,7 +39,7 @@ public class Search_ViewHandler extends AppCompatActivity {
         searchQueryListener();
 
 
-        updateRecyclerView(Services.getBookPersistence(false).getAllBooks(), "All the books"); // TEMPORARY TO REMOVE
+        //updateRecyclerView(Services.getBookPersistence(true).getAllBooks(), "All the books"); // TEMPORARY TO REMOVE
 
     }
 

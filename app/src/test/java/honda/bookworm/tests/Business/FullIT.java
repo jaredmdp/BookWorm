@@ -1,5 +1,8 @@
 package honda.bookworm.tests.Business;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.IUserManager;
@@ -90,6 +95,74 @@ public class FullIT {
 
         System.out.println("\nFinished testFullNewAuthorAddsBook");
 
+    }
+
+    @Test
+    public void testBookFavoriteToggle(){
+        System.out.println("\nStarting testBookFavoriteToggle");
+        boolean result;
+
+        //test with a no active user. invalid user cant access it
+        try{
+            result = accessBooks.bookFavouriteToggle("9780199536269");
+            assertFalse("this should not be called",result);
+        }catch (Exception e){
+            assert(e instanceof GeneralPersistenceException);
+        }
+
+        //log in to user
+        accessUsers.verifyUser("rowling","harrypotter");
+        try{
+            result = accessBooks.bookFavouriteToggle("9780199536269");
+            assertTrue(result);
+
+            result = accessBooks.bookFavouriteToggle("9780199536269");
+            assertFalse(result);
+        }catch (Exception e){
+            assertFalse("This should not be called", true);
+        }
+
+
+        try{
+            result = accessBooks.bookFavouriteToggle("178019953629");
+            assertFalse("this should not be called",result);
+        }catch (Exception e){
+            assert(e instanceof InvalidISBNException);
+        }
+
+        System.out.println("\nFinished testBookFavoriteToggle");
+
+    }
+
+    @Test
+    public void testIsBookFavorite(){
+        System.out.println("\nStarting testIsBookFavorite");
+        boolean result;
+        User u = null;
+
+        try {
+            result = accessBooks.isBookFavourite(u, "97199536269"); //null user and fake isbn
+            assert(!result);
+
+            result = accessBooks.isBookFavourite(u, "9780199536269"); // null user, valid isbn
+            assert(!result);
+
+            u = accessUsers.addNewUser("Test","User", "testUser","pass123",false);
+            result = accessBooks.isBookFavourite(u, "9780199536269"); // valid user and isbn but not favorite
+            assert(!result);
+
+            accessBooks.bookFavouriteToggle("9780199536269");
+
+            result = accessBooks.isBookFavourite(u, "9780199536269"); // valid user, isbn and book favorite
+            assert(result);
+
+            result = accessBooks.isBookFavourite(u, "97199536269"); // valid user and invalid isbn
+            assert(!result);
+        }catch(Exception e){
+            assert (false); //exception should not be thrown
+        }
+
+        System.out.println("\nFinished testIsBookFavorite");
     }
 
     @After

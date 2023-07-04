@@ -5,18 +5,21 @@ import java.util.List;
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Business.Exceptions.*;
+import honda.bookworm.Object.User;
 
 public class AccessBooks implements IAccessBooks {
     private IBookPersistence bookPersistence;
     private final int MAX_BOOK_TITLE_LENGTH = 40;
 
     public AccessBooks() {
-        bookPersistence = Services.getBookPersistence(false);
+        bookPersistence = Services.getBookPersistence(true);
     }
 
     public AccessBooks(IBookPersistence bookPersistence){
@@ -37,6 +40,45 @@ public class AccessBooks implements IAccessBooks {
         }
           return bookPersistence.addBook(newBook);
     }
+
+    public boolean isBookFavourite(User user , String isbn) {
+        boolean isFavourite = false;
+        try {
+            if (user != null) {
+                isFavourite = bookPersistence.isBookFavoriteOfUser(user, isbn);
+            }
+        }catch (UserNotFoundException e){
+            e.printStackTrace();
+        }
+        return isFavourite;
+    }
+
+    public boolean bookFavouriteToggle(String isbn) {
+        boolean favState = false;
+        try {
+            if (Services.getActiveUser() != null) {
+                favState = bookPersistence.toggleUserBookFavorite(Services.getActiveUser(), isbn);
+            }
+        } catch (UserNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return favState;
+    }
+
+    @Override
+    public Book getBookByISBN(String isbn) throws InvalidISBNException {
+        Book book = null;
+
+        try{
+            book = bookPersistence.getBookByISBN(isbn);
+        }catch (GeneralPersistenceException e){
+            e.printStackTrace();
+        }
+
+        return book;
+    }
+
 
     public String getTrimmedBookName(Book b) {
         String trimmedTitle = b.getName().trim();

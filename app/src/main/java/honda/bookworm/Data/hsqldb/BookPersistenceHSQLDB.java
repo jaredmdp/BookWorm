@@ -5,15 +5,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
-import honda.bookworm.Business.Exceptions.Books.*;
-import honda.bookworm.Business.Exceptions.InvalidGenreException;
-import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Object.User;
 
 public class BookPersistenceHSQLDB implements IBookPersistence {
 
@@ -34,7 +38,29 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
 
     @Override
     public Book getBookByISBN(String ISBN) {
-        return null;
+        Book result;
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement("Select b.*, u.first_name, u.last_name from PUBLIC.Book b "+
+                    "join author a on a.author_id = b.author_id " +
+                    "join user u on u.username=a.username "+
+                    "where b.ISBN = ?");
+
+            statement.setString(1, ISBN);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Process the result
+            if (resultSet.next()) {
+                result = this.fromResultSet(resultSet);
+            }else {
+                throw new InvalidISBNException(ISBN);
+            }
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new GeneralPersistenceException(e.getMessage());
+        }
+        return result;
     }
 
     @Override
@@ -103,6 +129,70 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         return booksByGenre;
     }
 
+    @Override
+    public boolean isBookFavoriteOfUser(User user, String isbn) throws UserNotFoundException {
+        String sql = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS rowExists " +
+                "FROM favoritebook " +
+                "WHERE user_username = ? AND ISBN = ?";
+        boolean result = false;
+        try (Connection c = connection()) {
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, isbn);
+
+            // Execute the query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Process the result
+            if (resultSet.next()) {
+                result = resultSet.getBoolean("rowExists");
+            }
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+            if (e instanceof NullPointerException) {
+                throw new UserNotFoundException("User does not exist");
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean toggleUserBookFavorite(User user, String isbn) throws InvalidISBNException, GeneralPersistenceException {
+        final String sql = "MERGE INTO favoritebook fb " +
+                "USING (VALUES (?,?)) AS data(username, bookISBN) " +
+                "ON (fb.user_username = data.username AND fb.ISBN = data.bookISBN) " +
+                "WHEN MATCHED THEN DELETE " +
+                "WHEN NOT MATCHED THEN INSERT (user_username, ISBN) VALUES (data.username, data.bookISBN);";
+        boolean result = false;
+
+        try(Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, isbn);
+
+            statement.executeUpdate();
+            result = isBookFavoriteOfUser(user, isbn);
+
+            c.commit();
+            statement.close();
+
+        } catch (final SQLException | NullPointerException e) {
+
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                if(((SQLIntegrityConstraintViolationException) e).getMessage().contains("101124")){
+                    throw new InvalidISBNException(isbn);
+                }
+            } else if (e instanceof NullPointerException) {
+                throw new UserNotFoundException("User does not exist");
+            } else {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
     private Book fromResultSet(final ResultSet result) throws SQLException{
         final String bookName = result.getString("book_name");
         final String bookAuthor = result.getString("first_name") + " " + result.getString("last_name");
@@ -112,6 +202,5 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         final String description = result.getString("description");
 
         return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description);
-
     }
 }

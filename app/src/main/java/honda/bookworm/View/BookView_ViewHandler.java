@@ -16,7 +16,9 @@ import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Object.Book;
 
@@ -25,6 +27,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
     private final int MIN = 7;
     private String thisBookISBN;
     private IUserManager userManager;
+    private IAccessBooks accessBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class BookView_ViewHandler extends AppCompatActivity {
         setContentView(R.layout.activity_book_view);
 
         userManager = new UserManager();
+        accessBooks = new AccessBooks();
+
         Bundle bookInfo = getIntent().getExtras();
         thisBookISBN = bookInfo.getString("isbn");
 
@@ -122,10 +127,13 @@ public class BookView_ViewHandler extends AppCompatActivity {
         ToggleButton favButton = findViewById(R.id.book_view_fav_book_toggle);
         if(userManager.isUserLoggedIn()){
             favButton.setVisibility(View.VISIBLE);
+            favButton.setChecked(accessBooks.isBookFavourite(userManager.getActiveUser(),thisBookISBN));
         }
     }
+
     public void isFavoriteClicked(View view) {
         /** Favorting process goes below**/
+        ((ToggleButton) view).setChecked(accessBooks.bookFavouriteToggle(thisBookISBN));
     }
 
 }

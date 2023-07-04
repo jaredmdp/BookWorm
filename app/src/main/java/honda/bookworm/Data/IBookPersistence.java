@@ -4,6 +4,7 @@ import java.util.List;
 
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Object.User;
 
 public interface IBookPersistence {
     List<Book> getAllBooks();
@@ -14,4 +15,7 @@ public interface IBookPersistence {
     void removeBookByTitle(String title);
     List<Book> getBooksByAuthor(String author);
     List<Book> getBooksByGenre(Genre genre);
+
+    boolean isBookFavoriteOfUser(User user, String isbn);
+    boolean toggleUserBookFavorite(User user, String isbn);
 }

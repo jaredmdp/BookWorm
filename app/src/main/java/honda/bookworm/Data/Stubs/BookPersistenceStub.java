@@ -8,6 +8,7 @@ import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Object.User;
 import honda.bookworm.Business.Exceptions.*;
 
 public class BookPersistenceStub implements IBookPersistence {
@@ -381,11 +382,30 @@ public class BookPersistenceStub implements IBookPersistence {
             }
         }
 
-        if (booksByGenre.isEmpty()) {
-            return null;
+        return booksByGenre;
+    }
+
+
+    public boolean isBookFavoriteOfUser(User user, String isbn) {
+        Book favBook = this.getBookByISBN(isbn);
+        return user != null && favBook!=null && user.isFavouriteBook(favBook);
+    }
+
+    public boolean toggleUserBookFavorite(User user, String isbn) {
+        Book favBook = this.getBookByISBN(isbn);
+        boolean isFav = isBookFavoriteOfUser(user,isbn);
+
+       if(user!=null && favBook!=null) {
+           if(isFav){
+               isFav = false;
+               user.removeFromFavoriteBooks(favBook);
+           }else {
+               isFav = true;
+               user.addToFavoriteBooks(favBook);
+           }
         }
 
-        return booksByGenre;
+        return isFav;
     }
 
 

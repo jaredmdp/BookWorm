@@ -3,6 +3,8 @@ package honda.bookworm.tests.Business;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,13 +15,13 @@ import java.io.IOException;
 import java.util.List;
 
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.tests.utils.TestUtils;
-import honda.bookworm.Business.Exceptions.*;
 
 public class AccessBooksIT {
     private AccessBooks accessBooks;
@@ -80,8 +82,38 @@ public class AccessBooksIT {
         System.out.println("\nFinished testAddDuplicateISBNBook");
     }
 
+    @Test
+    public void testGetBookByISBN() {
+        String validISBN = "9780199536269";
+        String invalidISBN = "007";
+        System.out.println("\n Testing testGetBookByISBN");
+        Book book = null;
+
+        try{
+            book = accessBooks.getBookByISBN(validISBN);
+            assertTrue(book.getISBN().equals(validISBN));
+        }catch (Exception e){
+            assertNotNull("This should not be null",book);
+            assertTrue("This should not be called",false);
+            System.out.println(e.getMessage());
+        }
+
+        book = null;
+
+        try{
+            book = accessBooks.getBookByISBN(invalidISBN);
+            assertNotNull("The book should be null and should not call this assert", book);
+        }catch (InvalidISBNException e){
+            assertNull("Book should be null: ",book);
+            System.out.println(e.getMessage());
+        }
+
+
+        System.out.println("\n Finished testGetBookByISBN");
+    }
+
     @After
-    public void tearDown(){
+    public void tearDown() {
         this.tempDB.delete();
     }
 
