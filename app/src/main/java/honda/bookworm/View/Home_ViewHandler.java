@@ -11,6 +11,8 @@ import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
+import honda.bookworm.View.Extra.Book_horizontalscroll_constructor;
+import honda.bookworm.View.Extra.Messages;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -37,9 +39,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class Home_ViewHandler extends AppCompatActivity {
-    private final int CARD_WIDTH = 400; // bookCard Width
-    private final int CARD_HEIGHT = 525; // bookCard Height
-
     private IAccessUsers accessUsers;
 
     private IAccessBooks accessBooks;
@@ -90,15 +89,8 @@ public class Home_ViewHandler extends AppCompatActivity {
             try {
                 bookList = accessBooks.getBooksGenre(genre);
                 if (!bookList.isEmpty()) {
-                    TextView tv = new TextView(linearBody.getContext());
-                    tv.setText(genreName);
-                    tv.setTextSize(25);
-                    linearBody.addView(tv);
-
-                    scrollViewContainerID = createHorizontalView(linearBody);
-                    for (Book book : bookList) {
-                        populateHorizontalView(scrollViewContainerID, book);
-                    }
+                    View horizontalScrollContainer = Book_horizontalscroll_constructor.create(Home_ViewHandler.this,genreName,bookList);
+                    linearBody.addView(horizontalScrollContainer);
                 }
             } catch (NullPointerException e) {
                 String msg = String.format("Invalid Genre: %s", e.getMessage());
@@ -117,54 +109,6 @@ public class Home_ViewHandler extends AppCompatActivity {
             intent = new Intent(getApplicationContext(), UserLogin_ViewHandler.class);
             startActivity(intent);
         }
-
-    }
-
-    private void populateHorizontalView(int id, Book book) {
-        LinearLayout viewContainer = (LinearLayout) findViewById(id);
-        viewContainer.addView(createBookCard(book), CARD_WIDTH, CARD_HEIGHT);
-    }
-
-    private int createHorizontalView(LinearLayout parent) {
-        LinearLayout llh = new LinearLayout(this);
-        llh.setOrientation(LinearLayout.HORIZONTAL);
-        llh.setId(View.generateViewId());
-
-        HorizontalScrollView hsv = new HorizontalScrollView(this);
-        hsv.addView(llh);
-        hsv.setHorizontalScrollBarEnabled(false);
-
-        HorizontalScrollView.LayoutParams params = new HorizontalScrollView.LayoutParams(
-                HorizontalScrollView.LayoutParams.MATCH_PARENT,
-                HorizontalScrollView.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 10, 0, 100);
-        hsv.setLayoutParams(params);
-
-        parent.addView(hsv);
-        return llh.getId();
-    }
-
-    private View createBookCard(Book book) {
-        View bookCardView = getLayoutInflater().inflate(R.layout.sub_view_book_card, null, false);
-        TextView bookName = (TextView) bookCardView.findViewById(R.id.book_card_title);
-        bookName.setText(accessBooks.getTrimmedBookName(book));
-
-        bookCardView.setTag(book);
-        addClickListenerToBookCard(bookCardView);
-
-        return bookCardView;
-    }
-
-    private void addClickListenerToBookCard(View bookCard) {
-        bookCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BookView_ViewHandler.class);
-                Book book = (Book) v.getTag();
-                intent.putExtra("isbn", book.getISBN());
-                startActivity(intent);
-            }
-        });
 
     }
 
@@ -201,7 +145,6 @@ public class Home_ViewHandler extends AppCompatActivity {
         //place holder for the User profile view intent
         sysVibrator.vibrate(5);
     }
-
 
 
 

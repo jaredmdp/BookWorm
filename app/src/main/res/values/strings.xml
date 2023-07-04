@@ -12,4 +12,5 @@
     <string name="searchResultHeading">Search Results for: </string>
     <string name="searchError">Search error message goes as follows and requires to be edited</string>
 
+    <string name="isPurchaseWarningMsg">WARNING: If the book is not available to purchase from Amazon. Unexpected results will be displayed.</string>
 </resources>

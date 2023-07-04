@@ -154,6 +154,7 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="10dp"
             android:paddingTop="75dp"
+            android:paddingBottom="25dp"
             android:orientation="vertical">
         </LinearLayout>
 

@@ -1,4 +1,4 @@
-package honda.bookworm.View;
+package honda.bookworm.View.Extra.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import com.honda.bookworm.R;
 import java.util.List;
 
 import honda.bookworm.Object.Book;
+import honda.bookworm.View.BookView_ViewHandler;
 
 public class Book_RecyclerViewAdapter extends RecyclerView.Adapter<Book_RecyclerViewAdapter.BookViewHolder> {
     private Context context;
