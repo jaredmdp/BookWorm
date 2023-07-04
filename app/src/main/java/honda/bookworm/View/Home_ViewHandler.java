@@ -89,7 +89,7 @@ public class Home_ViewHandler extends AppCompatActivity {
             genreName = genre.toString();
             try {
                 bookList = accessBooks.getBooksGenre(genre);
-                if (bookList != null) {
+                if (!bookList.isEmpty()) {
                     TextView tv = new TextView(linearBody.getContext());
                     tv.setText(genreName);
                     tv.setTextSize(25);
