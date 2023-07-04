@@ -17,6 +17,7 @@ import java.util.List;
 
 import honda.bookworm.Application.Services;
 import honda.bookworm.Object.Book;
+import honda.bookworm.View.Extra.Adapters.Book_RecyclerViewAdapter;
 
 public class Search_ViewHandler extends AppCompatActivity {
 

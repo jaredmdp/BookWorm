@@ -17,4 +17,5 @@
     <color name="text_link_blue">#4197d3</color>
     <color name="grass_green">#07ad62</color>
     <color name="inactive_grey">#61676D</color>
+    <color name="warning_red">#e32914</color>
 </resources>
