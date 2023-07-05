@@ -162,9 +162,11 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
     public void onImageImported(Uri imageUri) {
         ImageView bookImage = findViewById(R.id.addbook_image);
         try{
-            this.bookImage = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
-            bookImage.setImageBitmap(this.bookImage);
-
+            Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
+            if(ImageImporter.isValidImageSize(this,image)){
+                this.bookImage = image;
+                bookImage.setImageBitmap(this.bookImage);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
