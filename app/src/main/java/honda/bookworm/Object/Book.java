@@ -1,7 +1,7 @@
 package honda.bookworm.Object;
 
+import java.util.Arrays;
 import java.util.Objects;
-import java.util.ArrayList;
 
 public class Book {
     private String name;
@@ -10,6 +10,7 @@ public class Book {
     private String ISBN;
     private String description;
     private Genre genre;
+    private byte[] cover;
 
     public Book(String name, String author, int authorID, Genre genre, String ISBN) {
         this.name = name;
@@ -18,6 +19,7 @@ public class Book {
         this.genre = genre;
         this.ISBN = ISBN;
         description = "";
+        cover = null;
     }
 
     public Book(String name, String author, int authorID, Genre genre, String ISBN, String description) {
@@ -27,6 +29,17 @@ public class Book {
         this.genre = genre;
         this.ISBN = ISBN;
         this.description = description;
+        cover = null;
+    }
+
+    public Book(String name, String author, int authorID, Genre genre, String ISBN, String description, byte[] cover) {
+        this.name = name;
+        this.author = author;
+        this.authorID = authorID;
+        this.genre = genre;
+        this.ISBN = ISBN;
+        this.description = description;
+        this.cover = cover;
     }
 
     // Getters and Setters
@@ -72,6 +85,10 @@ public class Book {
 
     public void setGenre(Genre genre) {this.genre = genre;}
 
+    public void setCover(byte[] cover) {this.cover = cover;}
+
+    public byte[] getCover() {return cover;}
+
     public String toString() {
         return "Book name:'" + name + '\'' +
                 ", author:'" + author + '\'' +
@@ -95,6 +112,7 @@ public class Book {
                 Objects.equals(author, book.author) &&
                 Objects.equals(genre, book.genre) &&
                 Objects.equals(ISBN, book.ISBN) &&
+                Arrays.equals(cover, book.cover) &&
                 (authorID == book.getAuthorID());
     }
 }

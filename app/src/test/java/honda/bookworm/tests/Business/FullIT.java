@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,9 +87,10 @@ public class FullIT {
         Genre genre = Genre.NonFiction;
         String ISBN = "40000";
         String description = "Guidelines for the Astartes legions";
+        byte[] coverData = new byte[] {1,2,3,4,5};
 
         Book book = new Book(bookName, author.getFirstName()+ " " + author.getLastName()
-            , author.getAuthorID(), genre, ISBN, description);
+            , author.getAuthorID(), genre, ISBN, description, coverData);
 
         List<Book> getBooksOld = searchManager.performSearchGenre(genre.toString());
         Book inserted = accessBooks.addBook(book);
@@ -100,6 +102,7 @@ public class FullIT {
         assert(inserted.getGenre().equals(genre));
         assert(inserted.getISBN().equals(ISBN));
         assert(inserted.getDescription().equals(description));
+        assert(Arrays.equals(coverData, inserted.getCover()));
         assert(!(getBooksOld).contains(inserted));
         assert(getBooksNew.contains(inserted));
         assert(getBooksNew.size() == getBooksOld.size()+1);

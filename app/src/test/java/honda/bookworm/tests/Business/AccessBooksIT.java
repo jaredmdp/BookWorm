@@ -39,8 +39,8 @@ public class AccessBooksIT {
         Book book = new Book("Sword of Destiny", "Andrzej Sapkowski", 0, Genre.Adult, "970575077832",
                 "Geralt is a witcher, a man whose magic powers, enhanced by long training and a mysterious elixir, have made him a brilliant fighter and a merciless assassin. Yet he is no ordinary murderer: his targets are the multifarious monsters and vile fiends that ravage the land and attack the innocent.\n" +
                         "\n" +
-                        "This is a collection of short stories, following the adventures of the hit collection THE LAST WISH. Join Geralt as he battles monsters, demons and prejudices alike..."
-        );
+                        "This is a collection of short stories, following the adventures of the hit collection THE LAST WISH. Join Geralt as he battles monsters, demons and prejudices alike...",
+                new byte[]{1,2,3,4,5});
         assertNotNull(book);
         Book addedBook = accessBooks.addBook(book);
         assertEquals(book, addedBook);
@@ -53,8 +53,8 @@ public class AccessBooksIT {
         System.out.println("\nStarting testAddDuplicateISBNBook");
 
         Book book = new Book("To Kill a Mockingbird", "Harper Lee", 0, Genre.Fiction, "9780061120084",
-                "To Kill a Mockingbird is a novel by Harper Lee published in 1960. It is set in the fictional town of Maycomb, Alabama, during the Great Depression, and follows the story of Scout Finch as she grows up and learns about racial injustice in her community. The book explores themes of morality, compassion, and the loss of innocence. It is widely regarded as a classic of American literature."
-        );
+                "To Kill a Mockingbird is a novel by Harper Lee published in 1960. It is set in the fictional town of Maycomb, Alabama, during the Great Depression, and follows the story of Scout Finch as she grows up and learns about racial injustice in her community. The book explores themes of morality, compassion, and the loss of innocence. It is widely regarded as a classic of American literature.",
+                new byte[] {1,2,3,4,5});
 
         assertNotNull(book);
         Book addedBook = accessBooks.addBook(book);

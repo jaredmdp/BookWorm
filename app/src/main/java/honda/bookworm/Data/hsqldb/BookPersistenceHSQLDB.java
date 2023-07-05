@@ -1,5 +1,7 @@
 package honda.bookworm.Data.hsqldb;
 
+import java.io.ByteArrayInputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -127,13 +129,14 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     @Override
     public Book addBook(Book newBook) throws DuplicateISBNException {
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement("INSERT INTO Book (ISBN, book_name, author_id, genre_id, description, isPurchaseable) VALUES (?, ?, ?, ?, ?, ?)");
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO Book (ISBN, book_name, author_id, genre_id, description, isPurchaseable, image) VALUES (?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, newBook.getISBN());
             statement.setString(2, newBook.getName());
             statement.setObject(3, newBook.getAuthorID());
             statement.setObject(4, newBook.getGenre().ordinal());
             statement.setString(5, newBook.getDescription());
             statement.setBoolean(6, true);
+            statement.setBlob(7, new ByteArrayInputStream(newBook.getCover()));
 
             statement.executeUpdate();
             statement.close();
@@ -302,7 +305,9 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         final Genre bookGenre = Genre.values()[result.getInt("genre_id")];
         final String ISBN = result.getString("ISBN");
         final String description = result.getString("description");
+        final Blob coverBlob = result.getBlob("image");
+        final byte[] cover = coverBlob.getBytes(1, (int) coverBlob.length());
 
-        return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description);
+        return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description, cover);
     }
 }
