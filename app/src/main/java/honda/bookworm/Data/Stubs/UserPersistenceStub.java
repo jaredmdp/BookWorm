@@ -1,10 +1,5 @@
 package honda.bookworm.Data.Stubs;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +12,6 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 import honda.bookworm.Data.IUserPersistence;
-import honda.bookworm.Business.Exceptions.*;
 
 public class UserPersistenceStub implements IUserPersistence {
     private List<User> users;
