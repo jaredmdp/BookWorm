@@ -1,5 +1,10 @@
 package honda.bookworm.Data.Stubs;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -112,4 +117,27 @@ public class UserPersistenceStub implements IUserPersistence {
         users.remove(index);
         return currentUser;
     }
+
+    @Override
+    public boolean isGenreFavoriteOfUser(User user, Genre genre){
+        return user!=null && genre!=null && user.isFavouriteGenre(genre);
+    }
+
+    @Override
+    public boolean toggleUserGenreFavorite(User user, Genre genre){
+        boolean isFav = isGenreFavoriteOfUser(user,genre);
+
+        if(user!=null && genre!=null) {
+            if(isFav){
+                isFav = false;
+                user.removeFromFavoriteGenres(genre);
+            }else {
+                isFav = true;
+                user.addToFavoriteGenres(genre);
+            }
+        }
+
+        return isFav;
+    }
+
 }
