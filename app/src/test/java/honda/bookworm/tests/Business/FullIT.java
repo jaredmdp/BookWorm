@@ -19,6 +19,8 @@ import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.AccessUsers;
 import honda.bookworm.Business.Managers.UserManager;
+import honda.bookworm.Business.IUserPreference;
+import honda.bookworm.Business.Managers.UserPreference;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
@@ -33,6 +35,7 @@ public class FullIT {
     private IAccessUsers accessUsers;
     private IUserManager manager;
     private IAccessBooks accessBooks;
+    private IUserPreference userPreference;
     private File tempDB;
 
     @Before
@@ -43,6 +46,7 @@ public class FullIT {
         this.accessUsers = new AccessUsers(persistence);
         this.manager = new UserManager(persistence);
         this.accessBooks = new AccessBooks(bPersistence);
+        this.userPreference = new UserPreference(persistence);
     }
 
     @Test
@@ -163,6 +167,24 @@ public class FullIT {
         }
 
         System.out.println("\nFinished testIsBookFavorite");
+    }
+
+    //not done, just pushing to save
+    @Test
+    public void testGenreFavoriteToggle(){
+        System.out.println("\nStarting testGenreFavoriteToggle");
+        boolean result;
+
+        //test with a no active user. invalid user cant access it
+        try{
+            result = userPreference.genreFavouriteToggle(Genre.Action);
+            assertFalse("this should not be called",result);
+        }catch (Exception e){
+            assert(e instanceof GeneralPersistenceException);
+        }
+
+        //log in to user
+        //add more tests -
     }
 
     @After
