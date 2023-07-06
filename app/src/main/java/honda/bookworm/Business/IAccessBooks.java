@@ -15,5 +15,8 @@ public interface IAccessBooks {
 
     //favoriteToggle should only be accessed by active user
     boolean bookFavouriteToggle(String isbn);
+
     Book getBookByISBN(String isbn);
+
+    List<Book> getFavoriteBookList(User user);
 }
