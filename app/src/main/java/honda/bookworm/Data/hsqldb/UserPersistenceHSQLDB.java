@@ -218,13 +218,19 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
             c.commit();
             statement.close();
-
+        System.out.println("checking this"+genre);
         } catch (final SQLException | NullPointerException e) {
 
             if (e instanceof SQLIntegrityConstraintViolationException) {
                 throw new InvalidGenreException("Could not find " + genre + " in system");
             } else if (e instanceof NullPointerException) {
-                throw new UserNotFoundException("User does not exist");
+                if(genre == null) {
+                    throw new InvalidGenreException("Invalid genre value");
+                }
+                else {
+                    throw new UserNotFoundException("User does not exist");
+                }
+
             } else {
                 e.printStackTrace();
             }

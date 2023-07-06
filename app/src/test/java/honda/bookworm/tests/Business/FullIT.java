@@ -13,6 +13,7 @@ import java.util.List;
 
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.IUserManager;
@@ -183,8 +184,26 @@ public class FullIT {
             assert(e instanceof GeneralPersistenceException);
         }
 
-        //log in to user
-        //add more tests -
+        //log in to user and toggle the same genre
+        accessUsers.verifyUser("rowling","harrypotter");
+        try{
+            result = userPreference.genreFavouriteToggle(Genre.Action);
+            assertTrue(result);
+
+            result = userPreference.genreFavouriteToggle(Genre.Action);
+            assertFalse(result);
+        }catch (Exception e){
+            assertFalse("This should not be called", true);
+        }
+
+        try{
+            result = userPreference.genreFavouriteToggle(null);
+            assertFalse("this should not be called",result);
+        }catch (Exception e){
+            assert(e instanceof InvalidGenreException);
+        }
+
+        System.out.println("\nFinished testBookFavoriteToggle");
     }
 
     @After
