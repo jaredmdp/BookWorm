@@ -193,6 +193,30 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         return result;
     }
 
+    public List<Book> getFavoriteBookList(User user) {
+        List<Book> bookList = new ArrayList<>();
+        try(Connection c = connection()){
+            String sqlQuery = "SELECT b.*, u.first_name, u.last_name FROM favoritebook fb "
+                    + "join Book b on b.isbn = fb.isbn "
+                    + "join author a on a.author_id = b.author_id "
+                    + "join user u on u.username = a.username "
+                    + "where fb.user_username = ? " ;
+            PreparedStatement statement = c.prepareStatement(sqlQuery);
+            statement.setString(1,user.getUsername());
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()){
+                final Book book= fromResultSet(result);
+                bookList.add(book);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return bookList;
+    }
+
+
     private Book fromResultSet(final ResultSet result) throws SQLException{
         final String bookName = result.getString("book_name");
         final String bookAuthor = result.getString("first_name") + " " + result.getString("last_name");
