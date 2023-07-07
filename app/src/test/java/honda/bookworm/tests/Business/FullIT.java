@@ -296,6 +296,69 @@ public class FullIT {
         System.out.println("Finished testGetBookFavoriteBookList.\n");
     }
 
+    @Test
+    public void testGetFavouriteGenreList(){
+        System.out.println("\nStarting testGetFavoriteGenreList");
+        List<Genre> genreList = null;
+        User testUser = null;
+
+        try{
+            genreList = userPreference.getFavoriteGenreList(testUser);
+            assert(genreList.isEmpty());
+
+        }catch (Exception e) {
+            assert(!genreList.isEmpty());
+            assert(false);
+        }
+
+        testUser = new User("hello","world","testUser", "passwd"); //fake user
+
+        try{
+            genreList = userPreference.getFavoriteGenreList(testUser);
+            assert(genreList.isEmpty());
+
+        }catch (Exception e) {
+            assert(!genreList.isEmpty());
+            assert(false);
+        }
+
+        accessUsers.verifyUser("rowling","harrypotter");
+        testUser = manager.getActiveUser();
+
+
+
+        try{
+            genreList = userPreference.getFavoriteGenreList(testUser);
+            assert(genreList.isEmpty());
+
+            userPreference.genreFavouriteToggle(Genre.Action);
+            userPreference.genreFavouriteToggle(Genre.Adult);
+
+            genreList = userPreference.getFavoriteGenreList(testUser);
+            assert(!genreList.isEmpty());
+            assert(genreList.size() == 2);
+            assert(genreList.contains(Genre.Action) && genreList.contains(Genre.Adult));
+
+            userPreference.genreFavouriteToggle(Genre.Adult);
+
+            genreList = userPreference.getFavoriteGenreList(testUser);
+            assert(!genreList.isEmpty());
+            assert(genreList.size() == 1);
+            assert(genreList.contains(Genre.Action) && !genreList.contains(Genre.Adult));
+
+
+            userPreference.genreFavouriteToggle(Genre.Action);
+
+            genreList = userPreference.getFavoriteGenreList(testUser);
+            assert(genreList.isEmpty());
+
+        }catch (Exception e) {
+            assert(!genreList.isEmpty());
+        }
+
+        System.out.println("Finished testGetFavoriteGenreList.\n");
+    }
+
     @After
     public void tearDown(){
         manager.logOutActiveUser();

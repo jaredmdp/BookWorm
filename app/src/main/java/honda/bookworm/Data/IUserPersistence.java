@@ -17,5 +17,5 @@ public interface IUserPersistence {
     boolean isGenreFavoriteOfUser(User user, Genre genre);
     boolean toggleUserGenreFavorite(User user, Genre genre);
 
-
+    List<Genre> getFavoriteGenreList(User user);
 }

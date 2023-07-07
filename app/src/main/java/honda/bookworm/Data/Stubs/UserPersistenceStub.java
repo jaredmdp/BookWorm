@@ -134,4 +134,12 @@ public class UserPersistenceStub implements IUserPersistence {
         return isFav;
     }
 
+    public List<Genre> getFavoriteGenreList(User user){
+        List<Genre> genreList = new ArrayList<>();
+        if(user != null){
+            genreList = user.getFavoriteGenres();
+        }
+        return genreList;
+    }
+
 }

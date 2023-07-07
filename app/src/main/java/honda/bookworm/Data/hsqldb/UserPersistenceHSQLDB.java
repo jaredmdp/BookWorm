@@ -218,7 +218,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
             c.commit();
             statement.close();
-        System.out.println("checking this"+genre);
+
         } catch (final SQLException | NullPointerException e) {
 
             if (e instanceof SQLIntegrityConstraintViolationException) {
@@ -238,4 +238,26 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
         return result;
     }
+
+    public List<Genre> getFavoriteGenreList(User user) {
+        List<Genre> genreList = new ArrayList<>();
+        try(Connection c = connection()){
+            String sqlQuery = "SELECT g.* FROM favoritegenre fg "
+                    + "join Genre g on g.genre_id = fg.genre_id "
+                    + "where fg.user_username = ? " ;
+            PreparedStatement statement = c.prepareStatement(sqlQuery);
+            statement.setString(1,user.getUsername());
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()){
+                final Genre genre= Genre.valueOf(result.getString("name"));
+                genreList.add(genre);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return genreList;
+    }
+
 }

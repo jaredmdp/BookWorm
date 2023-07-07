@@ -1,6 +1,9 @@
 package honda.bookworm.Business.Managers;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IUserPreference;
@@ -43,6 +46,14 @@ public class UserPreference implements IUserPreference {
         }
 
         return favState;
+    }
+
+    public List<Genre> getFavoriteGenreList(User user) {
+        List<Genre> genreList = new ArrayList<>();
+        if(user != null){
+            genreList = userPersistence.getFavoriteGenreList(user);
+        }
+        return genreList;
     }
 
 }
