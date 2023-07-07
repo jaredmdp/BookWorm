@@ -298,6 +298,7 @@ public class FullIT {
 
     @After
     public void tearDown(){
+        manager.logOutActiveUser();
         this.tempDB.delete();
     }
 }
