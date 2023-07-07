@@ -23,7 +23,7 @@ public class UserPreference implements IUserPreference {
     public boolean isGenreFavourite(User user , Genre genre) {
         boolean isFavourite = false;
         try {
-            if (user != null) {
+            if (user != null && genre!=null) {
                 isFavourite = userPersistence.isGenreFavoriteOfUser(user, genre);
             }
         }catch (UserNotFoundException e){

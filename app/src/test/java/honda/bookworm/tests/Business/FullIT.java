@@ -206,6 +206,37 @@ public class FullIT {
         System.out.println("\nFinished testBookFavoriteToggle");
     }
 
+    @Test
+    public void testIsGenreFavorite(){
+        System.out.println("\nStarting testIsGenreFavorite");
+        boolean result;
+        User u = null;
+
+        try {
+            result = userPreference.isGenreFavourite(u, null); //null user and fake isbn
+            assert(!result);
+
+            result = userPreference.isGenreFavourite(u, Genre.Action); // null user, valid isbn
+            assert(!result);
+
+            u = accessUsers.addNewUser("Test","User", "testUser","pass123",false);
+            result = userPreference.isGenreFavourite(u, Genre.Action); // valid user and isbn but not favorite
+            assert(!result);
+
+            userPreference.genreFavouriteToggle(Genre.Action);
+
+            result = userPreference.isGenreFavourite(u, Genre.Action); // valid user, isbn and book favorite
+            assert(result);
+
+            result = userPreference.isGenreFavourite(u, null); // valid user and invalid isbn
+            assert(!result);
+        }catch(Exception e){
+            assert (false); //exception should not be thrown
+        }
+
+        System.out.println("\nFinished testIsGenreFavorite");
+    }
+
     @After
     public void tearDown(){
         this.tempDB.delete();
