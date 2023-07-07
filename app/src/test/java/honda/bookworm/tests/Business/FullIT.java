@@ -170,7 +170,6 @@ public class FullIT {
         System.out.println("\nFinished testIsBookFavorite");
     }
 
-    //not done, just pushing to save
     @Test
     public void testGenreFavoriteToggle(){
         System.out.println("\nStarting testGenreFavoriteToggle");
@@ -235,6 +234,66 @@ public class FullIT {
         }
 
         System.out.println("\nFinished testIsGenreFavorite");
+    }
+
+    @Test
+    public void testGetFavouriteBookList(){
+        System.out.println("\nStarting testGetBookFavoriteBookList");
+        List<Book> bookList = null;
+        User testUser = null;
+
+        try{
+            bookList = accessBooks.getFavoriteBookList(testUser);
+            assert(bookList.isEmpty());
+
+        }catch (Exception e) {
+            assert(!bookList.isEmpty());
+            assert(false);
+        }
+
+        testUser = new User("hello","world","testUser", "passwd"); //fake user
+
+        try{
+            bookList = accessBooks.getFavoriteBookList(testUser);
+            assert(bookList.isEmpty());
+
+        }catch (Exception e) {
+            assert(!bookList.isEmpty());
+            assert(false);
+        }
+
+        accessUsers.verifyUser("rowling","harrypotter");
+        testUser = manager.getActiveUser();
+
+
+
+        try{
+            bookList = accessBooks.getFavoriteBookList(testUser);
+            assert(bookList.isEmpty());
+
+            accessBooks.bookFavouriteToggle("9780007123803");
+            accessBooks.bookFavouriteToggle("9780141198888");
+
+            bookList = accessBooks.getFavoriteBookList(testUser);
+            assert(!bookList.isEmpty());
+            assert(bookList.size() == 2);
+
+            accessBooks.bookFavouriteToggle("9780007123803");
+
+            bookList = accessBooks.getFavoriteBookList(testUser);
+            assert(!bookList.isEmpty());
+            assert(bookList.size() == 1);
+
+            accessBooks.bookFavouriteToggle("9780141198888");
+
+            bookList = accessBooks.getFavoriteBookList(testUser);
+            assert(bookList.isEmpty());
+
+        }catch (Exception e) {
+            assert(!bookList.isEmpty());
+        }
+
+        System.out.println("Finished testGetBookFavoriteBookList.\n");
     }
 
     @After

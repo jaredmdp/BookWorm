@@ -1,5 +1,6 @@
 package honda.bookworm.Business.Managers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
@@ -77,6 +78,15 @@ public class AccessBooks implements IAccessBooks {
         }
 
         return book;
+    }
+
+
+    public List<Book> getFavoriteBookList(User user) {
+        List<Book> bookList = new ArrayList<>();
+        if(user != null){
+            bookList = bookPersistence.getFavoriteBookList(user);
+        }
+        return bookList;
     }
 
 

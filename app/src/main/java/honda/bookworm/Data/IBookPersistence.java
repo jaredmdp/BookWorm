@@ -18,4 +18,6 @@ public interface IBookPersistence {
 
     boolean isBookFavoriteOfUser(User user, String isbn);
     boolean toggleUserBookFavorite(User user, String isbn);
+
+    List<Book> getFavoriteBookList(User user);
 }
