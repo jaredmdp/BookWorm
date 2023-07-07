@@ -11,7 +11,6 @@ import honda.bookworm.Object.User;
 public class Services {
     private static IBookPersistence bookPersistence = null;
     private static IUserPersistence userPersistence = null;
-
     private static User activeUser = null;
     
     public static synchronized IBookPersistence getBookPersistence(boolean forProduction){

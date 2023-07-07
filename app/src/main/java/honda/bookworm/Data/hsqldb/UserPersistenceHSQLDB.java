@@ -5,12 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
+import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 import honda.bookworm.Business.Exceptions.Users.*;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
@@ -166,5 +169,73 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             e.printStackTrace();
             throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
+    }
+
+    @Override
+    public boolean isGenreFavoriteOfUser(User user, Genre genre) throws UserNotFoundException {
+        String sql = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS rowExists " +
+                "FROM favoritegenre " +
+                "WHERE user_username = ? AND genre_id = ?";
+        boolean result = false;
+        try (Connection c = connection()) {
+            PreparedStatement statement = c.prepareStatement(sql);
+            statement.setString(1, user.getUsername());
+            statement.setInt(2, genre.ordinal());
+
+            // Execute the query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Process the result
+            if (resultSet.next()) {
+                result = resultSet.getBoolean("rowExists");
+            }
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+            if (e instanceof NullPointerException) {
+                throw new UserNotFoundException("User does not exist");
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean toggleUserGenreFavorite(User user, Genre genre) throws InvalidGenreException, GeneralPersistenceException {
+        final String sql = "MERGE INTO favoritegenre fg " +
+                "USING (VALUES (?,?)) AS data(username, genreID) " +
+                "ON (fg.user_username = data.username AND fg.genre_id = data.genreID) " +
+                "WHEN MATCHED THEN DELETE " +
+                "WHEN NOT MATCHED THEN INSERT (user_username, genre_id) VALUES (data.username, data.genreID);";
+        boolean result = false;
+
+        try(Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+            statement.setString(1, user.getUsername());
+            statement.setInt(2, genre.ordinal());
+
+            statement.executeUpdate();
+            result = isGenreFavoriteOfUser(user, genre);
+
+            c.commit();
+            statement.close();
+        System.out.println("checking this"+genre);
+        } catch (final SQLException | NullPointerException e) {
+
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                throw new InvalidGenreException("Could not find " + genre + " in system");
+            } else if (e instanceof NullPointerException) {
+                if(genre == null) {
+                    throw new InvalidGenreException("Invalid genre value");
+                }
+                else {
+                    throw new UserNotFoundException("User does not exist");
+                }
+
+            } else {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 }

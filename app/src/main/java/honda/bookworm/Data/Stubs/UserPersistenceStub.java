@@ -12,7 +12,6 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 import honda.bookworm.Data.IUserPersistence;
-import honda.bookworm.Business.Exceptions.*;
 
 public class UserPersistenceStub implements IUserPersistence {
     private List<User> users;
@@ -112,4 +111,27 @@ public class UserPersistenceStub implements IUserPersistence {
         users.remove(index);
         return currentUser;
     }
+
+    @Override
+    public boolean isGenreFavoriteOfUser(User user, Genre genre){
+        return user!=null && genre!=null && user.isFavouriteGenre(genre);
+    }
+
+    @Override
+    public boolean toggleUserGenreFavorite(User user, Genre genre){
+        boolean isFav = isGenreFavoriteOfUser(user,genre);
+
+        if(user!=null && genre!=null) {
+            if(isFav){
+                isFav = false;
+                user.removeFromFavoriteGenres(genre);
+            }else {
+                isFav = true;
+                user.addToFavoriteGenres(genre);
+            }
+        }
+
+        return isFav;
+    }
+
 }

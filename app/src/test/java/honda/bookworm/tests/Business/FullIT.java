@@ -13,12 +13,15 @@ import java.util.List;
 
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.AccessUsers;
 import honda.bookworm.Business.Managers.UserManager;
+import honda.bookworm.Business.IUserPreference;
+import honda.bookworm.Business.Managers.UserPreference;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
@@ -33,6 +36,7 @@ public class FullIT {
     private IAccessUsers accessUsers;
     private IUserManager manager;
     private IAccessBooks accessBooks;
+    private IUserPreference userPreference;
     private File tempDB;
 
     @Before
@@ -43,6 +47,7 @@ public class FullIT {
         this.accessUsers = new AccessUsers(persistence);
         this.manager = new UserManager(persistence);
         this.accessBooks = new AccessBooks(bPersistence);
+        this.userPreference = new UserPreference(persistence);
     }
 
     @Test
@@ -166,6 +171,72 @@ public class FullIT {
     }
 
     @Test
+    public void testGenreFavoriteToggle(){
+        System.out.println("\nStarting testGenreFavoriteToggle");
+        boolean result;
+
+        //test with a no active user. invalid user cant access it
+        try{
+            result = userPreference.genreFavouriteToggle(Genre.Action);
+            assertFalse("this should not be called",result);
+        }catch (Exception e){
+            assert(e instanceof GeneralPersistenceException);
+        }
+
+        //log in to user and toggle the same genre
+        accessUsers.verifyUser("rowling","harrypotter");
+        try{
+            result = userPreference.genreFavouriteToggle(Genre.Action);
+            assertTrue(result);
+
+            result = userPreference.genreFavouriteToggle(Genre.Action);
+            assertFalse(result);
+        }catch (Exception e){
+            assertFalse("This should not be called", true);
+        }
+
+        try{
+            result = userPreference.genreFavouriteToggle(null);
+            assertFalse("this should not be called",result);
+        }catch (Exception e){
+            assert(e instanceof InvalidGenreException);
+        }
+
+        System.out.println("\nFinished testBookFavoriteToggle");
+    }
+
+    @Test
+    public void testIsGenreFavorite(){
+        System.out.println("\nStarting testIsGenreFavorite");
+        boolean result;
+        User u = null;
+
+        try {
+            result = userPreference.isGenreFavourite(u, null); //null user and fake isbn
+            assert(!result);
+
+            result = userPreference.isGenreFavourite(u, Genre.Action); // null user, valid isbn
+            assert(!result);
+
+            u = accessUsers.addNewUser("Test","User", "testUser","pass123",false);
+            result = userPreference.isGenreFavourite(u, Genre.Action); // valid user and isbn but not favorite
+            assert(!result);
+
+            userPreference.genreFavouriteToggle(Genre.Action);
+
+            result = userPreference.isGenreFavourite(u, Genre.Action); // valid user, isbn and book favorite
+            assert(result);
+
+            result = userPreference.isGenreFavourite(u, null); // valid user and invalid isbn
+            assert(!result);
+        }catch(Exception e){
+            assert (false); //exception should not be thrown
+        }
+
+        System.out.println("\nFinished testIsGenreFavorite");
+    }
+
+    @Test
     public void testGetFavouriteBookList(){
         System.out.println("\nStarting testGetBookFavoriteBookList");
         List<Book> bookList = null;
@@ -227,6 +298,7 @@ public class FullIT {
 
     @After
     public void tearDown(){
+        manager.logOutActiveUser();
         this.tempDB.delete();
     }
 }
