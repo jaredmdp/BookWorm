@@ -7,12 +7,10 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 public interface IBookPersistence {
-    List<Book> getAllBooks();
     Book getBookByISBN(String ISBN); //All ISBNS are 13 digits
-    Book getBookByTitle(String title);
+    List<Book> searchBooksByISBN (String query);
+    List<Book> getBooksByTitle(String title);
     Book addBook(Book newBook);
-    void removeBookByISBN(String ISBN); //All ISBNS are 13 digits
-    void removeBookByTitle(String title);
     List<Book> getBooksByAuthor(String author);
     List<Book> getBooksByGenre(Genre genre);
 

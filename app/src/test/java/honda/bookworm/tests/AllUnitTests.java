@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 import honda.bookworm.tests.Business.AccessBooksTest;
 import honda.bookworm.tests.Business.AccessUsersTest;
+import honda.bookworm.tests.Business.SearchManagerTest;
 import honda.bookworm.tests.Object.BookTest;
 import honda.bookworm.tests.Object.UserTest;
 import honda.bookworm.tests.Object.AuthorTest;
@@ -17,7 +18,8 @@ import honda.bookworm.tests.Business.StringValidatorTest;
         AuthorTest.class,
         StringValidatorTest.class,
         AccessBooksTest.class,
-        AccessUsersTest.class
+        AccessUsersTest.class,
+        SearchManagerTest.class
 })
 
 public class AllUnitTests {

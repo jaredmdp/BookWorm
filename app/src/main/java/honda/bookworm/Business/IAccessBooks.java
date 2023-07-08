@@ -7,7 +7,6 @@ import honda.bookworm.Object.User;
 import java.util.List;
 
 public interface IAccessBooks {
-    List<Book> getBooksGenre(Genre genre);
     Book addBook(Book newBook);
     String getTrimmedBookName(Book book);
 

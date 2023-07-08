@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
-import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
@@ -32,12 +32,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     }
 
     @Override
-    public List<Book> getAllBooks() {
-        return null;
-    }
-
-    @Override
-    public Book getBookByISBN(String ISBN) {
+    public Book getBookByISBN(String ISBN) throws InvalidISBNException, GeneralPersistenceException {
         Book result;
 
         try (final Connection c = connection()) {
@@ -63,13 +58,74 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         return result;
     }
 
-    @Override
-    public Book getBookByTitle(String title) {
-        return null;
+    public List<Book> searchBooksByISBN(String ISBN) throws GeneralPersistenceException {
+
+        String sql = "SELECT b.*, u.first_name, u.last_name " +
+                "FROM Book b " +
+                "JOIN Author a ON b.author_id = a.author_id " +
+                "JOIN User u ON a.username = u.username " +
+                "WHERE b.ISBN LIKE ?";
+
+        String searchValue = "%" + ISBN + "%";
+        List<Book> bookList = new ArrayList<>();
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            statement.setString(1, searchValue);
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final Book book = fromResultSet(result);
+                bookList.add(book);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Invalid ISBN");
+        }
+
+        return bookList;
     }
 
     @Override
-    public Book addBook(Book newBook) {
+    public List<Book> getBooksByTitle(String title) {
+        String sql = "SELECT b.*, u.first_name, u.last_name " +
+                "FROM Book b " +
+                "JOIN Author a ON b.author_id = a.author_id " +
+                "JOIN User u ON a.username = u.username " +
+                "WHERE LOWER(b.book_name) LIKE LOWER(?)";
+
+        String searchValue = "%" + title + "%";
+        List<Book> bookList = new ArrayList<>();
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            statement.setString(1, searchValue);
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final Book book = fromResultSet(result);
+                bookList.add(book);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Invalid Title");
+        }
+
+        return bookList;
+    }
+
+    @Override
+    public Book addBook(Book newBook) throws DuplicateISBNException {
         try (final Connection c = connection()) {
             final PreparedStatement statement = c.prepareStatement("INSERT INTO Book (ISBN, book_name, author_id, genre_id, description, isPurchaseable) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setString(1, newBook.getISBN());
@@ -90,22 +146,44 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     }
 
     @Override
-    public void removeBookByISBN(String ISBN) {
+    public List<Book> getBooksByAuthor(String author) throws GeneralPersistenceException {
+        String sql = "SELECT b.*, u.first_name, u.last_name FROM Book b " +
+                "JOIN Author a ON b.author_id = a.author_id " +
+                "JOIN User u ON a.username = u.username " +
+                "WHERE LOWER(u.username) = LOWER(?) " +
+                "OR LOWER(u.first_name) LIKE LOWER(?) " +
+                "OR LOWER(u.last_name) LIKE LOWER(?) " +
+                "OR (LOWER(u.first_name) || ' ' || LOWER(u.last_name)) LIKE LOWER(?)";
+        List<Book> booksByAuthor = new ArrayList<>();
+        String searchValue = "%" + author + "%";
 
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            statement.setString(1, author.toLowerCase());
+            statement.setString(2, searchValue);
+            statement.setString(3, searchValue);
+            statement.setString(4, searchValue);
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final Book book = fromResultSet(result);
+                booksByAuthor.add(book);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Author: " + author + " does not exist");
+        }
+
+        return booksByAuthor;
     }
 
     @Override
-    public void removeBookByTitle(String title) {
-
-    }
-
-    @Override
-    public List<Book> getBooksByAuthor(String author) {
-        return null;
-    }
-
-    @Override
-    public List<Book> getBooksByGenre(Genre genre) {
+    public List<Book> getBooksByGenre(Genre genre) throws GeneralPersistenceException {
         List<Book> booksByGenre = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement statement = c.prepareStatement ("SELECT b.*, u.first_name, u.last_name FROM Book b "
@@ -124,7 +202,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             result.close();
         } catch (final SQLException e) {
             e.printStackTrace();
-            throw new InvalidGenreException("Could not find " + genre + " in system");
+            throw new GeneralPersistenceException("Could not find " + genre + " in system");
         }
         return booksByGenre;
     }
@@ -180,7 +258,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         } catch (final SQLException | NullPointerException e) {
 
             if (e instanceof SQLIntegrityConstraintViolationException) {
-                if(((SQLIntegrityConstraintViolationException) e).getMessage().contains("101124")){
+                if(Objects.requireNonNull(e.getMessage()).contains("101124")){
                     throw new InvalidISBNException(isbn);
                 }
             } else if (e instanceof NullPointerException) {

@@ -1,10 +1,9 @@
 package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +11,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
@@ -32,16 +30,6 @@ public class AccessBooksIT {
         this.tempDB = TestUtils.copyDB();
         final IBookPersistence persistence = new BookPersistenceHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
         this.accessBooks = new AccessBooks(persistence);
-    }
-
-    @Test
-    public void testGetBooksGenreFound(){
-        System.out.println("\nStarting testGetBooksGenreFound");
-
-        List<Book> books = accessBooks.getBooksGenre(Genre.Fantasy);
-        assertEquals(5, books.size());
-
-        System.out.println("\nFinished testGetBooksGenreFound");
     }
 
     @Test
@@ -73,10 +61,10 @@ public class AccessBooksIT {
         assertEquals(book, addedBook);
 
         try {
-            addedBook = accessBooks.addBook(book);  //add same book
-            assertFalse(true);
+            accessBooks.addBook(book);  //add same book
+            fail();
         } catch (DuplicateISBNException e) {
-            System.out.println("Error: Duplicate ISBN found: " + e.getMessage());
+            System.out.println("Success: Duplicate ISBN found: " + e.getMessage());
         }
 
         System.out.println("\nFinished testAddDuplicateISBNBook");
@@ -91,10 +79,10 @@ public class AccessBooksIT {
 
         try{
             book = accessBooks.getBookByISBN(validISBN);
-            assertTrue(book.getISBN().equals(validISBN));
+            assertEquals(book.getISBN(), validISBN);
         }catch (Exception e){
             assertNotNull("This should not be null",book);
-            assertTrue("This should not be called",false);
+            fail("This should not be called");
             System.out.println(e.getMessage());
         }
 
