@@ -1,13 +1,12 @@
 package honda.bookworm.Data.hsqldb;
 
-import java.io.ByteArrayInputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -136,7 +135,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.setObject(4, newBook.getGenre().ordinal());
             statement.setString(5, newBook.getDescription());
             statement.setBoolean(6, true);
-            statement.setBlob(7, new ByteArrayInputStream(newBook.getCover()));
+            statement.setString(7, newBook.getCover());
 
             statement.executeUpdate();
             statement.close();
@@ -305,9 +304,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         final Genre bookGenre = Genre.values()[result.getInt("genre_id")];
         final String ISBN = result.getString("ISBN");
         final String description = result.getString("description");
-        final Blob coverBlob = result.getBlob("image");
-        final byte[] cover = coverBlob.getBytes(1, (int) coverBlob.length());
+        final String coverEncoded = result.getString("image");
 
-        return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description, cover);
+        return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description, coverEncoded);
     }
 }

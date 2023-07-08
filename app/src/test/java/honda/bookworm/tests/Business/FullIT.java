@@ -85,15 +85,15 @@ public class FullIT {
 
         String bookName = "Codex Astartes";
         Genre genre = Genre.NonFiction;
-        String ISBN = "40000";
+        String ISBN = "1111111111111";
         String description = "Guidelines for the Astartes legions";
-        byte[] coverData = new byte[] {1,2,3,4,5};
+        String coverData = "Test Cover";
 
         Book book = new Book(bookName, author.getFirstName()+ " " + author.getLastName()
             , author.getAuthorID(), genre, ISBN, description, coverData);
 
         List<Book> getBooksOld = searchManager.performSearchGenre(genre.toString());
-        Book inserted = accessBooks.addBook(book);
+        Book inserted = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover());
         List<Book> getBooksNew = searchManager.performSearchGenre(genre.toString());
 
         assert(inserted.getName().equals(bookName));
@@ -102,7 +102,7 @@ public class FullIT {
         assert(inserted.getGenre().equals(genre));
         assert(inserted.getISBN().equals(ISBN));
         assert(inserted.getDescription().equals(description));
-        assert(Arrays.equals(coverData, inserted.getCover()));
+        assert(coverData.equals(inserted.getCover()));
         assert(!(getBooksOld).contains(inserted));
         assert(getBooksNew.contains(inserted));
         assert(getBooksNew.size() == getBooksOld.size()+1);

@@ -1,13 +1,10 @@
 package honda.bookworm.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -16,14 +13,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.honda.bookworm.R;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import honda.bookworm.Application.Services;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.AccessBooks;
@@ -32,6 +27,7 @@ import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.View.Extra.Adapters.GenreAdapter;
 import honda.bookworm.View.Extra.ImageImporter;
+import honda.bookworm.View.Extra.ImageConverter;
 
 public class AddBook_ViewHandler extends AppCompatActivity implements ImageImporter.ImageImportCallback {
 
@@ -63,13 +59,12 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
 
     }
 
-    private void processBooksInput(String bookTitle, String authorName, int authorID, Genre genre, String ISBN, String description) {
+    private void processBooksInput(String bookTitle, Genre genre, String ISBN, String description){
         boolean signUpState = false;
         String msg = "";
 
         try {
-            Book newBook = new Book(bookTitle, authorName, authorID, genre, ISBN, description);
-            Book addedBook = accessBooks.addBook(newBook);
+            Book addedBook = accessBooks.addBook(bookTitle, genre, ISBN, description, ImageConverter.EncodeToBase64(bookImage));
             signUpState = true;
             //** TODO: will delete after user profile has been made, only use for toast now **
             msg = String.format(("Add Book: %s, %s, %s, %s"), addedBook.getName(), addedBook.getISBN(), addedBook.getGenre(), addedBook.getDescription());
@@ -82,6 +77,10 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
             //** TODO: will intent to user profile after user profile has been made **
             //** TODO: delete toast after user profile has been made **
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(getApplicationContext(), Home_ViewHandler.class);
+            startActivity(intent);
+
         } else {
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
         }
@@ -89,18 +88,12 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
     }
 
     public void isAddBookButtonClicked(View view) {
-        //** TODO: just for testing purposes, will remove after user profile has been made **
-        Author theAuthor = new Author("John", "Doe", "johndoe", "password", 0);
-        //Author theAuthor = (Author) userManager.getActiveUser();
-
         String bookTitle = bookTitleEditText.getText().toString();
-        String authorName = theAuthor.getFirstName() + " " + theAuthor.getLastName();
-        int authorID = theAuthor.getAuthorID();
         Genre genre = (Genre) spinner.getSelectedItem();
         String ISBN = ISBNEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
 
-        processBooksInput(bookTitle, authorName, authorID, genre, ISBN, description);
+        processBooksInput(bookTitle, genre, ISBN, description);
 
     }
 

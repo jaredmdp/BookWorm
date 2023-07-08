@@ -2,6 +2,7 @@ package honda.bookworm.View.Extra.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.honda.bookworm.R;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import honda.bookworm.Object.Book;
 import honda.bookworm.View.BookView_ViewHandler;
+import honda.bookworm.View.Extra.ImageConverter;
 
 public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adapter<Book_Horizontalscroll_RecyclerViewAdapter.BookCardHolder> {
 
@@ -41,7 +44,16 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
     public void onBindViewHolder(@NonNull Book_Horizontalscroll_RecyclerViewAdapter.BookCardHolder holder, int position) {
         holder.bookTitle.setText(bookList.get(position).getName());
 
-
+        if(!bookList.get(position).getCover().equals(""))
+        {
+            Log.d("Image", bookList.get(position).getCover());
+            holder.bookImage.setForeground(null);
+            holder.bookImage.setImageBitmap(ImageConverter.DecodeToBitmap(bookList.get(position).getCover()));
+            holder.bookImage.setAlpha(1f);
+            holder.bookImage.setImageTintMode(null);
+            holder.bookTitle.setVisibility(View.GONE);
+            holder.card.setCardBackgroundColor(null);
+        }
     }
 
     @Override
@@ -53,11 +65,14 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
 
         ImageView bookImage;
         TextView bookTitle;
+        CardView card;
 
         public BookCardHolder(@NonNull View itemView) {
             super(itemView);
             bookImage = itemView.findViewById(R.id.book_card_image);
             bookTitle = itemView.findViewById(R.id.book_card_title);
+            card = itemView.findViewById(R.id.book_card_parent);
+
 
             itemView.setOnClickListener(this);
         }

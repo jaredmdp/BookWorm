@@ -12,6 +12,9 @@ import honda.bookworm.Business.Exceptions.*;
 public class AccessUsers implements IAccessUsers {
     private IUserPersistence userPersistence;
 
+    private static final int MAX_LENGTH = 16;
+    private static final int MIN_LENGTH = 3;
+
     public AccessUsers()
     {
         userPersistence = Services.getUserPersistence(true);
@@ -69,22 +72,22 @@ public class AccessUsers implements IAccessUsers {
         validatePassword(password);
     }
 
-    public static void validateName(String name) {
+    private static void validateName(String name) {
         if (StringValidator.isEmpty(name)) {
             throw new IllegalStateException("Name must not be empty");
         }
         if (!StringValidator.isAlphaOnly(name)) {
             throw new IllegalStateException("Name can only contain alphabets");
         }
-        if (StringValidator.isTooLong(name)) {
-            throw new IllegalStateException("Name cannot exceed 16 characters");
+        if (StringValidator.isTooLong(name, MAX_LENGTH)) {
+            throw new IllegalStateException("Name cannot exceed "+MAX_LENGTH+" characters");
         }
-        if (StringValidator.isTooShort(name)) {
-            throw new IllegalStateException("Name must be greater than 2 characters");
+        if (StringValidator.isTooShort(name, MIN_LENGTH)) {
+            throw new IllegalStateException("Name must be at least "+MIN_LENGTH+" characters");
         }
     }
 
-    public static void validateUsername(String username) {
+    private static void validateUsername(String username) {
         if (StringValidator.isEmpty(username)) {
             throw new IllegalStateException("Username must not be empty");
         }
@@ -94,20 +97,20 @@ public class AccessUsers implements IAccessUsers {
         if (!StringValidator.isValidInput(username)) {
             throw new IllegalStateException("Invalid characters used in the username");
         }
-        if (StringValidator.isTooLong(username)) {
-            throw new IllegalStateException("Username cannot be greater than 16 characters");
+        if (StringValidator.isTooLong(username, MAX_LENGTH)) {
+            throw new IllegalStateException("Username cannot exceed "+MAX_LENGTH+" characters");
         }
-        if (StringValidator.isTooShort(username)) {
-            throw new IllegalStateException("Username must be greater than 2 characters");
+        if (StringValidator.isTooShort(username, MIN_LENGTH)) {
+            throw new IllegalStateException("Username must be at least "+MIN_LENGTH+" characters");
         }
     }
 
-    public static void validatePassword(String password) {
-        if (StringValidator.isTooShort(password)) {
-            throw new IllegalStateException("Password must be greater than 2 characters");
+    private static void validatePassword(String password) {
+        if (StringValidator.isTooLong(password, MAX_LENGTH)) {
+            throw new IllegalStateException("Password cannot exceed "+MAX_LENGTH+" characters");
         }
-        if (StringValidator.isTooLong(password)) {
-            throw new IllegalStateException("Password must be less than 16 characters");
+        if (StringValidator.isTooShort(password, MIN_LENGTH)) {
+            throw new IllegalStateException("Password must be at least "+MIN_LENGTH+" characters");
         }
         if (StringValidator.containsWhitespace(password)) {
             throw new IllegalStateException("Password cannot contain whitespaces");

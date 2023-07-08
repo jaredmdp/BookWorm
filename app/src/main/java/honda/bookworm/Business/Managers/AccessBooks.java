@@ -10,6 +10,7 @@ import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Data.IBookPersistence;
+import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Business.Exceptions.*;
@@ -17,22 +18,34 @@ import honda.bookworm.Object.User;
 
 public class AccessBooks implements IAccessBooks {
     private IBookPersistence bookPersistence;
-    private final int MAX_BOOK_TITLE_LENGTH = 40;
+    private static final int MAX_TITLE_TRIM_LENGTH = 40;
+    private static final int MAX_TITLE_LENGTH = 45;
+    private static final int MIN_TITLE_LENGTH = 1;
+    private static final int MAX_DESCRIPTION_LENGTH = 5000;
+    private static final int MIN_DESCRIPTION_LENGTH = 1;
+    private static final int ISBN_LENGTH = 13;
 
-    public AccessBooks() {
-        bookPersistence = Services.getBookPersistence(true);
-    }
+    public AccessBooks() {bookPersistence = Services.getBookPersistence(true);}
 
     public AccessBooks(IBookPersistence bookPersistence){
         this.bookPersistence = bookPersistence;
     }
 
     //TODO We have to change Exception handling once addBook Parameters change and connected with UI. Ask Jared
-    public Book addBook(Book newBook) throws DuplicateISBNException, InvalidBookException {
-        if (newBook == null) {
-            throw new InvalidBookException("Book can't be empty");
+    public Book addBook(String bookTitle, Genre genre, String ISBN, String description, String cover)
+            throws DuplicateISBNException, InvalidBookException, IllegalStateException {
+        User current = Services.getActiveUser();
+        if(!(current instanceof Author)) {
+            throw new IllegalStateException("Only Authors can insert books");
         }
-          return bookPersistence.addBook(newBook);
+        Author author = (Author) current;
+
+        validateBookInput(bookTitle, ISBN, description);
+
+        Book newBook = new Book(bookTitle, author.getFirstName()+" "+author.getLastName(), author.getAuthorID(),
+                genre, ISBN, description, cover);
+
+        return bookPersistence.addBook(newBook);
     }
 
     public boolean isBookFavourite(User user , String isbn) {
@@ -86,7 +99,7 @@ public class AccessBooks implements IAccessBooks {
         String trimmedTitle = b.getName().trim();
         String [] words;
 
-        if (trimmedTitle.length() > MAX_BOOK_TITLE_LENGTH) {
+        if (trimmedTitle.length() > MAX_TITLE_TRIM_LENGTH) {
             words = trimmedTitle.split(" ");
             if(words.length>1) {
                 trimmedTitle = titleTrimHelper(words);
@@ -104,7 +117,7 @@ public class AccessBooks implements IAccessBooks {
         String last = words [words.length-1];
         int i = 1;
 
-        while((first+middle+last).length()< MAX_BOOK_TITLE_LENGTH && i < words.length-1){
+        while((first+middle+last).length()< MAX_TITLE_TRIM_LENGTH && i < words.length-1){
             middle= middle+words[i]+" ";
             i++;
         }
@@ -132,6 +145,39 @@ public class AccessBooks implements IAccessBooks {
         }
 
         return trimmedTitle.toString();
+    }
+
+    public void validateBookInput(String bookTitle, String ISBN, String description){
+        validateBookTitle(bookTitle);
+        validateISBN(ISBN);
+        validateDescription(description);
+    }
+
+    private static void validateBookTitle(String bookTitle){
+        if(StringValidator.isTooLong(bookTitle, MAX_TITLE_LENGTH)){
+            throw new InvalidBookException("Title cannot exceed "+MAX_DESCRIPTION_LENGTH+" characters");
+        }
+        if(StringValidator.isTooShort(bookTitle, MIN_TITLE_LENGTH)){
+            throw new InvalidBookException("Title must be at least "+MIN_DESCRIPTION_LENGTH+" characters");
+        }
+    }
+
+    private static void validateISBN(String ISBN){
+        if(!(StringValidator.isNumericOnly(ISBN))){
+            throw new InvalidBookException("ISBN codes can only contain numbers");
+        }
+        if(!(StringValidator.isExactly(ISBN, ISBN_LENGTH))){
+            throw new InvalidBookException("ISBN codes should be exactly "+ISBN_LENGTH+" characters");
+        }
+    }
+
+    private static void validateDescription(String description){
+        if(StringValidator.isTooLong(description, MAX_DESCRIPTION_LENGTH)){
+            throw new InvalidBookException("Description cannot exceed "+MAX_DESCRIPTION_LENGTH+" characters");
+        }
+        if(StringValidator.isTooShort(description, MIN_DESCRIPTION_LENGTH)){
+            throw new InvalidBookException("Description must be at least "+MIN_DESCRIPTION_LENGTH+" characters");
+        }
     }
 
 }
