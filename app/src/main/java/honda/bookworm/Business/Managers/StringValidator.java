@@ -11,10 +11,24 @@ public class StringValidator {
         return str.contains(" ");
     }
 
+    //alphabet only
     public static boolean isAlphaOnly(String str) {
         return str.matches("[a-zA-Z]+");
     }
+    public static boolean isAlphaDashes(String str) {
+        return str.matches("[a-zA-Z- ]+");
+    }
 
+    public static boolean isNumericOnly(String str) {
+        return str.matches("[0-9]+");
+    }
+
+    //alphabets + space + period + numbers
+    public static boolean isValidName(String str) {
+        return str.matches("[a-zA-Z0-9 .]+");
+    }
+
+    //alphabets + numbers + dash and underscores
     public static boolean isValidInput(String input) {
         return input.matches("[a-zA-Z0-9_-]+");
     }

@@ -27,13 +27,6 @@ public class AccessBooks implements IAccessBooks {
         this.bookPersistence = bookPersistence;
     }
 
-    public List<Book> getBooksGenre(Genre genre) throws InvalidGenreException {
-        if (genre == null) {
-            throw new InvalidGenreException("Genre can't be empty");
-        }
-            return bookPersistence.getBooksByGenre(genre);
-    }
-
     //TODO We have to change Exception handling once addBook Parameters change and connected with UI. Ask Jared
     public Book addBook(Book newBook) throws DuplicateISBNException, InvalidBookException {
         if (newBook == null) {
@@ -79,7 +72,6 @@ public class AccessBooks implements IAccessBooks {
 
         return book;
     }
-
 
     public List<Book> getFavoriteBookList(User user) {
         List<Book> bookList = new ArrayList<>();

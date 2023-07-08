@@ -76,3 +76,5 @@ INSERT INTO BOOK VALUES('9780553801477','A Game of Thrones',5,4,'The first book 
 INSERT INTO BOOK VALUES('9781840227798','Sense and Sensibility',0,3,'Another classic romance novel',TRUE)
 INSERT INTO BOOK VALUES('9781853260001','Emma',0,3,'A comedic novel about matchmaking',TRUE)
 INSERT INTO BOOK VALUES('9788845270758','The Two Towers',9,4,'The second book in The Lord of the Rings series',TRUE)
+INSERT INTO BOOK VALUES('9780451457998','Neuromancer',6, 2,'A classic cyberpunk novel',TRUE);
+INSERT INTO BOOK VALUES('9780441013593','Dune', 10, 2,'A science fiction novel set in a distant future',TRUE);

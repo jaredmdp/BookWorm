@@ -2,6 +2,7 @@ package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,15 +11,18 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.Managers.SearchManager;
 import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Business.Managers.UserPreference;
@@ -37,6 +41,7 @@ public class FullIT {
     private IUserManager manager;
     private IAccessBooks accessBooks;
     private IUserPreference userPreference;
+    private ISearchManager searchManager;
     private File tempDB;
 
     @Before
@@ -48,6 +53,7 @@ public class FullIT {
         this.manager = new UserManager(persistence);
         this.accessBooks = new AccessBooks(bPersistence);
         this.userPreference = new UserPreference(persistence);
+        this.searchManager = new SearchManager(bPersistence);
     }
 
     @Test
@@ -84,9 +90,9 @@ public class FullIT {
         Book book = new Book(bookName, author.getFirstName()+ " " + author.getLastName()
             , author.getAuthorID(), genre, ISBN, description);
 
-        List<Book> getBooksOld = accessBooks.getBooksGenre(genre);
+        List<Book> getBooksOld = searchManager.performSearchGenre(genre.toString());
         Book inserted = accessBooks.addBook(book);
-        List<Book> getBooksNew = accessBooks.getBooksGenre(genre);
+        List<Book> getBooksNew = searchManager.performSearchGenre(genre.toString());
 
         assert(inserted.getName().equals(bookName));
         assert(inserted.getAuthor().equals(author.getFirstName()+ " " + author.getLastName()));
@@ -124,7 +130,7 @@ public class FullIT {
             result = accessBooks.bookFavouriteToggle("9780199536269");
             assertFalse(result);
         }catch (Exception e){
-            assertFalse("This should not be called", true);
+            fail("This should not be called");
         }
 
 
@@ -192,7 +198,7 @@ public class FullIT {
             result = userPreference.genreFavouriteToggle(Genre.Action);
             assertFalse(result);
         }catch (Exception e){
-            assertFalse("This should not be called", true);
+            fail("This should not be called");
         }
 
         try{
@@ -247,7 +253,7 @@ public class FullIT {
             assert(bookList.isEmpty());
 
         }catch (Exception e) {
-            assert(!bookList.isEmpty());
+            assert(!Objects.requireNonNull(bookList).isEmpty());
             assert(false);
         }
 
@@ -307,7 +313,7 @@ public class FullIT {
             assert(genreList.isEmpty());
 
         }catch (Exception e) {
-            assert(!genreList.isEmpty());
+            assert(!Objects.requireNonNull(genreList).isEmpty());
             assert(false);
         }
 

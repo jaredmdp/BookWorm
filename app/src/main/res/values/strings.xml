@@ -10,7 +10,7 @@
 
     <string name="searchBy">Search By </string>
     <string name="searchResultHeading">Search Results for: </string>
-    <string name="searchError">Search error message goes as follows and requires to be edited</string>
+    <string name="searchError">Sorry we either don\'t have what you are looking for, or the right search category isn\'t selected.</string>
 
     <string name="isPurchaseWarningMsg">WARNING: If the book is not available to purchase from Amazon. Unexpected results will be displayed.</string>
 </resources>

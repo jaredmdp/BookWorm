@@ -2,11 +2,11 @@ package honda.bookworm.View;
 
 import honda.bookworm.Application.Main;
 import honda.bookworm.Application.Services;
-import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.IAccessBooks;
+import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.IUserManager;
-import honda.bookworm.Business.Managers.AccessUsers;
 import honda.bookworm.Business.Managers.AccessBooks;
+import honda.bookworm.Business.Managers.SearchManager;
 import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
@@ -23,7 +23,6 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,10 +38,9 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class Home_ViewHandler extends AppCompatActivity {
-    private IAccessUsers accessUsers;
-
     private IAccessBooks accessBooks;
     private IUserManager userManager;
+    private ISearchManager searchManager;
     private Vibrator sysVibrator;
 
     @Override
@@ -50,9 +48,9 @@ public class Home_ViewHandler extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         copyDatabaseToDevice();
-        accessUsers = new AccessUsers();
         accessBooks = new AccessBooks();
         userManager = new UserManager();
+        searchManager = new SearchManager();
 
         sysVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         customizeToUser();
@@ -82,12 +80,11 @@ public class Home_ViewHandler extends AppCompatActivity {
         String genreName;
         List<Book> bookList;
         LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
-        int scrollViewContainerID;
 
         for (Genre genre : genres) {
             genreName = genre.toString();
             try {
-                bookList = accessBooks.getBooksGenre(genre);
+                bookList = searchManager.performSearchGenre(genreName);
                 if (!bookList.isEmpty()) {
                     View horizontalScrollContainer = Book_horizontalscroll_constructor.create(Home_ViewHandler.this,genreName,bookList);
                     linearBody.addView(horizontalScrollContainer);

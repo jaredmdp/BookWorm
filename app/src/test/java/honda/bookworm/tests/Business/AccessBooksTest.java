@@ -4,48 +4,22 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.List;
-
+import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.Managers.AccessBooks;
+import honda.bookworm.Business.Managers.SearchManager;
 import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
-import honda.bookworm.Business.Exceptions.*;
 
 public class AccessBooksTest {
     private AccessBooks accessBooks;
+    private ISearchManager accessSearch;
 
     @Before
     public void setup() {
         System.out.println("\nStarting test for AccessBooks");
         accessBooks = new AccessBooks(new BookPersistenceStub());
-    }
-
-    @Test
-    public void testGetBooksGenreFound() {
-        System.out.println("\nStarting testGetBooksGenreFound");
-
-        List<Book> books = accessBooks.getBooksGenre(Genre.Fantasy);
-        assertEquals(books.size(), 5);
-        System.out.println("\nFinished testGetBooksGenreFound");
-
-    }
-
-    @Test
-    public void testGetBooksGenreNotFound() {
-        System.out.println("\nStarting testGetBooksGenreNotFound");
-        boolean caught = false;
-
-        try {
-            accessBooks.getBooksGenre(null);
-        } catch (InvalidGenreException e) {
-            caught = true;
-        }
-
-        assertTrue(caught);
-
-        System.out.println("\nFinished testGetBooksGenreNotFound");
-
+        accessSearch = new SearchManager(new BookPersistenceStub());
     }
 
     @Test
@@ -72,7 +46,7 @@ public class AccessBooksTest {
 
         testBook.setName("A short title that is nice");
         trimmed = accessBooks.getTrimmedBookName(testBook);
-        assertTrue("Trimmed title must be equal to actual book title", testBook.getName().length()==trimmed.length() );
+        assertEquals("Trimmed title must be equal to actual book title", testBook.getName().length(), trimmed.length());
 
         System.out.println("\nFinished getTrimmedBookTitles Test");
     }
