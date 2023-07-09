@@ -127,7 +127,7 @@
             android:id="@+id/home_userProfile_logoutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Logout"
+            android:text="@string/logout"
             android:textAlignment="center"
             android:textColor="#61676D"
             android:onClick="onLogoutPressed"

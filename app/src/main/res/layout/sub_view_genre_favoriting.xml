@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/userprofile_userfavgenre_relativelayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="2dp"
+    android:paddingBottom="10dp">
+
+<TextView
+    android:id="@+id/userfavgenre_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:text="Your Favourite Genres"
+    android:textSize="25sp"
+    />
+
+    <LinearLayout
+        android:id="@+id/userfavgenre_spinner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userfavgenre_text"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/shape_pill"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:layout_marginVertical="5dp"
+        android:elevation="5dp"
+        >
+
+        <Spinner
+            android:id="@+id/userfavgenre_genre_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:spinnerMode="dialog"/>
+
+        <ImageButton
+            android:id="@+id/userfavgenre_add_genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_add"
+            app:tint="?colorSecondary"
+            android:layout_marginEnd="5dp"/>
+
+        <ImageButton
+            android:id="@+id/userfavgenre_done_changes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_done"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/userfavgenre_addgenretext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add To Your Favourite Genres"
+            android:visibility="visible"/>
+
+
+    </LinearLayout>
+
+<com.google.android.flexbox.FlexboxLayout
+    android:id="@+id/userfavgenre_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/userfavgenre_spinner_container"
+    android:padding="3dp"
+    app:flexWrap="wrap"
+    app:flexDirection="row"
+    >
+
+    <TextView
+        android:id="@+id/userfavgenre_no_fav_genres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Favourite Genres Found"
+        android:textSize="15dp" />
+
+</com.google.android.flexbox.FlexboxLayout>
+
+
+
+
+</RelativeLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,10 +20,9 @@ import honda.bookworm.View.Extra.Adapters.Book_Horizontalscroll_RecyclerViewAdap
 public class Book_horizontalscroll_constructor {
 
     public static View create(Context context, String Title, List<Book>bookList){
-        View container = LayoutInflater.from(context).inflate(R.layout.books_horizontal_scroll_container,null,false);
+        View container = LayoutInflater.from(context).inflate(R.layout.books_horizontal_scroll_container,null);
         TextView tv  = container.findViewById(R.id.books_horizontal_info_text);
         RecyclerView rv = container.findViewById(R.id.books_horizontal_recyclerview);
-
         tv.setText(Title);
         buildRecyclerView(context,rv,bookList);
         return container;

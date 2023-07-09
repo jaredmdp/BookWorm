@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IUserManager {
     User getActiveUser();
+    boolean isAuthorActive();
     void logOutActiveUser();
     List<User> getAllUsers();
     boolean isUserLoggedIn();
