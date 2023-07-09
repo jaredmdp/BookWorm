@@ -19,5 +19,5 @@ public interface IAccessBooks {
 
     List<Book> getFavoriteBookList(User user);
     
-    void validateBookInput(String bookTitle, String ISBN, String description);
+    void validateBookInput(String bookTitle, String ISBN, String description, String cover);
 }

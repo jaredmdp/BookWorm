@@ -40,7 +40,7 @@ public class AccessBooks implements IAccessBooks {
         }
         Author author = (Author) current;
 
-        validateBookInput(bookTitle, ISBN, description);
+        validateBookInput(bookTitle, ISBN, description, cover);
 
         Book newBook = new Book(bookTitle, author.getFirstName()+" "+author.getLastName(), author.getAuthorID(),
                 genre, ISBN, description, cover);
@@ -147,10 +147,11 @@ public class AccessBooks implements IAccessBooks {
         return trimmedTitle.toString();
     }
 
-    public void validateBookInput(String bookTitle, String ISBN, String description){
+    public void validateBookInput(String bookTitle, String ISBN, String description, String cover){
         validateBookTitle(bookTitle);
         validateISBN(ISBN);
         validateDescription(description);
+        validateCover(cover);
     }
 
     private static void validateBookTitle(String bookTitle){
@@ -177,6 +178,12 @@ public class AccessBooks implements IAccessBooks {
         }
         if(StringValidator.isTooShort(description, MIN_DESCRIPTION_LENGTH)){
             throw new InvalidBookException("Description must be at least "+MIN_DESCRIPTION_LENGTH+" characters");
+        }
+    }
+
+    private static void validateCover(String cover){
+        if(cover == null){
+            throw new InvalidBookException("Error with book cover");
         }
     }
 

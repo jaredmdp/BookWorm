@@ -45,10 +45,9 @@ public class Book_RecyclerViewAdapter extends RecyclerView.Adapter<Book_Recycler
         holder.bookGenre.setText("Genre: " + bookList.get(position).getGenre().toString());
         holder.bookISBN.setText("ISBN: " + bookList.get(position).getISBN());
 
-        if(!bookList.get(position).getCover().equals(""))
-        {
-            holder.bookImage.setForeground(null);
-            holder.bookImage.setImageBitmap(ImageConverter.DecodeToBitmap(bookList.get(position).getCover()));
+       if(!bookList.get(position).getCover().equals("")) {
+           holder.bookImage.setForeground(null);
+           holder.bookImage.setImageBitmap(ImageConverter.DecodeToBitmap(bookList.get(position).getCover()));
         }
     }
 
@@ -69,6 +68,7 @@ public class Book_RecyclerViewAdapter extends RecyclerView.Adapter<Book_Recycler
             bookAuthor = itemView.findViewById(R.id.recycler_book_author);
             bookGenre = itemView.findViewById(R.id.recycler_book_genre);
             bookISBN = itemView.findViewById(R.id.recycler_book_isbn);
+            bookImage = itemView.findViewById(R.id.recycler_book_image);
 
             itemView.setOnClickListener(this);
         }
