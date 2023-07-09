@@ -13,6 +13,6 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="colorTertiaryFixedDim">#73000000</item>
+        <item name="colorTertiaryFixedDim">#99232425</item>
     </style>
 </resources>

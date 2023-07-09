@@ -32,6 +32,11 @@ public class UserPersistenceStub implements IUserPersistence {
         authorBrandon.addWrittenBook(new Book("Elantris", "Brandon Sanderson", 0, Genre.Fantasy, "9780765311788"));
         authorBrandon.addWrittenBook(new Book("The Alloy of Law", "Brandon Sanderson", 0, Genre.Fantasy, "9780765368546"));
 
+        authorBrandon.addToFavoriteBooks(new Book("The C Programming Language", "Brian W. Kernighan", 18, Genre.NonFiction, "9780132650884"));
+        authorBrandon.addToFavoriteBooks(new Book("Introduction to Algorithms", "Thomas H. Cormen", 17, Genre.NonFiction, "9780132350884"));
+        authorBrandon.addToFavoriteBooks(new Book("Operating Systems: Three Easy Pieces", "Remzi H. Arpaci-Dusseau", 19, Genre.NonFiction, "9780100650884"));
+        authorBrandon.addToFavoriteBooks(new Book("The Art of War", "Sun Tzu", 16, Genre.NonFiction, "578099920888"));
+
 
     }
 
