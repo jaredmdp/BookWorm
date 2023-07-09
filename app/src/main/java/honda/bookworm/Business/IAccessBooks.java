@@ -7,7 +7,7 @@ import honda.bookworm.Object.User;
 import java.util.List;
 
 public interface IAccessBooks {
-    Book addBook(String bookTitle, Genre genre, String ISBN, String description, String cover);
+    Book addBook(String bookTitle, Genre genre, String ISBN, String description, String cover,  boolean isPurchaseable);
     String getTrimmedBookName(Book book);
 
     boolean isBookFavourite(User u, String isbn);

@@ -41,6 +41,7 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
     private Spinner spinner;
     private GenreAdapter adapter;
     private Bitmap bookImage;
+    private boolean isPurchaseable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
         ISBNEditText = findViewById(R.id.addbook_ISBN_input);
         descriptionEditText = findViewById(R.id.addbook_description_input);
         bookImage = null;
+        isPurchaseable = false;
 
         accessBooks = new AccessBooks();
         updateSpinner();
@@ -64,7 +66,7 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
         String msg = "";
 
         try {
-            Book addedBook = accessBooks.addBook(bookTitle, genre, ISBN, description, ImageConverter.EncodeToBase64(bookImage));
+            Book addedBook = accessBooks.addBook(bookTitle, genre, ISBN, description, ImageConverter.EncodeToBase64(bookImage), isPurchaseable);
             signUpState = true;
             //** TODO: will delete after user profile has been made, only use for toast now **
             msg = String.format(("Add Book: %s, %s, %s, %s"), addedBook.getName(), addedBook.getISBN(), addedBook.getGenre(), addedBook.getDescription());
@@ -100,9 +102,9 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
     public void isAvailableToPurchaseClicked(View v) {
 
         if (v instanceof CheckBox) {
-            boolean isChecked = ((CheckBox) v).isChecked();
+            isPurchaseable = ((CheckBox) v).isChecked();
             TextView warning = findViewById(R.id.addbook_purchase_warning);
-            if (isChecked) {
+            if (isPurchaseable) {
                 warning.setVisibility(View.VISIBLE);
             }else {
                 warning.setVisibility(View.GONE);

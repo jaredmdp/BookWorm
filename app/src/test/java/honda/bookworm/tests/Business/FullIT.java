@@ -88,12 +88,13 @@ public class FullIT {
         String ISBN = "1111111111111";
         String description = "Guidelines for the Astartes legions";
         String coverData = "Test Cover";
+        boolean isPurchaseable = false;
 
         Book book = new Book(bookName, author.getFirstName()+ " " + author.getLastName()
-            , author.getAuthorID(), genre, ISBN, description, coverData);
+            , author.getAuthorID(), genre, ISBN, description, coverData, isPurchaseable);
 
         List<Book> getBooksOld = searchManager.performSearchGenre(genre.toString());
-        Book inserted = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover());
+        Book inserted = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover(), book.getPurchaseable());
         List<Book> getBooksNew = searchManager.performSearchGenre(genre.toString());
 
         assert(inserted.getName().equals(bookName));
@@ -106,6 +107,7 @@ public class FullIT {
         assert(!(getBooksOld).contains(inserted));
         assert(getBooksNew.contains(inserted));
         assert(getBooksNew.size() == getBooksOld.size()+1);
+        assert(inserted.getPurchaseable() == book.getPurchaseable());
 
         System.out.println("\nFinished testFullNewAuthorAddsBook");
 

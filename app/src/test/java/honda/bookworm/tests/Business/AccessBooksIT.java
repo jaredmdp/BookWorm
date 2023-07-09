@@ -48,9 +48,9 @@ public class AccessBooksIT {
                 "Geralt is a witcher, a man whose magic powers, enhanced by long training and a mysterious elixir, have made him a brilliant fighter and a merciless assassin. Yet he is no ordinary murderer: his targets are the multifarious monsters and vile fiends that ravage the land and attack the innocent.\n" +
                         "\n" +
                         "This is a collection of short stories, following the adventures of the hit collection THE LAST WISH. Join Geralt as he battles monsters, demons and prejudices alike...",
-                "Test Cover");
+                "Test Cover", true);
         assertNotNull(book);
-        Book addedBook = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover());
+        Book addedBook = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover(), book.getPurchaseable());
         assertEquals(book, addedBook);
 
         System.out.println("\nFinished testAddBook");
@@ -62,14 +62,14 @@ public class AccessBooksIT {
 
         Book book = new Book("To Kill a Mockingbird", testAuthor.getFirstName()+" "+testAuthor.getLastName(), testAuthor.getAuthorID(), Genre.Fiction, "9780061120084",
                 "To Kill a Mockingbird is a novel by Harper Lee published in 1960. It is set in the fictional town of Maycomb, Alabama, during the Great Depression, and follows the story of Scout Finch as she grows up and learns about racial injustice in her community. The book explores themes of morality, compassion, and the loss of innocence. It is widely regarded as a classic of American literature.",
-                "Test Cover");
+                "Test Cover", true);
 
         assertNotNull(book);
-        Book addedBook = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover());
+        Book addedBook = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover(), book.getPurchaseable());
         assertEquals(book, addedBook);
 
         try {
-            addedBook = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover());  //add same book
+            addedBook = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover(), book.getPurchaseable());  //add same book
             fail();
         } catch (DuplicateISBNException e) {
             System.out.println("Success: Duplicate ISBN found: " + e.getMessage());

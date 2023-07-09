@@ -32,7 +32,7 @@ public class AccessBooks implements IAccessBooks {
     }
 
     //TODO We have to change Exception handling once addBook Parameters change and connected with UI. Ask Jared
-    public Book addBook(String bookTitle, Genre genre, String ISBN, String description, String cover)
+    public Book addBook(String bookTitle, Genre genre, String ISBN, String description, String cover, boolean isPurchaseable)
             throws DuplicateISBNException, InvalidBookException, IllegalStateException {
         User current = Services.getActiveUser();
         if(!(current instanceof Author)) {
@@ -43,7 +43,7 @@ public class AccessBooks implements IAccessBooks {
         validateBookInput(bookTitle, ISBN, description, cover);
 
         Book newBook = new Book(bookTitle, author.getFirstName()+" "+author.getLastName(), author.getAuthorID(),
-                genre, ISBN, description, cover);
+                genre, ISBN, description, cover, isPurchaseable);
 
         return bookPersistence.addBook(newBook);
     }

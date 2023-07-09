@@ -65,7 +65,7 @@ public class AccessBooksTest {
         String wrongTitleLong = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 
         try{
-            accessBooks.addBook(wrongTitleShort, Genre.SciFi, "1111111111111", "asd", "");
+            accessBooks.addBook(wrongTitleShort, Genre.SciFi, "1111111111111", "asd", "", true);
             assert(false);
         }
         catch(Exception e){
@@ -73,7 +73,7 @@ public class AccessBooksTest {
         }
 
         try{
-            accessBooks.addBook(wrongTitleLong, Genre.SciFi, "1111111111111", "asd", "");
+            accessBooks.addBook(wrongTitleLong, Genre.SciFi, "1111111111111", "asd", "", true);
             assert(false);
         }
         catch(Exception e){
@@ -91,7 +91,7 @@ public class AccessBooksTest {
         String wrongISBNLetters = "111111111111a";
 
         try{
-            accessBooks.addBook("asd", Genre.SciFi, wrongISBNLength, "asd", "");
+            accessBooks.addBook("asd", Genre.SciFi, wrongISBNLength, "asd", "", true);
             assert(false);
         }
         catch(Exception e){
@@ -99,7 +99,7 @@ public class AccessBooksTest {
         }
 
         try{
-            accessBooks.addBook("asd", Genre.SciFi, wrongISBNLetters, "asd", "");
+            accessBooks.addBook("asd", Genre.SciFi, wrongISBNLetters, "asd", "", true);
             assert(false);
         }
         catch(Exception e){
@@ -122,7 +122,7 @@ public class AccessBooksTest {
         }
 
         try{
-            accessBooks.addBook("asd", Genre.SciFi, "1111111111111", wrongDescriptionLong, "");
+            accessBooks.addBook("asd", Genre.SciFi, "1111111111111", wrongDescriptionLong, "", true);
             assert(false);
         }
         catch(Exception e){
@@ -130,7 +130,7 @@ public class AccessBooksTest {
         }
 
         try{
-            accessBooks.addBook("asd", Genre.SciFi, "1111111111111", wrongDescriptionShort, "");
+            accessBooks.addBook("asd", Genre.SciFi, "1111111111111", wrongDescriptionShort, "", true);
             assert(false);
         }
         catch(Exception e){
@@ -145,7 +145,7 @@ public class AccessBooksTest {
         System.out.println("\nStarting testAddBookCoverFail");
 
         try{
-            accessBooks.addBook("asd", Genre.SciFi, "1111111111111", "asd", null);
+            accessBooks.addBook("asd", Genre.SciFi, "1111111111111", "asd", null, true);
             assert(false);
         }
         catch(Exception e){

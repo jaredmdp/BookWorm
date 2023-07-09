@@ -134,7 +134,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.setObject(3, newBook.getAuthorID());
             statement.setObject(4, newBook.getGenre().ordinal());
             statement.setString(5, newBook.getDescription());
-            statement.setBoolean(6, true);
+            statement.setBoolean(6, newBook.getPurchaseable());
             statement.setString(7, newBook.getCover());
 
             statement.executeUpdate();
@@ -305,7 +305,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         final String ISBN = result.getString("ISBN");
         final String description = result.getString("description");
         final String coverEncoded = result.getString("image");
+        final boolean isPurchaseable = result.getBoolean("isPurchaseable");
 
-        return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description, coverEncoded);
+        return new Book(bookName,bookAuthor,bookAuthorID,bookGenre,ISBN, description, coverEncoded, isPurchaseable);
     }
 }

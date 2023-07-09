@@ -11,6 +11,7 @@ public class Book {
     private String description;
     private Genre genre;
     private String cover;
+    private boolean isPurchaseable;
 
     public Book(String name, String author, int authorID, Genre genre, String ISBN) {
         this.name = name;
@@ -20,6 +21,7 @@ public class Book {
         this.ISBN = ISBN;
         description = "";
         cover = "";
+        isPurchaseable = false;
     }
 
     public Book(String name, String author, int authorID, Genre genre, String ISBN, String description) {
@@ -30,6 +32,7 @@ public class Book {
         this.ISBN = ISBN;
         this.description = description;
         cover = "";
+        isPurchaseable = false;
     }
 
     public Book(String name, String author, int authorID, Genre genre, String ISBN, String description, String cover) {
@@ -40,6 +43,18 @@ public class Book {
         this.ISBN = ISBN;
         this.description = description;
         this.cover = cover;
+        isPurchaseable = false;
+    }
+
+    public Book(String name, String author, int authorID, Genre genre, String ISBN, String description, String cover, boolean isPurchaseable) {
+        this.name = name;
+        this.author = author;
+        this.authorID = authorID;
+        this.genre = genre;
+        this.ISBN = ISBN;
+        this.description = description;
+        this.cover = cover;
+        this. isPurchaseable = isPurchaseable;
     }
 
     // Getters and Setters
@@ -87,6 +102,10 @@ public class Book {
 
     public void setCover(String cover) {this.cover = cover;}
 
+    public void setPurchaseable(boolean canPurchase){this.isPurchaseable = canPurchase;}
+
+    public boolean getPurchaseable(){return isPurchaseable;}
+
     public String getCover() {return cover;}
 
     public String toString() {
@@ -113,6 +132,7 @@ public class Book {
                 Objects.equals(genre, book.genre) &&
                 Objects.equals(ISBN, book.ISBN) &&
                 Objects.equals(cover, book.cover) &&
-                (authorID == book.getAuthorID());
+                (authorID == book.getAuthorID()) &&
+                isPurchaseable == book.getPurchaseable();
     }
 }
