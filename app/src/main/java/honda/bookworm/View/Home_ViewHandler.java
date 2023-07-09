@@ -91,7 +91,7 @@ public class Home_ViewHandler extends AppCompatActivity {
                 }
             } catch (NullPointerException e) {
                 String msg = String.format("Invalid Genre: %s", e.getMessage());
-                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -141,6 +141,10 @@ public class Home_ViewHandler extends AppCompatActivity {
     public void onViewProfilePressed(View view) {
         //place holder for the User profile view intent
         sysVibrator.vibrate(5);
+        if(userManager.isUserLoggedIn()) {
+            Intent intent = new Intent(this, UserProfile_ViewHandler.class);
+            startActivity(intent);
+        }
     }
 
 

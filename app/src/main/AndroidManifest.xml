@@ -14,12 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookWorm"
-        tools:targetApi="31"
-        android:windowSoftInputMode="adjustPan">
+        android:windowSoftInputMode="adjustPan"
+        tools:targetApi="31">
+        <activity
+            android:name="honda.bookworm.View.UserProfile_ViewHandler"
+            android:exported="true" />
         <activity
             android:name="honda.bookworm.View.AddBook_ViewHandler"
-            android:exported="true"
-           />
+            android:exported="true" />
         <activity android:name="honda.bookworm.View.BookView_ViewHandler" />
         <activity
             android:name="honda.bookworm.View.Home_ViewHandler"
