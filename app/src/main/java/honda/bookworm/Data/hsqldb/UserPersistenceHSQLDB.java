@@ -250,7 +250,8 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             ResultSet result = statement.executeQuery();
 
             while(result.next()){
-                final Genre genre= Genre.valueOf(result.getString("name"));
+                String genreName = result.getString("name").replace("-","");
+                final Genre genre= Genre.valueOf(genreName);
                 genreList.add(genre);
             }
         }catch (SQLException e){
