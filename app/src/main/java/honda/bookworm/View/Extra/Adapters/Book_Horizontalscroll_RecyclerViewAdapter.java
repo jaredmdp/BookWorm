@@ -51,8 +51,9 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
             holder.bookImage.setImageBitmap(ImageConverter.DecodeToBitmap(bookList.get(position).getCover()));
             holder.bookImage.setAlpha(1f);
             holder.bookImage.setImageTintMode(null);
+            holder.bookImage.setMinimumWidth(-1);
+            holder.bookImage.setMaxWidth(1000);
             holder.bookTitle.setVisibility(View.GONE);
-            holder.card.setCardBackgroundColor(null);
         }
     }
 
