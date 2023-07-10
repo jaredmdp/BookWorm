@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,14 +85,16 @@ public class FullIT {
 
         String bookName = "Codex Astartes";
         Genre genre = Genre.NonFiction;
-        String ISBN = "40000";
+        String ISBN = "1111111111111";
         String description = "Guidelines for the Astartes legions";
+        String coverData = "Test Cover";
+        boolean isPurchaseable = false;
 
         Book book = new Book(bookName, author.getFirstName()+ " " + author.getLastName()
-            , author.getAuthorID(), genre, ISBN, description);
+            , author.getAuthorID(), genre, ISBN, description, coverData, isPurchaseable);
 
         List<Book> getBooksOld = searchManager.performSearchGenre(genre.toString());
-        Book inserted = accessBooks.addBook(book);
+        Book inserted = accessBooks.addBook(book.getName(), book.getGenre(), book.getISBN(), book.getDescription(), book.getCover(), book.getPurchaseable());
         List<Book> getBooksNew = searchManager.performSearchGenre(genre.toString());
 
         assert(inserted.getName().equals(bookName));
@@ -100,9 +103,11 @@ public class FullIT {
         assert(inserted.getGenre().equals(genre));
         assert(inserted.getISBN().equals(ISBN));
         assert(inserted.getDescription().equals(description));
+        assert(coverData.equals(inserted.getCover()));
         assert(!(getBooksOld).contains(inserted));
         assert(getBooksNew.contains(inserted));
         assert(getBooksNew.size() == getBooksOld.size()+1);
+        assert(inserted.getPurchaseable() == book.getPurchaseable());
 
         System.out.println("\nFinished testFullNewAuthorAddsBook");
 

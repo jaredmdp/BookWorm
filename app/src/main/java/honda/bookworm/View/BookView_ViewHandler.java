@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Object.Book;
+import honda.bookworm.View.Extra.ImageConverter;
 
 public class BookView_ViewHandler extends AppCompatActivity {
 
@@ -43,24 +45,31 @@ public class BookView_ViewHandler extends AppCompatActivity {
         /** TODO: apply the proper logic for fetch bookByISBN **/
         Book bk = Services.getBookPersistence(false).getBookByISBN(thisBookISBN);
 
-        assignValues(bk.getName(), bk.getAuthor(), bk.getGenre().toString(), bk.getISBN(), bk.getDescription());
+        assignValues(bk.getName(), bk.getAuthor(), bk.getGenre().toString(), bk.getISBN(), bk.getDescription(), bk.getCover());
         applyHideOnScroll();
     }
 
     //need to figure out image
-    private void assignValues(String bookTitle, String bookAuthor, String bookGenre, String bookIsbn, String bookDescription) {
+    private void assignValues(String bookTitle, String bookAuthor, String bookGenre, String bookIsbn, String bookDescription, String cover) {
         TextView title = findViewById(R.id.book_view_book_title);
         TextView author = findViewById(R.id.book_view_book_author);
         TextView genre = findViewById(R.id.book_view_book_genre);
         TextView isbn = findViewById(R.id.book_view_book_isbn);
         TextView description = findViewById(R.id.book_view_book_description);
         TextView collapseButton = findViewById(R.id.book_view_book_description_toggle);
+        ImageView coverView = findViewById(R.id.book_view_book_cover);
 
         title.setText(String.format("%s %s", title.getText(), bookTitle));
         author.setText(String.format("%s %s", author.getText(), bookAuthor));
         genre.setText(String.format("%s %s", genre.getText(), bookGenre));
         isbn.setText(String.format("%s %s", isbn.getText(), bookIsbn));
         description.setText(String.format("%s %s", description.getText(), bookDescription));
+
+        if(!cover.equals(""))
+        {
+            coverView.setForeground(null);
+            coverView.setImageBitmap(ImageConverter.DecodeToBitmap(cover));
+        }
 
         description.post(new Runnable() {
             @Override

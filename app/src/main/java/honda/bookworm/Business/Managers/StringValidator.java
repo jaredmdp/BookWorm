@@ -33,14 +33,16 @@ public class StringValidator {
         return input.matches("[a-zA-Z0-9_-]+");
     }
 
-    public static boolean isTooLong(String str) {
-        int maxLength = 16;
+    public static boolean isTooLong(String str, int maxLength) {
         return str.length() > maxLength;
     }
 
-    public static boolean isTooShort(String str) {
-        int minLength = 3;
+    public static boolean isTooShort(String str, int minLength) {
         return str.length() < minLength;
+    }
+
+    public static boolean isExactly(String str, int length){
+        return str.length() == length;
     }
 }
 

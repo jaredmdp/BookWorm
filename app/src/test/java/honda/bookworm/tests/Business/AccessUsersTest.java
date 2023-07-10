@@ -237,7 +237,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("J", "Doe", "johndoe", "password1");
             assertTrue("Too short first name should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("Name must be greater than 2 characters", e.getMessage());
+            assertEquals("Name must be at least 3 characters", e.getMessage());
         }
 
         //Test empty username
@@ -269,7 +269,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("John", "Doe", "johndoejohndoejohndoe", "password1");
             assertTrue("Too long username should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("Username cannot be greater than 16 characters", e.getMessage());
+            assertEquals("Username cannot exceed 16 characters", e.getMessage());
         }
 
         //Test too short username
@@ -277,7 +277,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("John", "Doe", "j", "password1");
             assertTrue("Too short username should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("Username must be greater than 2 characters", e.getMessage());
+            assertEquals("Username must be at least 3 characters", e.getMessage());
         }
 
         //Test too short password
@@ -285,7 +285,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("John", "Doe", "johndoe", "12");
             assertTrue("Too short password should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("Password must be greater than 2 characters", e.getMessage());
+            assertEquals("Password must be at least 3 characters", e.getMessage());
         }
 
         //Test too long password
@@ -293,7 +293,7 @@ public class AccessUsersTest {
             signUp.validateUserInput("John", "Doe", "johndoe", "passwordpasswordpassword");
             assertTrue("Too long password should throw an exception", false);
         } catch (Exception e) {
-            assertEquals("Password must be less than 16 characters", e.getMessage());
+            assertEquals("Password cannot exceed 16 characters", e.getMessage());
         }
 
         //Test whitespace in password

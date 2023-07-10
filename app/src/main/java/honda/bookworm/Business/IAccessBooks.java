@@ -7,7 +7,7 @@ import honda.bookworm.Object.User;
 import java.util.List;
 
 public interface IAccessBooks {
-    Book addBook(Book newBook);
+    Book addBook(String bookTitle, Genre genre, String ISBN, String description, String cover,  boolean isPurchaseable);
     String getTrimmedBookName(Book book);
 
     boolean isBookFavourite(User u, String isbn);
@@ -18,4 +18,6 @@ public interface IAccessBooks {
     Book getBookByISBN(String isbn);
 
     List<Book> getFavoriteBookList(User user);
+    
+    void validateBookInput(String bookTitle, String ISBN, String description, String cover);
 }
