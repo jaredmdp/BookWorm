@@ -19,8 +19,10 @@ import com.honda.bookworm.R;
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.UserManager;
+import honda.bookworm.Business.Managers.UserPreference;
 import honda.bookworm.Object.Book;
 import honda.bookworm.View.Extra.ImageConverter;
 
@@ -31,6 +33,8 @@ public class BookView_ViewHandler extends AppCompatActivity {
     private IUserManager userManager;
     private IAccessBooks accessBooks;
 
+    private IUserPreference userPreference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
 
         userManager = new UserManager();
         accessBooks = new AccessBooks();
+        userPreference = new UserPreference();
 
         Bundle bookInfo = getIntent().getExtras();
         thisBookISBN = bookInfo.getString("isbn");
@@ -136,13 +141,13 @@ public class BookView_ViewHandler extends AppCompatActivity {
         ToggleButton favButton = findViewById(R.id.book_view_fav_book_toggle);
         if(userManager.isUserLoggedIn()){
             favButton.setVisibility(View.VISIBLE);
-            favButton.setChecked(accessBooks.isBookFavourite(userManager.getActiveUser(),thisBookISBN));
+            favButton.setChecked(userPreference.isBookFavourite(userManager.getActiveUser(),thisBookISBN));
         }
     }
 
     public void isFavoriteClicked(View view) {
         /** Favorting process goes below**/
-        ((ToggleButton) view).setChecked(accessBooks.bookFavouriteToggle(thisBookISBN));
+        ((ToggleButton) view).setChecked(userPreference.bookFavouriteToggle(thisBookISBN));
     }
 
 }

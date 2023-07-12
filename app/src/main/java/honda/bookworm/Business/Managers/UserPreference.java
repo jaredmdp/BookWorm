@@ -7,21 +7,26 @@ import java.util.List;
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IUserPreference;
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
+import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 public class UserPreference implements IUserPreference {
     private IUserPersistence userPersistence;
 
+    private IBookPersistence bookPersistence;
+
     public UserPreference() {
         userPersistence = Services.getUserPersistence(true);
+        bookPersistence = Services.getBookPersistence(true);
     }
 
-    public UserPreference(IUserPersistence userPersistence){
+    public UserPreference(IUserPersistence userPersistence, IBookPersistence bookPersistence){
         this.userPersistence = userPersistence;
+        this.bookPersistence = bookPersistence;
     }
-
 
     public boolean isGenreFavourite(User user , Genre genre) {
         boolean isFavourite = false;
@@ -54,6 +59,39 @@ public class UserPreference implements IUserPreference {
             genreList = userPersistence.getFavoriteGenreList(user);
         }
         return genreList;
+    }
+
+    public boolean isBookFavourite(User user , String isbn) {
+        boolean isFavourite = false;
+        try {
+            if (user != null) {
+                isFavourite = bookPersistence.isBookFavoriteOfUser(user, isbn);
+            }
+        }catch (UserNotFoundException e){
+            e.printStackTrace();
+        }
+        return isFavourite;
+    }
+
+    public boolean bookFavouriteToggle(String isbn) {
+        boolean favState = false;
+        try {
+            if (Services.getActiveUser() != null && isbn != null) {
+                favState = bookPersistence.toggleUserBookFavorite(Services.getActiveUser(), isbn);
+            }
+        } catch (UserNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return favState;
+    }
+
+    public List<Book> getFavoriteBookList(User user) {
+        List<Book> bookList = new ArrayList<>();
+        if(user != null){
+            bookList = bookPersistence.getFavoriteBookList(user);
+        }
+        return bookList;
     }
 
 }

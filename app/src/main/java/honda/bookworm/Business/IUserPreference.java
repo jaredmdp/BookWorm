@@ -2,6 +2,7 @@ package honda.bookworm.Business;
 
 import java.util.List;
 
+import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
@@ -10,4 +11,10 @@ public interface IUserPreference {
     List<Genre> getFavoriteGenreList(User user);
 
     boolean genreFavouriteToggle(Genre genre);
+
+    boolean isBookFavourite(User u, String isbn);
+
+    boolean bookFavouriteToggle(String isbn);
+
+    List<Book> getFavoriteBookList(User user);
 }
