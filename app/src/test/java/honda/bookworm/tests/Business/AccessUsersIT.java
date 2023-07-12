@@ -26,8 +26,6 @@ import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.Managers.AccessUsers;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.UserManager;
-import honda.bookworm.Business.Exceptions.*;
-
 
 public class AccessUsersIT {
     private IAccessUsers accessUsers;
@@ -174,6 +172,7 @@ public class AccessUsersIT {
 
     @After
     public void tearDown(){
+        manager.logOutActiveUser();
         this.tempDB.delete();
     }
 }

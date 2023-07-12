@@ -48,31 +48,6 @@ public class AccessBooks implements IAccessBooks {
         return bookPersistence.addBook(newBook);
     }
 
-    public boolean isBookFavourite(User user , String isbn) {
-        boolean isFavourite = false;
-        try {
-            if (user != null) {
-                isFavourite = bookPersistence.isBookFavoriteOfUser(user, isbn);
-            }
-        }catch (UserNotFoundException e){
-            e.printStackTrace();
-        }
-        return isFavourite;
-    }
-
-    public boolean bookFavouriteToggle(String isbn) {
-        boolean favState = false;
-        try {
-            if (Services.getActiveUser() != null) {
-                favState = bookPersistence.toggleUserBookFavorite(Services.getActiveUser(), isbn);
-            }
-        } catch (UserNotFoundException e){
-            e.printStackTrace();
-        }
-
-        return favState;
-    }
-
     @Override
     public Book getBookByISBN(String isbn) throws InvalidISBNException {
         Book book = null;
@@ -85,15 +60,6 @@ public class AccessBooks implements IAccessBooks {
 
         return book;
     }
-
-    public List<Book> getFavoriteBookList(User user) {
-        List<Book> bookList = new ArrayList<>();
-        if(user != null){
-            bookList = bookPersistence.getFavoriteBookList(user);
-        }
-        return bookList;
-    }
-
 
     public String getTrimmedBookName(Book b) {
         String trimmedTitle = b.getName().trim();

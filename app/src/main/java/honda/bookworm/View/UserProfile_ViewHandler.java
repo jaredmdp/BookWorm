@@ -98,12 +98,11 @@ public class UserProfile_ViewHandler extends AppCompatActivity {
         List<Book> favoriteBooks;
         LinearLayout linearBody = findViewById(R.id.userprofile_linear_content_body);
 
-            favoriteBooks = accessBooks.getFavoriteBookList(activeUser);
+            favoriteBooks = userPreference.getFavoriteBookList(activeUser);
 
             if(!favoriteBooks.isEmpty()){
                 View horizontalScrollContainer = Book_horizontalscroll_constructor.create(UserProfile_ViewHandler.this,"Favorite Books",favoriteBooks);
                 linearBody.addView(horizontalScrollContainer);
-
             }
     }
 
