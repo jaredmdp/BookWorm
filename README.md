@@ -19,13 +19,17 @@ Our [Vision Statement](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13
 
 
 ## Features List  
-Iteration 1 [Features List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%201&label_name%5B%5D=Feature&first_page_size=20)
+Iteration 1 [Features List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%201&label_name%5B%5D=Feature&first_page_size=20)  
+Iteration 2 [Features List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%202&label_name%5B%5D=Feature&first_page_size=20)
 
 ## User Story List  
-Iteration 1 [User-Story List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%201&label_name%5B%5D=User%20Story&first_page_size=20)
+Iteration 1 [User-Story List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%201&label_name%5B%5D=User%20Story&first_page_size=20)  
+Iteration 2 [User-Story List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%202&label_name%5B%5D=User%20Story&first_page_size=20)
 
 ## Dev-task List  
-Iteration 1 [Dev-Tasks List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%201&label_name%5B%5D=Developer%20Task&first_page_size=20&page_after=eyJjcmVhdGVkX2F0IjoiMjAyMy0wNS0yOCAyMDoxMDo1Ni45ODI5MzcwMDAgKzAwMDAiLCJpZCI6IjEyMTIwIn0)
+Iteration 1 [Dev-Tasks List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%201&label_name%5B%5D=Developer%20Task&first_page_size=20&page_after=eyJjcmVhdGVkX2F0IjoiMjAyMy0wNS0yOCAyMDoxMDo1Ni45ODI5MzcwMDAgKzAwMDAiLCJpZCI6IjEyMTIwIn0)  
+Iteration 2 [Dev-Tasks List](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/issues/?sort=created_date&state=all&milestone_title=Iteration%202&label_name%5B%5D=Developer%20Task&first_page_size=20)
+
 
 
 ## Architecture  

@@ -2,8 +2,9 @@
 
 # Iteration 2 Worksheet
 
-## Paying off technical debt
-# Technical debt 1: Add Books Refactor
+## Paying off technical debt:
+
+### Technical debt 1: Add Books Refactor
 We felt this was technical debt as the logic for how addBook functioned was different from addUser and needed to be used differently.
 We felt this may cause slowdowns in the future as the inconsistency between our 2 add functions meant devs would need to understand and learn 2 different functions.
 They would also have to remember how each is used differently and this may lead to mistakes where 1 add function is used the way the other one is coded.
@@ -15,7 +16,7 @@ This was reckless inadvertent tech debt.
 Inadvertent as it was unintentionally done by the 2 different people that initially set up the 2 functions.
 Reckless as the issue stemmed from a lack of coordination, communication, and planning from the team.
 
-# Technical debt 2: Improving Exception descriptiveness
+### Technical debt 2: Improving Exception descriptiveness
 This was technical debt as it caused problems in development where we needed to very carefully examine what was being thrown to resolve bugs.
 Particularly we would have cases where it was not clear which exceptions were being caught or thrown since they were all generically 1 exception.
 
