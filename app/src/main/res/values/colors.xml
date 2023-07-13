@@ -18,4 +18,5 @@
     <color name="grass_green">#07ad62</color>
     <color name="inactive_grey">#61676D</color>
     <color name="warning_red">#e32914</color>
+    <color name="translucent_black">#78000000</color>
 </resources>

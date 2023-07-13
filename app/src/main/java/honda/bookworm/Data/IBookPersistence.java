@@ -13,6 +13,7 @@ public interface IBookPersistence {
     Book addBook(Book newBook);
     List<Book> getBooksByAuthor(String author);
     List<Book> getBooksByGenre(Genre genre);
+    public List<Book> getBooksByAuthorID(int authorID);
 
     boolean isBookFavoriteOfUser(User user, String isbn);
     boolean toggleUserBookFavorite(User user, String isbn);

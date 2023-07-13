@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
-import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
@@ -34,7 +34,7 @@ public class UserPreference implements IUserPreference {
             if (user != null && genre!=null) {
                 isFavourite = userPersistence.isGenreFavoriteOfUser(user, genre);
             }
-        }catch (UserNotFoundException e){
+        }catch (GeneralPersistenceException e){
             e.printStackTrace();
         }
         return isFavourite;
@@ -46,7 +46,7 @@ public class UserPreference implements IUserPreference {
             if (Services.getActiveUser() != null) {
                 favState = userPersistence.toggleUserGenreFavorite(Services.getActiveUser(), genre);
             }
-        } catch (UserNotFoundException e){
+        } catch (GeneralPersistenceException e){
             e.printStackTrace();
         }
 
@@ -67,7 +67,7 @@ public class UserPreference implements IUserPreference {
             if (user != null) {
                 isFavourite = bookPersistence.isBookFavoriteOfUser(user, isbn);
             }
-        }catch (UserNotFoundException e){
+        }catch (GeneralPersistenceException e){
             e.printStackTrace();
         }
         return isFavourite;
@@ -79,7 +79,7 @@ public class UserPreference implements IUserPreference {
             if (Services.getActiveUser() != null && isbn != null) {
                 favState = bookPersistence.toggleUserBookFavorite(Services.getActiveUser(), isbn);
             }
-        } catch (UserNotFoundException e){
+        } catch (GeneralPersistenceException e){
             e.printStackTrace();
         }
 

@@ -2,6 +2,7 @@ package honda.bookworm.Business.Managers;
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
 import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
+import honda.bookworm.Business.Exceptions.Users.InvalidSignupException;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Data.IUserPersistence;
@@ -46,74 +47,74 @@ public class AccessUsers implements IAccessUsers {
         return result;
     }
 
-    public boolean verifyUser(String username, String password) throws UserNotFoundException, InvalidPasswordException {
-        User user = null;
+    public void verifyUser(String username, String password) throws UserNotFoundException, InvalidPasswordException {
+        User user;
         try {
             user = userPersistence.getUserByUsername(username);
 
             if (user.getPassword().equals(password)) {
                 Services.setActiveUser(user);
-                return true;
             } else {
                 throw new InvalidPasswordException("Incorrect password provided");
             }
         } catch (GeneralPersistenceException e) {
             e.printStackTrace();
         }
-
-        return false;
     }
 
     //Validator functions----------------------------------------------------------------------------
-    public void validateUserInput(String first, String last, String username, String password) {
+    public void validateUserInput(String first, String last, String username, String password) throws InvalidSignupException {
         validateName(first);
         validateName(last);
         validateUsername(username);
         validatePassword(password);
     }
 
-    private static void validateName(String name) {
+    private static void validateName(String name) throws InvalidSignupException {
         if (StringValidator.isEmpty(name)) {
-            throw new IllegalStateException("Name must not be empty");
+            throw new InvalidSignupException("Name must not be empty");
         }
         if (!StringValidator.isAlphaOnly(name)) {
-            throw new IllegalStateException("Name can only contain alphabets");
+            throw new InvalidSignupException("Name can only contain alphabets");
         }
         if (StringValidator.isTooLong(name, MAX_LENGTH)) {
-            throw new IllegalStateException("Name cannot exceed "+MAX_LENGTH+" characters");
+            throw new InvalidSignupException("Name cannot exceed "+MAX_LENGTH+" characters");
         }
         if (StringValidator.isTooShort(name, MIN_LENGTH)) {
-            throw new IllegalStateException("Name must be at least "+MIN_LENGTH+" characters");
+            throw new InvalidSignupException("Name must be at least "+MIN_LENGTH+" characters");
         }
     }
 
-    private static void validateUsername(String username) {
+    private static void validateUsername(String username) throws InvalidSignupException {
         if (StringValidator.isEmpty(username)) {
-            throw new IllegalStateException("Username must not be empty");
+            throw new InvalidSignupException("Username must not be empty");
         }
         if (StringValidator.containsWhitespace(username)) {
-            throw new IllegalStateException("Username cannot contain spaces");
+            throw new InvalidSignupException("Username cannot contain spaces");
         }
         if (!StringValidator.isValidInput(username)) {
-            throw new IllegalStateException("Invalid characters used in the username");
+            throw new InvalidSignupException("Invalid characters used in the username");
         }
         if (StringValidator.isTooLong(username, MAX_LENGTH)) {
-            throw new IllegalStateException("Username cannot exceed "+MAX_LENGTH+" characters");
+            throw new InvalidSignupException("Username cannot exceed "+MAX_LENGTH+" characters");
         }
         if (StringValidator.isTooShort(username, MIN_LENGTH)) {
-            throw new IllegalStateException("Username must be at least "+MIN_LENGTH+" characters");
+            throw new InvalidSignupException("Username must be at least "+MIN_LENGTH+" characters");
         }
     }
 
-    private static void validatePassword(String password) {
+    private static void validatePassword(String password) throws InvalidSignupException{
+        if (StringValidator.isEmpty(password)) {
+            throw new InvalidSignupException("Password must not be empty");
+        }
         if (StringValidator.isTooLong(password, MAX_LENGTH)) {
-            throw new IllegalStateException("Password cannot exceed "+MAX_LENGTH+" characters");
+            throw new InvalidSignupException("Password cannot exceed "+MAX_LENGTH+" characters");
         }
         if (StringValidator.isTooShort(password, MIN_LENGTH)) {
-            throw new IllegalStateException("Password must be at least "+MIN_LENGTH+" characters");
+            throw new InvalidSignupException("Password must be at least "+MIN_LENGTH+" characters");
         }
         if (StringValidator.containsWhitespace(password)) {
-            throw new IllegalStateException("Password cannot contain whitespaces");
+            throw new InvalidSignupException("Password cannot contain whitespaces");
         }
     }
 

@@ -55,6 +55,7 @@
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="12dp"
                 android:textSize="19sp"
+                android:maxLength="45"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addbook_addimage_button" />

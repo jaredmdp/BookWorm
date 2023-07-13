@@ -148,12 +148,41 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
     }
 
     @Override
+    public List<Book> getBooksByAuthorID(int authorID) throws GeneralPersistenceException {
+        String sql = "SELECT b.*, u.first_name, u.last_name FROM Book b " +
+                "JOIN Author a ON b.author_id = a.author_id " +
+                "JOIN User u ON a.username = u.username " +
+                "WHERE a.author_id = ?";
+        List<Book> booksByAuthor = new ArrayList<>();
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            statement.setInt(1, authorID);
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final Book book = fromResultSet(result);
+                booksByAuthor.add(book);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Author ID: " + authorID + " does not exist");
+        }
+
+        return booksByAuthor;
+    }
+
+    @Override
     public List<Book> getBooksByAuthor(String author) throws GeneralPersistenceException {
         String sql = "SELECT b.*, u.first_name, u.last_name FROM Book b " +
                 "JOIN Author a ON b.author_id = a.author_id " +
                 "JOIN User u ON a.username = u.username " +
-                "WHERE LOWER(u.username) = LOWER(?) " +
-                "OR LOWER(u.first_name) LIKE LOWER(?) " +
+                "WHERE LOWER(u.first_name) LIKE LOWER(?) " +
                 "OR LOWER(u.last_name) LIKE LOWER(?) " +
                 "OR (LOWER(u.first_name) || ' ' || LOWER(u.last_name)) LIKE LOWER(?)";
         List<Book> booksByAuthor = new ArrayList<>();
@@ -162,10 +191,9 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         try (final Connection c = connection()) {
             final PreparedStatement statement = c.prepareStatement(sql);
 
-            statement.setString(1, author.toLowerCase());
+            statement.setString(1, searchValue);
             statement.setString(2, searchValue);
             statement.setString(3, searchValue);
-            statement.setString(4, searchValue);
 
             final ResultSet result = statement.executeQuery();
 
@@ -183,7 +211,6 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
 
         return booksByAuthor;
     }
-
     @Override
     public List<Book> getBooksByGenre(Genre genre) throws GeneralPersistenceException {
         List<Book> booksByGenre = new ArrayList<>();

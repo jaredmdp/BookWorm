@@ -4,12 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
+import honda.bookworm.Business.Exceptions.Users.InvalidSignupException;
 import honda.bookworm.Data.Stubs.UserPersistenceStub;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.User;
@@ -17,6 +22,7 @@ import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.Managers.AccessUsers;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.UserManager;
+import honda.bookworm.Application.Services;
 
 public class AccessUsersTest {
 
@@ -57,12 +63,12 @@ public class AccessUsersTest {
         System.out.println("Starting testVerifyUserTrue");
 
         //exists in stub already
-        String username = "johndoe";
-        String password = "password1";
+        User newUser = new User("jared", "Mandap", "mandapj", "pass123");
 
-        boolean result = signUp.verifyUser(username, password);
-
-        assertTrue(result);
+        //insert
+        userPersistence.addUser(newUser);
+        signUp.verifyUser("mandapj", "pass123");
+        assertEquals(newUser, Services.getActiveUser());
 
         System.out.println("Finished testVerifyUserTrue");
     }
@@ -75,12 +81,7 @@ public class AccessUsersTest {
         String username = "janedoe";
         String password = "password1";
 
-        try {
-            boolean result = signUp.verifyUser(username, password);
-            assertFalse(result);
-        } catch (Exception e) {
-            System.out.println("Failed to verify user: " + e.getMessage());
-        }
+        assertThrows(UserNotFoundException.class, () -> signUp.verifyUser(username, password));
 
         System.out.println("Finished testVerifyUserFalseNotFound");
     }
@@ -93,12 +94,7 @@ public class AccessUsersTest {
         String username = "johndoe";
         String badPassword = "Dumb Password";
 
-        try{
-            boolean result = signUp.verifyUser(username, badPassword);
-            assertFalse(result);
-        } catch(Exception e){
-            System.out.println("Failed to verify user: " + e.getMessage());
-        }
+        assertThrows(InvalidPasswordException.class, () -> signUp.verifyUser(username, badPassword));
 
         System.out.println("Finished testVerifyUserFalsePasswordWrong");
     }
@@ -128,7 +124,7 @@ public class AccessUsersTest {
 
         try{
             assertFalse(manager.getAllUsers().contains(newUser)); //not inserting a duplicate user
-            User result = signUp.addNewUser("Johnathon", "Doe the Third", "johnthe3", "123", false);
+            signUp.addNewUser("Johnathon", "Doe the Third", "johnthe3", "123", false);
         } catch(Exception e){
             System.out.println("Failed to insert user: " + e.getMessage());
         }
@@ -206,103 +202,107 @@ public class AccessUsersTest {
         try {
             signUp.validateUserInput("John", "Doe", "johndoe", "password1");
         } catch (Exception e) {
-            assertTrue("Valid input should not throw an exception", false);
+            fail("Valid input should not throw an exception");
         }
 
-        //Test empty first name
-        try {
-            signUp.validateUserInput("", "Doe", "johndoe", "password1");
-            assertTrue("Empty first name should throw an exception", false);
-        } catch (Exception e) {
-            assertEquals("Name must not be empty", e.getMessage());
-        }
+        //Test empty name
+        assertThrows(InvalidSignupException.class, () -> signUp.validateUserInput("", "Doe", "johndoe", "password1"));
+
 
         //Test invalid characters in first name
         try {
             signUp.validateUserInput("John123", "Doe", "johndoe", "password1");
-            assertTrue("Invalid characters in first name should throw an exception", false);
+            fail("Invalid characters in first name should throw an exception");
         } catch (Exception e) {
-            assertEquals("Name can only contain alphabets", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test too long first name
         try {
             signUp.validateUserInput("Johnathonathonathonathon", "Doe", "johndoe", "password1");
-            assertTrue("Too long first name should throw an exception", false);
+            fail("Too long first name should throw an exception");
         } catch (Exception e) {
-            assertEquals("Name cannot exceed 16 characters", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test too short first name
         try {
             signUp.validateUserInput("J", "Doe", "johndoe", "password1");
-            assertTrue("Too short first name should throw an exception", false);
+            fail("Too short first name should throw an exception");
         } catch (Exception e) {
-            assertEquals("Name must be at least 3 characters", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test empty username
         try {
             signUp.validateUserInput("John", "Doe", "", "password1");
-            assertTrue("Empty username should throw an exception", false);
+            fail("Empty username should throw an exception");
         } catch (Exception e) {
-            assertEquals("Username must not be empty", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test whitespace in username
         try {
             signUp.validateUserInput("John", "Doe", "john doe", "password1");
-            assertTrue("Whitespace in username should throw an exception", false);
+            fail("Whitespace in username should throw an exception");
         } catch (Exception e) {
-            assertEquals("Username cannot contain spaces", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test invalid characters in username
         try {
             signUp.validateUserInput("John", "Doe", "john@doe", "password1");
-            assertTrue("Invalid characters in username should throw an exception", false);
+            fail("Invalid characters in username should throw an exception");
         } catch (Exception e) {
-            assertEquals("Invalid characters used in the username", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test too long username
         try {
             signUp.validateUserInput("John", "Doe", "johndoejohndoejohndoe", "password1");
-            assertTrue("Too long username should throw an exception", false);
+            fail("Too long username should throw an exception");
         } catch (Exception e) {
-            assertEquals("Username cannot exceed 16 characters", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test too short username
         try {
             signUp.validateUserInput("John", "Doe", "j", "password1");
-            assertTrue("Too short username should throw an exception", false);
+            fail("Too short username should throw an exception");
         } catch (Exception e) {
-            assertEquals("Username must be at least 3 characters", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test too short password
         try {
             signUp.validateUserInput("John", "Doe", "johndoe", "12");
-            assertTrue("Too short password should throw an exception", false);
+            fail("Too short password should throw an exception");
         } catch (Exception e) {
-            assertEquals("Password must be at least 3 characters", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test too long password
         try {
             signUp.validateUserInput("John", "Doe", "johndoe", "passwordpasswordpassword");
-            assertTrue("Too long password should throw an exception", false);
+            fail("Too long password should throw an exception");
         } catch (Exception e) {
-            assertEquals("Password cannot exceed 16 characters", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         //Test whitespace in password
         try {
             signUp.validateUserInput("John", "Doe", "johndoe", "password 1");
-            assertTrue("Whitespace in password should throw an exception", false);
+            fail("Whitespace in password should throw an exception");
         } catch (Exception e) {
-            assertEquals("Password cannot contain whitespaces", e.getMessage());
+            assertTrue(e instanceof InvalidSignupException);
+        }
+
+        //Test empty password
+        try {
+            signUp.validateUserInput("John", "Doe", "username", "");
+            fail("Password can't be empty");
+        } catch (Exception e) {
+            assertTrue(e instanceof InvalidSignupException);
         }
 
         System.out.println("Finished testValidateUserInput");

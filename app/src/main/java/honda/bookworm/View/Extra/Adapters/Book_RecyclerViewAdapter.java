@@ -48,7 +48,9 @@ public class Book_RecyclerViewAdapter extends RecyclerView.Adapter<Book_Recycler
        if(!bookList.get(position).getCover().equals("")) {
            holder.bookImage.setForeground(null);
            holder.bookImage.setImageBitmap(ImageConverter.DecodeToBitmap(bookList.get(position).getCover()));
-        }
+        }else{
+           holder.reset();
+       }
     }
 
     @Override
@@ -71,6 +73,11 @@ public class Book_RecyclerViewAdapter extends RecyclerView.Adapter<Book_Recycler
             bookImage = itemView.findViewById(R.id.recycler_book_image);
 
             itemView.setOnClickListener(this);
+        }
+
+        public void reset(){
+            bookImage.setForeground(context.getDrawable(R.mipmap.ic_launcher_foreground));
+            bookImage.setImageResource(R.drawable.shape_empty_book);
         }
 
         @Override

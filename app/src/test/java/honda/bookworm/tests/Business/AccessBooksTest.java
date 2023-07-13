@@ -1,11 +1,21 @@
 package honda.bookworm.tests.Business;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.SearchManager;
@@ -13,6 +23,7 @@ import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
+import honda.bookworm.Object.User;
 
 public class AccessBooksTest {
     private AccessBooks accessBooks;
@@ -55,6 +66,25 @@ public class AccessBooksTest {
         assertEquals("Trimmed title must be equal to actual book title", testBook.getName().length(), trimmed.length());
 
         System.out.println("\nFinished getTrimmedBookTitles Test");
+    }
+
+    @Test
+    public void testAddBookSuccess() {
+        System.out.println("\nStarting testAddBookSuccess");
+
+        Book result = null;
+        try {
+            result = accessBooks.addBook("Awesome Book", Genre.SciFi, "1111111111111", "asd", "", true);
+        } catch (Exception e) {
+            fail();
+        }
+
+        List<Book> bookList = accessBooks.getAuthorIDBookList(0);
+        boolean isBookAdded = bookList.contains(result);
+
+        assertTrue(isBookAdded);
+
+        System.out.println("\nFinished testAddBookSuccess");
     }
 
     @Test
@@ -110,6 +140,23 @@ public class AccessBooksTest {
     }
 
     @Test
+    public void testAddBookISBN_FailLength(){
+        System.out.println("\nStarting testAddBookISBNFail");
+
+        String wrongISBNLength = "123456";
+
+        try{
+            accessBooks.addBook("asd", Genre.SciFi, wrongISBNLength, "asd", "", true);
+            assert(false);
+        }
+        catch(Exception e){
+            assert(e instanceof InvalidBookException);
+        }
+
+        System.out.println("\nFinished testAddBookISBNFail");
+    }
+
+    @Test
     public void testAddBookDescriptionFail(){
         System.out.println("\nStarting testAddBookDescriptionFail");
 
@@ -154,4 +201,72 @@ public class AccessBooksTest {
 
         System.out.println("\nFinished testAddBookCoverFail");
     }
+
+    @Test
+    public void testAddBookGenreFail(){
+        System.out.println("\nStarting testAddBookGenreFail");
+
+        try{
+            accessBooks.addBook("asd", null, "1111111111111", "asd", "", true);
+            assert(false);
+        }
+        catch(Exception e){
+            assert(e instanceof InvalidGenreException);
+        }
+
+        System.out.println("\nFinished testAddBookGenreFail");
+    }
+
+    @Test
+    public void testBookByISBN_Success() {
+        System.out.println("\nStarting testBookByISBN");
+
+        Book result = accessBooks.getBookByISBN("5780100220888");
+        assertEquals(result.getName(), "Atomic Habits");
+        assertEquals(result.getISBN(), "5780100220888");
+        assertEquals(result.getAuthor(), "James Clear");
+        assertEquals(result.getAuthorID(), 15);
+
+        System.out.println("\nFinished testBookByISBN");
+    }
+
+    @Test
+    public void testGetBookByAuthorID() {
+        System.out.println("\nStarting testGetBookByAuthorID");
+        List<Book> newList = new ArrayList<>();
+        try {
+            newList = accessBooks.getAuthorIDBookList(0);
+        } catch (AuthorNotFoundException e) {
+            fail(); //should not error
+        }
+
+        assertEquals(newList.size(), 5);
+
+        System.out.println("\nFinished testGetBookByAuthorID");
+    }
+
+    @Test
+    public void testGetBookByAuthorID_Fail() {
+        System.out.println("\nStarting testGetBookByAuthorID_Fail");
+        try {
+            assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
+        } catch (AuthorNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("\nFinished testGetBookByAuthorID_Fail");
+    }
+
+    @Test
+    public void testAddBookNonAuthor_Fail () {
+        System.out.println("\nStarting testAddBookNonAuthor_Fail");
+
+        User newUser = new User("Jared", "Mandap", "mandapj", "pass123");
+        Services.setActiveUser(newUser);
+
+        assertThrows(IllegalStateException.class, () -> accessBooks.addBook("asd", Genre.SciFi, "1111111111111", "", "", true));
+
+        System.out.println("\nFinished testAddBookNonAuthor_Fail");
+    }
+
 }

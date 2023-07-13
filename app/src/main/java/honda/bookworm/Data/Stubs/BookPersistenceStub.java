@@ -339,6 +339,17 @@ public class BookPersistenceStub implements IBookPersistence {
         }
         return matchingBooks;
     }
+
+    @Override
+    public List<Book> getBooksByAuthorID(int authorID)  {
+        List<Book> matchingBooks = new ArrayList<>();
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getAuthorID() == authorID) {
+                matchingBooks.add(books.get(i));
+            }
+        }
+        return matchingBooks;
+    }
     @Override
     public Book addBook(Book newBook) {
         Book result = null;

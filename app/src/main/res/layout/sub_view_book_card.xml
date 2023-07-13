@@ -8,15 +8,18 @@
     tools:context="honda.bookworm.View.Home_ViewHandler">
 
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/book_card_parent"
         android:layout_width="wrap_content"
         android:layout_height="170dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="18dp"
         app:cardBackgroundColor="?attr/colorSecondaryVariant"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="5dp"
+        app:cardElevation="4dp"
+        app:strokeColor="?attr/colorSecondaryVariant"
+        app:strokeWidth="1dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -27,36 +30,34 @@
                 android:id="@+id/book_card_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_centerHorizontal="true"
-                android:alpha=".5"
-                android:src="@mipmap/ic_launcher_foreground"
                 android:adjustViewBounds="true"
-                app:tint="@color/black"
-                android:maxWidth="125dp"/>
+                android:maxWidth="125dp"
+                android:src="@mipmap/ic_launcher_foreground" />
 
             <TextView
                 android:id="@+id/book_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginBottom="25dp"
                 android:elegantTextHeight="true"
-                android:maxLines="2"
-                android:text="Book_Title"
                 android:maxWidth="125dp"
-                android:minWidth="80dp"
+                android:maxLines="2"
+                android:minWidth="125dp"
+                android:text="Book_Title"
                 android:textAlignment="center"
                 android:translationZ="25dp"
                 app:autoSizeMaxTextSize="18sp"
                 app:autoSizeMinTextSize="12sp"
                 app:autoSizeTextType="uniform" />
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

@@ -12,7 +12,6 @@ import java.util.List;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
-import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 import honda.bookworm.Business.Exceptions.Users.*;
@@ -52,16 +51,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             throw new UserNotFoundException("No Users found");
         }
         return allUsers;
-    }
-
-    @Override
-    public List<Author> getAllAuthors() {
-        return null;
-    }
-
-    @Override
-    public List<Book> getAllWrittenBooks(String author) {
-        return null;
     }
 
     @Override

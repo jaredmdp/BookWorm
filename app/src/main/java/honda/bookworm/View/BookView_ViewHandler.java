@@ -1,7 +1,5 @@
 package honda.bookworm.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +11,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
-import honda.bookworm.Application.Services;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.IUserPreference;
@@ -29,7 +28,7 @@ import honda.bookworm.View.Extra.ImageConverter;
 public class BookView_ViewHandler extends AppCompatActivity {
 
     private final int MIN = 7;
-    private String thisBookISBN;
+    private Book book;
     private IUserManager userManager;
     private IAccessBooks accessBooks;
 
@@ -45,17 +44,16 @@ public class BookView_ViewHandler extends AppCompatActivity {
         userPreference = new UserPreference();
 
         Bundle bookInfo = getIntent().getExtras();
-        thisBookISBN = bookInfo.getString("isbn");
+        String bookISBN = bookInfo.getString("isbn");
 
-        /** TODO: apply the proper logic for fetch bookByISBN **/
-        Book bk = Services.getBookPersistence(false).getBookByISBN(thisBookISBN);
+        this.book = accessBooks.getBookByISBN(bookISBN);
 
-        assignValues(bk.getName(), bk.getAuthor(), bk.getGenre().toString(), bk.getISBN(), bk.getDescription(), bk.getCover());
+        assignValues();
         applyHideOnScroll();
     }
 
     //need to figure out image
-    private void assignValues(String bookTitle, String bookAuthor, String bookGenre, String bookIsbn, String bookDescription, String cover) {
+    private void assignValues() {
         TextView title = findViewById(R.id.book_view_book_title);
         TextView author = findViewById(R.id.book_view_book_author);
         TextView genre = findViewById(R.id.book_view_book_genre);
@@ -64,42 +62,49 @@ public class BookView_ViewHandler extends AppCompatActivity {
         TextView collapseButton = findViewById(R.id.book_view_book_description_toggle);
         ImageView coverView = findViewById(R.id.book_view_book_cover);
 
-        title.setText(String.format("%s %s", title.getText(), bookTitle));
-        author.setText(String.format("%s %s", author.getText(), bookAuthor));
-        genre.setText(String.format("%s %s", genre.getText(), bookGenre));
-        isbn.setText(String.format("%s %s", isbn.getText(), bookIsbn));
-        description.setText(String.format("%s %s", description.getText(), bookDescription));
+        title.setText(String.format("%s %s", title.getText(), book.getName()));
+        author.setText(String.format("%s %s", author.getText(), book.getAuthor()));
+        genre.setText(String.format("%s %s", genre.getText(), book.getGenre()));
+        isbn.setText(String.format("%s %s", isbn.getText(), book.getISBN()));
+        description.setText(String.format("%s %s", description.getText(), book.getDescription()));
 
-        if(!cover.equals(""))
-        {
+        if (!book.getCover().equals("")) {
             coverView.setForeground(null);
-            coverView.setImageBitmap(ImageConverter.DecodeToBitmap(cover));
+            coverView.setImageBitmap(ImageConverter.DecodeToBitmap(book.getCover()));
         }
 
         description.post(new Runnable() {
             @Override
             public void run() {
-                if(description.getLineCount()<=MIN){
+                if (description.getLineCount() <= MIN) {
                     collapseButton.setVisibility(View.GONE);
                 }
             }
         });
 
-        String url = String.format("https://www.amazon.ca/s?k=%s", bookTitle.toLowerCase().replaceAll(" ", "+"));
-        createPurchaseButtonViewListener(url);
+
+        createPurchaseButtonViewListener();
         setUpFavoriting();
     }
 
-    private void createPurchaseButtonViewListener(String url) {
+    private void createPurchaseButtonViewListener() {
         MaterialButton purchaseButton = findViewById(R.id.book_view_book_purchase_link);
-        purchaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri webLink = Uri.parse(url);
-                Intent webIntent = new Intent(Intent.ACTION_VIEW, webLink);
-                startActivity(webIntent);
-            }
-        });
+
+        if (book.getPurchaseable()) {
+            String url = String.format("https://www.amazon.ca/s?k=%s",
+                    book.getName().toLowerCase().replaceAll(" ", "+"));
+
+            purchaseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri webLink = Uri.parse(url);
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW, webLink);
+                    startActivity(webIntent);
+                }
+            });
+        } else {
+            purchaseButton.setVisibility(View.GONE);
+        }
     }
 
     public void expandCollapseDescription(View v) {
@@ -107,10 +112,10 @@ public class BookView_ViewHandler extends AppCompatActivity {
         TextView description = findViewById(R.id.book_view_book_description);
         LinearLayout floatContent = findViewById(R.id.book_view_floating_content);
 
-        if(description.getMaxLines()<=MIN){
-            description.setMaxLines(description.getLineCount()+1);
+        if (description.getMaxLines() <= MIN) {
+            description.setMaxLines(description.getLineCount() + 1);
             toggleText.setText("[Collapse]");
-        }else{
+        } else {
             description.setMaxLines(MIN);
             toggleText.setText("[Expand]");
             floatContent.setVisibility(View.VISIBLE);
@@ -118,18 +123,18 @@ public class BookView_ViewHandler extends AppCompatActivity {
 
     }
 
-    public void applyHideOnScroll(){
+    public void applyHideOnScroll() {
         LinearLayout hideOnScroll = findViewById(R.id.book_view_floating_content);
         ScrollView scrollView = findViewById(R.id.book_view_scrollview);
 
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.i("Curr Y",""+scrollY);
-                Log.i("Old Y",""+oldScrollY);
-                if(scrollY>oldScrollY) {
+                Log.i("Curr Y", "" + scrollY);
+                Log.i("Old Y", "" + oldScrollY);
+                if (scrollY > oldScrollY) {
                     hideOnScroll.setVisibility(View.GONE);
-                }else{
+                } else {
                     hideOnScroll.setVisibility(View.VISIBLE);
                 }
             }
@@ -137,17 +142,16 @@ public class BookView_ViewHandler extends AppCompatActivity {
 
     }
 
-    private void setUpFavoriting(){
+    private void setUpFavoriting() {
         ToggleButton favButton = findViewById(R.id.book_view_fav_book_toggle);
-        if(userManager.isUserLoggedIn()){
+        if (userManager.isUserLoggedIn()) {
             favButton.setVisibility(View.VISIBLE);
-            favButton.setChecked(userPreference.isBookFavourite(userManager.getActiveUser(),thisBookISBN));
+            favButton.setChecked(userPreference.isBookFavourite(userManager.getActiveUser(), book.getISBN()));
         }
     }
 
     public void isFavoriteClicked(View view) {
-        /** Favorting process goes below**/
-        ((ToggleButton) view).setChecked(userPreference.bookFavouriteToggle(thisBookISBN));
+        ((ToggleButton) view).setChecked(userPreference.bookFavouriteToggle(book.getISBN()));
     }
 
 }

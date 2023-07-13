@@ -1,26 +1,18 @@
 package honda.bookworm.View.Extra;
 
 import android.app.Activity;
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.view.LayoutInflater;
 import android.widget.Toast;
-
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class ImageImporter{
     private static final int REQUEST_CODE = 1;
     private static final int PICK_IMAGE = 1;
-    private static final int MAX_FILE_SIZE = 5 * (1024 * 1024) ; // 5MB
+
+    private static final int MB = 2;
+    private static final int MAX_FILE_SIZE = MB * (1024 * 1024) ;
 
 
     public static void importImage(Activity parentActivity) {
@@ -48,7 +40,7 @@ public class ImageImporter{
         boolean validSize = size<MAX_FILE_SIZE;
 
         if(!validSize) {
-            Toast.makeText(c, "Image Size must not exceed: 5MB", Toast.LENGTH_LONG).show();
+            Toast.makeText(c, "Image too large, try a smaller image", Toast.LENGTH_LONG).show();
         }
 
         return validSize;

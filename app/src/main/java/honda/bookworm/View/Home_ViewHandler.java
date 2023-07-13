@@ -42,6 +42,7 @@ public class Home_ViewHandler extends AppCompatActivity {
     private IUserManager userManager;
     private ISearchManager searchManager;
     private Vibrator sysVibrator;
+    protected static boolean bookAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class Home_ViewHandler extends AppCompatActivity {
         accessBooks = new AccessBooks();
         userManager = new UserManager();
         searchManager = new SearchManager();
+        bookAdded = false;
 
         sysVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         customizeToUser();
@@ -198,6 +200,15 @@ public class Home_ViewHandler extends AppCompatActivity {
                 out.close();
                 in.close();
             }
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(bookAdded){
+            startActivity(getIntent());
+            finishAffinity();
         }
     }
 }
