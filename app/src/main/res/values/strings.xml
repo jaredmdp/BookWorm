@@ -4,5 +4,14 @@
     <string name="sign_up">Sign Up</string>
     <string name="user_name">Username</string>
     <string name="password">Password</string>
+    <string name="logout">Logout</string>
 
+    <string name="fatalError">Fatal error</string>
+    <string name="warning">Warning</string>
+
+    <string name="searchBy">Search By </string>
+    <string name="searchResultHeading">Search Results for: </string>
+    <string name="searchError">Sorry we either don\'t have what you are looking for, or the right search category isn\'t selected.</string>
+
+    <string name="isPurchaseWarningMsg">WARNING: If the book is not available to purchase from Amazon. Unexpected results will be displayed.</string>
 </resources>

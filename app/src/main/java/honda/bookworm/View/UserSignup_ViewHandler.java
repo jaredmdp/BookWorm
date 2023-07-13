@@ -1,18 +1,20 @@
 package honda.bookworm.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.content.Intent;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.honda.bookworm.R;
 
-import honda.bookworm.Business.AccessUsers;
+import honda.bookworm.Business.Exceptions.Users.UserException;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.Managers.AccessUsers;
 
 public class UserSignup_ViewHandler extends AppCompatActivity {
 
@@ -21,7 +23,7 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private CheckBox isAuthorCheckbox;
-    private AccessUsers accessUsers;
+    private IAccessUsers accessUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +41,13 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
 
     private void processUserInput(String firstName, String lastName, String username, String password, boolean isAuthor) {
         boolean signUpState = false;
-        String msg = "";
+        String message = "";
 
         try {
             accessUsers.addNewUser(firstName, lastName, username, password, isAuthor);
             signUpState = true;
-        } catch (IllegalStateException e) {
-            msg = String.format(("Invalid Sign-up: %s"), e.getMessage());
+        } catch (UserException e) {
+            message = e.getMessage();
         }
 
         //redirect to Homepage if signup was successful
@@ -54,7 +56,7 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
             startActivity(intent);
             finishAffinity();
         } else {
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
     }
 

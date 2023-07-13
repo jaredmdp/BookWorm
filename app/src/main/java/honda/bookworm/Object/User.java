@@ -8,8 +8,7 @@ public class User {
     private String lastName;
     private String username;
     private String password;
-    private ArrayList<Book> wishlist;
-    private ArrayList<String> favoriteGenres;
+    private ArrayList<Genre> favoriteGenres;
     private ArrayList<Book> favoriteBooks;
 
     public User(String firstName, String lastName, String username, String password) {
@@ -17,7 +16,6 @@ public class User {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        wishlist = new ArrayList<>();
         favoriteGenres = new ArrayList<>();
         favoriteBooks = new ArrayList<>();
     }
@@ -56,34 +54,25 @@ public class User {
     }
 
     //Getting the Arraylists
-    public ArrayList<Book> getWishlist() {
-        return wishlist;
-    }
-
     public ArrayList<Book> getFavoriteBooks() {
         return favoriteBooks;
     }
 
-    public ArrayList<String> getFavoriteGenres() {
+    public ArrayList<Genre> getFavoriteGenres() {
         return favoriteGenres;
     }
 
-    //Adding and Removing items from Wishlist, Favorite Genres, and Favorite Books
-    public void addToWishlist(Book book) {
-        wishlist.add(book);
-    }
 
-    public void removeFromWishlist(Book book) {
-        wishlist.remove(book);
-    }
-
-    public void addToFavoriteGenres(String genre) {
+    //Comparing, Adding and Removing items, Favorite Genres, and Favorite Books
+    public void addToFavoriteGenres(Genre genre) {
         favoriteGenres.add(genre);
     }
 
-    public void removeFromFavoriteGenres(String genre) {
+    public void removeFromFavoriteGenres(Genre genre) {
         favoriteGenres.remove(genre);
     }
+
+    public boolean isFavouriteGenre(Genre genre) { return favoriteGenres.contains(genre); }
 
     public void addToFavoriteBooks(Book book) {
         favoriteBooks.add(book);
@@ -92,6 +81,8 @@ public class User {
     public void removeFromFavoriteBooks(Book book) {
         favoriteBooks.remove(book);
     }
+
+    public boolean isFavouriteBook(Book book) { return favoriteBooks.contains(book); }
 
     public String toString() {
         return "User: " +
@@ -117,7 +108,6 @@ public class User {
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(wishlist, user.wishlist) &&
                 Objects.equals(favoriteGenres, user.favoriteGenres) &&
                 Objects.equals(favoriteBooks, user.favoriteBooks);
     }
