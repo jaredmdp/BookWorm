@@ -12,6 +12,4 @@ public interface IAccessBooks {
     public List<Book> getAuthorIDBookList (int authorID);
 
     Book getBookByISBN(String isbn);
-
-    void validateBookInput(String bookTitle, String ISBN, String description,Genre genre, String cover);
 }
