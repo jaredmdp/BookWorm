@@ -8,7 +8,6 @@ import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
-import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Author;
