@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 
 import honda.bookworm.tests.Business.AccessBooksTest;
 import honda.bookworm.tests.Business.AccessUsersTest;
-import honda.bookworm.tests.Data.BookPersistenceStubTest;
-import honda.bookworm.tests.Data.UserPersistenceStubTest;
+import honda.bookworm.tests.Business.SearchManagerTest;
+import honda.bookworm.tests.Business.UserPreferenceTest;
 import honda.bookworm.tests.Object.BookTest;
 import honda.bookworm.tests.Object.UserTest;
 import honda.bookworm.tests.Object.AuthorTest;
@@ -17,11 +17,11 @@ import honda.bookworm.tests.Business.StringValidatorTest;
         BookTest.class,
         UserTest.class,
         AuthorTest.class,
-        UserPersistenceStubTest.class,
-        BookPersistenceStubTest.class,
         StringValidatorTest.class,
         AccessBooksTest.class,
-        AccessUsersTest.class
+        AccessUsersTest.class,
+        SearchManagerTest.class,
+        UserPreferenceTest.class
 })
 
 public class AllUnitTests {

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="2dp"
+    android:paddingVertical="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/books_horizontal_info_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="ContainerInfo"
+            android:textSize="25sp"
+            android:layout_weight="1"
+            />
+
+
+        <ImageButton
+            android:id="@+id/books_horizontal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            app:tint="?colorSecondary"
+            android:onClick="HorizontalViewButtonClicked"
+            android:visibility="gone"
+            android:src="@drawable/icon_add" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/books_horizontal_msg_on_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fatalError"
+        android:visibility="gone"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/books_horizontal_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

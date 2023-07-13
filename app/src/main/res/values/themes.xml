@@ -13,7 +13,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="colorTertiaryFixedDim">#b3f7f3f0</item>
+        <item name="colorTertiaryFixedDim">#e6f2eef5</item>
     </style>
     <style name="Theme.BookWorm.NoActionBar">
         <item name="windowActionBar">false</item>

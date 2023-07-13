@@ -4,9 +4,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-import honda.bookworm.Business.StringValidator;
+import honda.bookworm.Business.Managers.StringValidator;
 
 public class StringValidatorTest {
+
+    private static final int TEST_MAX = 16;
+    private static final int TEST_MIN = 3;
 
     @Test
     public void testIsEmpty() {
@@ -61,8 +64,8 @@ public class StringValidatorTest {
     public void testIsTooLong() {
         System.out.println("Starting testIsTooLong");
 
-        assertTrue(StringValidator.isTooLong("ThisStringIsTooLong"));
-        assertFalse(StringValidator.isTooLong("Short"));
+        assertTrue(StringValidator.isTooLong("ThisStringIsTooLong", TEST_MAX));
+        assertFalse(StringValidator.isTooLong("Short", TEST_MAX));
 
         System.out.println("Finished testIsTooLong");
     }
@@ -71,8 +74,8 @@ public class StringValidatorTest {
     public void testIsTooShort() {
         System.out.println("Starting testIsTooShort");
 
-        assertTrue(StringValidator.isTooShort("A"));
-        assertFalse(StringValidator.isTooShort("LongEnough"));
+        assertTrue(StringValidator.isTooShort("A", TEST_MIN));
+        assertFalse(StringValidator.isTooShort("LongEnough", TEST_MIN));
 
         System.out.println("Finished testIsTooShort");
     }

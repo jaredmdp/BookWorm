@@ -103,8 +103,8 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
-        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
+        Book book1 = new Book("Book 1", "Author 1", 0, Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", 1, Genre.Fantasy, "1235");
 
         user.addToFavoriteBooks(book1);
         user.addToFavoriteBooks(book2);
@@ -122,8 +122,8 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
-        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
+        Book book1 = new Book("Book 1", "Author 1", 0, Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", 1, Genre.Fantasy, "1235");
 
         user.addToFavoriteBooks(book1);
         user.addToFavoriteBooks(book2);
@@ -144,8 +144,8 @@ public class UserTest {
 
         User user = new User("John", "Doe", "johndoe", "hunter2");
 
-        Book book1 = new Book("Book 1", "Author 1", Genre.Fiction, "1234");
-        Book book2 = new Book("Book 2", "Author 2", Genre.Fantasy, "1235");
+        Book book1 = new Book("Book 1", "Author 1", 0, Genre.Fiction, "1234");
+        Book book2 = new Book("Book 2", "Author 2", 1, Genre.Fantasy, "1235");
 
         user.addToFavoriteBooks(book1);
 

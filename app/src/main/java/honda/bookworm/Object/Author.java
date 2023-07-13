@@ -5,9 +5,16 @@ import java.util.Objects;
 
 public class Author extends User {
     private ArrayList<Book> writtenBooks;
+    private int authorID;
 
     public Author(String firstName, String lastName, String username, String password) {
         super(firstName, lastName, username, password);
+        writtenBooks = new ArrayList<>();
+    }
+
+    public Author(String firstName, String lastName, String username, String password, int authorID) {
+        super(firstName, lastName, username, password);
+        this.authorID = authorID;
         writtenBooks = new ArrayList<>();
     }
 
@@ -22,6 +29,10 @@ public class Author extends User {
     public void removeWrittenBook(Book book) {
         writtenBooks.remove(book);
     }
+
+    public int getAuthorID() {return authorID;}
+
+    public void setAuthorID(int authorID) {this.authorID = authorID;}
 
     public String toString() {
         return "Author: " +
@@ -47,6 +58,6 @@ public class Author extends User {
 
         Author author = (Author) compare;
 
-        return Objects.equals(writtenBooks, author.writtenBooks);
+        return Objects.equals(writtenBooks, author.writtenBooks) && (authorID == author.getAuthorID());
     }
 }

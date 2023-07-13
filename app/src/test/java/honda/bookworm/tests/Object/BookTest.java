@@ -15,12 +15,12 @@ public class BookTest {
     public void testBookGet() {
         System.out.println("\nStarting BookGet");
 
-        Book book = new Book("Dune", "Frank Herbert", Genre.SciFi, "9780399128967");
+        Book book = new Book("Dune", "Frank Herbert", 0, Genre.SciFi, "9780399128967");
 
         assertEquals("Dune", book.getName());
         assertEquals("Frank Herbert", book.getAuthor());
-        assertFalse(book.getGenre().isEmpty());
-        assertEquals(Genre.SciFi, book.getGenre().get(0));
+        assertEquals(0, book.getAuthorID());
+        assertEquals(Genre.SciFi, book.getGenre());
         assertEquals("9780399128967", book.getISBN());
 
         System.out.println("\nFinished BookGet");
@@ -30,65 +30,34 @@ public class BookTest {
     public void testBookSet() {
         System.out.println("\nStarting BookSet");
 
-        Book book = new Book("Dune", "Frank Herbert", Genre.SciFi, "9780399128967");
+        Book book = new Book("Dune", "Frank Herbert", 0, Genre.SciFi, "9780399128967");
 
         book.setName("Harry Potter and the Philosopher's Stone");
         book.setAuthor("JK Rowling");
         book.setISBN("9780747532743");
+        book.setAuthorID(1);
+        book.setGenre(Genre.Fiction);
 
         assertEquals("Harry Potter and the Philosopher's Stone", book.getName());
         assertEquals("JK Rowling", book.getAuthor());
-        assertFalse(book.getGenre().isEmpty());
-        assertEquals(Genre.SciFi, book.getGenre().get(0));
+        assertEquals(Genre.Fiction, book.getGenre());
         assertEquals("9780747532743", book.getISBN());
+        assertEquals(1, book.getAuthorID());
 
         System.out.println("\nFinished BookSet");
-    }
-
-    @Test
-    public void testAddGenre() {
-        System.out.println("\nStarting AddGenre");
-
-        Book book = new Book("Dune", "Frank Herbert", Genre.SciFi, "9780399128967");
-
-        book.addGenre(Genre.Fiction);
-
-        assertEquals("Dune", book.getName());
-        assertEquals("Frank Herbert", book.getAuthor());
-        assertEquals(2, book.getGenre().size());
-        assertEquals(Genre.SciFi, book.getGenre().get(0));
-        assertEquals(Genre.Fiction, book.getGenre().get(1));
-        assertEquals("9780399128967", book.getISBN());
-
-        System.out.println("\nFinished AddGenre");
-    }
-
-    @Test
-    public void testRemoveGenre() {
-        System.out.println("\nStarting RemoveGenre");
-
-        Book book = new Book("Dune", "Frank Herbert", Genre.SciFi, "9780399128967");
-
-        book.removeGenre(Genre.SciFi);
-
-        assertEquals("Dune", book.getName());
-        assertEquals("Frank Herbert", book.getAuthor());
-        assertTrue(book.getGenre().isEmpty());
-        assertEquals("9780399128967", book.getISBN());
-
-        System.out.println("\nFinished RemoveGenre");
     }
 
     @Test
     public void testEquals() {
         System.out.println("\nStarting Equals");
 
-        Book book = new Book("Dune", "Frank Herbert", Genre.SciFi, "9780399128967");
-        Book rightBook = new Book("Dune", "Frank Herbert", Genre.SciFi, "9780399128967");
-        Book wrongTitle = new Book("Dun", "Frank Herbert", Genre.SciFi, "9780399128967");
-        Book wrongAuthor= new Book("Dun", "Fran Herbert", Genre.SciFi, "9780399128967");
-        Book wrongGenre = new Book("Dun", "Frank Herbert", Genre.Romance, "9780399128967");
-        Book wrongISBN = new Book("Dun", "Frank Herbert", Genre.SciFi, "12");
+        Book book = new Book("Dune", "Frank Herbert", 0, Genre.SciFi, "9780399128967");
+        Book rightBook = new Book("Dune", "Frank Herbert", 0, Genre.SciFi, "9780399128967");
+        Book wrongTitle = new Book("Dun", "Frank Herbert", 0, Genre.SciFi, "9780399128967");
+        Book wrongAuthor= new Book("Dun", "Fran Herbert", 0, Genre.SciFi, "9780399128967");
+        Book wrongGenre = new Book("Dun", "Frank Herbert", 0, Genre.Romance, "9780399128967");
+        Book wrongISBN = new Book("Dun", "Frank Herbert", 0, Genre.SciFi, "12");
+        Book wrongAuthorID = new Book("Dune", "Frank Herbert", 1, Genre.SciFi, "9780399128967");
         User wrongObject = new User("wrong", "object", "test", "123");
 
         assertTrue(book.equals(rightBook));
@@ -96,6 +65,7 @@ public class BookTest {
         assertFalse(book.equals(wrongAuthor));
         assertFalse(book.equals(wrongGenre));
         assertFalse(book.equals(wrongISBN));
+        assertFalse(book.equals(wrongAuthorID));
         assertFalse(book.equals(wrongObject));
 
         System.out.println("\nFinished Equals");
@@ -109,7 +79,7 @@ public class BookTest {
         String ISBN = "9780765326355";
         String description = "Fantasy novel with rich world-building and compelling characters.";
 
-        Book book = new Book(name, author, genre, ISBN, description);
+        Book book = new Book(name, author, 0, genre,ISBN, description);
 
         assertEquals(description, book.getDescription());
 
@@ -117,7 +87,7 @@ public class BookTest {
         author = "George Orwell";
         genre = Genre.Fiction;
         ISBN = "9780451524935";
-        book = new Book(name, author, genre, ISBN);
+        book = new Book(name, author, 0, genre, ISBN);
 
         assertEquals("", book.getDescription());
     }
@@ -126,12 +96,9 @@ public class BookTest {
     public void testToString() {
         System.out.println("\nStarting ToString");
 
-        Book book = new Book("Dune", "Frank Herbert", Genre.SciFi, "9780399128967");
+        Book book = new Book("Dune", "Frank Herbert", 0, Genre.SciFi, "9780399128967");
 
-        book.addGenre(Genre.Fiction);
-        book.addGenre(Genre.Adventure);
-
-        String expectedString = "Book name:'Dune', author:'Frank Herbert', genre:'Sci-Fi, Fiction, Adventure', ISBN:'9780399128967'";
+        String expectedString = "Book name:'Dune', author:'Frank Herbert', genre:'Sci-Fi', ISBN:'9780399128967'";
         assertEquals(expectedString, book.toString());
 
         System.out.println("\nFinished ToString");
