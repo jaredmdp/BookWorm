@@ -2,7 +2,7 @@ package honda.bookworm.View.Extra.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.honda.bookworm.R;
@@ -42,19 +41,23 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(@NonNull Book_Horizontalscroll_RecyclerViewAdapter.BookCardHolder holder, int position) {
-        holder.bookTitle.setText(bookList.get(position).getName());
+
 
         if(!bookList.get(position).getCover().equals(""))
         {
-            Log.d("Image", bookList.get(position).getCover());
             holder.bookImage.setForeground(null);
             holder.bookImage.setImageBitmap(ImageConverter.DecodeToBitmap(bookList.get(position).getCover()));
+            holder.bookImage.setColorFilter(0);
             holder.bookImage.setAlpha(1f);
             holder.bookImage.setImageTintMode(null);
             holder.bookImage.setMinimumWidth(-1);
             holder.bookImage.setMaxWidth(1000);
             holder.bookTitle.setVisibility(View.GONE);
+        }else{
+            holder.reset();
         }
+
+        holder.bookTitle.setText(bookList.get(position).getName());
     }
 
     @Override
@@ -66,16 +69,27 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
 
         ImageView bookImage;
         TextView bookTitle;
-        CardView card;
+        private int minWidth,maxWidth;
+
 
         public BookCardHolder(@NonNull View itemView) {
             super(itemView);
             bookImage = itemView.findViewById(R.id.book_card_image);
             bookTitle = itemView.findViewById(R.id.book_card_title);
-            card = itemView.findViewById(R.id.book_card_parent);
 
+            minWidth = bookImage.getMinimumWidth();
+            maxWidth = bookImage.getMaxWidth();
 
             itemView.setOnClickListener(this);
+        }
+
+        public void reset(){
+            bookImage.setImageResource(R.mipmap.ic_launcher_foreground);
+            bookImage.setAlpha(0.7f);
+            bookImage.setColorFilter(R.color.black,PorterDuff.Mode.SRC_IN);
+            bookImage.setMaxWidth(maxWidth);
+            bookImage.setMinimumWidth(minWidth);
+            bookTitle.setVisibility(View.VISIBLE);
         }
 
         @Override

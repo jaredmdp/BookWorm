@@ -12,7 +12,7 @@ import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
 public class SearchManager implements ISearchManager {
-    private IBookPersistence bookPersistence;
+    private final IBookPersistence bookPersistence;
 
     public SearchManager() {
         bookPersistence = Services.getBookPersistence(true);
@@ -63,7 +63,7 @@ public class SearchManager implements ISearchManager {
             result = bookPersistence.searchBooksByISBN(query);
         } catch (GeneralPersistenceException e) {
             e.printStackTrace();
-            throw new InvalidSearchException("Invalid ISBN:" + query);
+            throw new InvalidSearchException("Invalid ISBN: " + query);
         }
 
         return result;
@@ -75,6 +75,7 @@ public class SearchManager implements ISearchManager {
         try {
             result = bookPersistence.getBooksByTitle(query);
         } catch (GeneralPersistenceException e) {
+            e.printStackTrace();
             throw new InvalidSearchException("Invalid Title: " + query);
         }
 
@@ -108,7 +109,7 @@ public class SearchManager implements ISearchManager {
 
     private void validateAuthorName (String query) throws InvalidSearchException {
         if (!StringValidator.isValidName(query)) {
-            throw new InvalidSearchException("Author names or usernames may only contain alphabets and numbers" + query);
+            throw new InvalidSearchException("Author names may only contain alphabets and numbers" + query);
         }
     }
 }

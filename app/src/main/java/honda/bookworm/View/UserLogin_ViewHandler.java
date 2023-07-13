@@ -44,15 +44,12 @@ public class UserLogin_ViewHandler extends AppCompatActivity {
 
     private void proceedToLogin(String username, String password) {
         try {
-            boolean loginState = accessUsers.verifyUser(username, password);
+            accessUsers.verifyUser(username, password);
 
-            if (loginState) {
-                Intent intent = new Intent(this, Home_ViewHandler.class);
-                startActivity(intent);
-                finishAffinity();
-            } else {
-                Toast.makeText(getApplicationContext(), "Invalid user credentials", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(this, Home_ViewHandler.class);
+            startActivity(intent);
+            finishAffinity();
+
         } catch (UserNotFoundException e) {
             Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
         } catch (InvalidPasswordException e) {

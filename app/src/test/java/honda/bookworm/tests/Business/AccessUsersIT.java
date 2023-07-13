@@ -1,9 +1,9 @@
 package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -50,7 +50,7 @@ public class AccessUsersIT {
         List<User> users = manager.getAllUsers();
 
         assertNotNull(users);
-        assertEquals(14, users.size());
+        assertEquals(15, users.size());
 
         System.out.println("\nFinished testGetAllUsers");
 
@@ -87,7 +87,7 @@ public class AccessUsersIT {
         try {
             //insert same user
             accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
-            assertFalse(true);
+            fail();
         } catch (DuplicateUserException e) {
             System.out.println("Error: Duplicate user: " + e.getMessage());
         }
@@ -103,9 +103,7 @@ public class AccessUsersIT {
         String username = "johndoe";
         String password = "password1";
 
-        boolean result = accessUsers.verifyUser(username, password);
-
-        assertTrue(result);
+        accessUsers.verifyUser(username, password);
 
         System.out.println("\nFinished testVerifyUserTrue");
     }
@@ -118,15 +116,7 @@ public class AccessUsersIT {
         String username = "janedoe";
         String password = "password1";
 
-        try {
-            boolean result = accessUsers.verifyUser(username, password);
-            assertFalse(result);
-        } catch (InvalidPasswordException e) {
-            fail("InvalidPasswordException was thrown unexpectedly.");
-        } catch (UserNotFoundException e) {
-            // This block should be executed
-            System.out.println("UserNotFoundException thrown: " + e.getMessage());
-        }
+        assertThrows(UserNotFoundException.class, () -> accessUsers.verifyUser(username, password));
 
         System.out.println("Finished testVerifyUserFalseNotFound");
     }
@@ -142,12 +132,7 @@ public class AccessUsersIT {
         String username = "johndoe";
         String badPassword = "Dumb Password";
 
-        try{
-            boolean result = accessUsers.verifyUser(username, badPassword);
-            assertFalse(result);
-        } catch(InvalidPasswordException e){
-            System.out.println("Failed to verify user: " + e.getMessage());
-        }
+        assertThrows(InvalidPasswordException.class, () -> accessUsers.verifyUser(username, badPassword));
 
         System.out.println("Finished testVerifyUserFalsePasswordWrong");
     }

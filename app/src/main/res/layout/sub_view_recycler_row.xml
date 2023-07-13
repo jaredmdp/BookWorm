@@ -20,7 +20,7 @@
             android:adjustViewBounds="true"
             android:foreground="@mipmap/ic_launcher_foreground"
             android:foregroundGravity="center"
-            android:foregroundTint="#88000000"
+            android:foregroundTint="@color/translucent_black"
             android:maxHeight="115dp"
             android:src="@drawable/shape_empty_book"
             app:layout_constraintBottom_toBottomOf="parent"

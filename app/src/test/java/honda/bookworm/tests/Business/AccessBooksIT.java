@@ -3,6 +3,7 @@ package honda.bookworm.tests.Business;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import org.junit.After;
@@ -11,10 +12,12 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
@@ -106,6 +109,25 @@ public class AccessBooksIT {
 
 
         System.out.println("\n Finished testGetBookByISBN");
+    }
+
+    @Test
+    public void testGetBookByAuthorID() {
+        System.out.println("\nStarting testGetBookByAuthorID");
+        List<Book> books = accessBooks.getAuthorIDBookList(0); //Author: 0 = Jane Austen in script
+        assertEquals(5, books.size());
+        System.out.println("\nFinished testGetBookByAuthorID");
+    }
+
+    @Test
+    public void testGetBookByAuthorID_Fail() {
+        System.out.println("\nStarting testGetBookByAuthorID_Fail");
+        try {
+            assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
+        } catch (AuthorNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("\nFinished testGetBookByAuthorID_Fail");
     }
 
     @After

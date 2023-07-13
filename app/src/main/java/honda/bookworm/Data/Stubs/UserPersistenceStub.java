@@ -46,31 +46,6 @@ public class UserPersistenceStub implements IUserPersistence {
     }
 
     @Override
-    public List<Author> getAllAuthors() {
-        List <Author> authors = new ArrayList<>();
-        for (int i = 0; i < users.size(); i++){
-            if(users.get(i) instanceof  Author){
-                authors.add((Author) users.get(i));
-            }
-        }
-        return authors;
-    }
-    @Override
-    public List<Book> getAllWrittenBooks(String authorName){
-        List<Book> books = null;
-        Author theAuthor;
-        String fullName;
-        for(int i = 0; i < users.size(); i++){
-            fullName = users.get(i).getFirstName() + " " + users.get(i).getLastName();
-            if(fullName.equalsIgnoreCase(authorName)){
-                theAuthor = (Author) users.get(i);
-                books = theAuthor.getWrittenBooks();
-            }
-        }
-        return books;
-    }
-
-    @Override
     public User getUserByUsername(String currentUsername) {
         User user = null;
         for(int i = 0; i < users.size() && user==null ; i++){

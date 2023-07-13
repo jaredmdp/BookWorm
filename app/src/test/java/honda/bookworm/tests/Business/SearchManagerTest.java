@@ -105,6 +105,16 @@ public class SearchManagerTest {
     }
 
     @Test
+    public void testPerformSearchAuthor_InvalidAuthorSymbols() {
+        System.out.println("\nStarting testPerformSearchAuthor_InvalidAuthor");
+
+        String query = "randomauth$#@ordoesntexist";
+        assertThrows(InvalidSearchException.class, () -> accessSearch.performSearchAuthor(query));
+
+        System.out.println("\nFinished testPerformSearchAuthor_InvalidAuthor");
+    }
+
+    @Test
     public void testSearchBooksByISBN() {
         System.out.println("\nStarting testSearchBooksByISBN");
 

@@ -7,6 +7,7 @@ import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Data.IBookPersistence;
@@ -31,21 +32,37 @@ public class AccessBooks implements IAccessBooks {
         this.bookPersistence = bookPersistence;
     }
 
-    //TODO We have to change Exception handling once addBook Parameters change and connected with UI. Ask Jared
     public Book addBook(String bookTitle, Genre genre, String ISBN, String description, String cover, boolean isPurchaseable)
-            throws DuplicateISBNException, InvalidBookException, IllegalStateException {
+            throws DuplicateISBNException, InvalidBookException, IllegalStateException, InvalidGenreException {
         User current = Services.getActiveUser();
+
         if(!(current instanceof Author)) {
             throw new IllegalStateException("Only Authors can insert books");
         }
+
         Author author = (Author) current;
 
-        validateBookInput(bookTitle, ISBN, description, cover);
+        validateBookInput(bookTitle, ISBN, description, genre, cover);
 
         Book newBook = new Book(bookTitle, author.getFirstName()+" "+author.getLastName(), author.getAuthorID(),
                 genre, ISBN, description, cover, isPurchaseable);
 
         return bookPersistence.addBook(newBook);
+    }
+
+    @Override
+    public List<Book> getAuthorIDBookList (int authorID) throws AuthorNotFoundException {
+        List<Book> bookList = new ArrayList<>();
+
+        validateAuthorID(authorID);
+
+        try {
+            bookList = bookPersistence.getBooksByAuthorID(authorID);
+        } catch (GeneralPersistenceException e) {
+            e.printStackTrace();
+        }
+
+        return bookList;
     }
 
     @Override
@@ -113,23 +130,25 @@ public class AccessBooks implements IAccessBooks {
         return trimmedTitle.toString();
     }
 
-    public void validateBookInput(String bookTitle, String ISBN, String description, String cover){
+    //Validator functions----------------------------------------------------------------------------
+    public void validateBookInput(String bookTitle, String ISBN, String description,Genre genre, String cover){
         validateBookTitle(bookTitle);
         validateISBN(ISBN);
         validateDescription(description);
         validateCover(cover);
+        validateGenre(genre);
     }
 
-    private static void validateBookTitle(String bookTitle){
+    private static void validateBookTitle(String bookTitle) throws InvalidBookException{
         if(StringValidator.isTooLong(bookTitle, MAX_TITLE_LENGTH)){
-            throw new InvalidBookException("Title cannot exceed "+MAX_DESCRIPTION_LENGTH+" characters");
+            throw new InvalidBookException("Title cannot exceed "+MAX_TITLE_LENGTH+" characters");
         }
         if(StringValidator.isTooShort(bookTitle, MIN_TITLE_LENGTH)){
-            throw new InvalidBookException("Title must be at least "+MIN_DESCRIPTION_LENGTH+" characters");
+            throw new InvalidBookException("Title must be at least "+MIN_TITLE_LENGTH+" characters");
         }
     }
 
-    private static void validateISBN(String ISBN){
+    private static void validateISBN(String ISBN) throws InvalidBookException{
         if(!(StringValidator.isNumericOnly(ISBN))){
             throw new InvalidBookException("ISBN codes can only contain numbers");
         }
@@ -138,7 +157,7 @@ public class AccessBooks implements IAccessBooks {
         }
     }
 
-    private static void validateDescription(String description){
+    private static void validateDescription(String description) throws InvalidBookException{
         if(StringValidator.isTooLong(description, MAX_DESCRIPTION_LENGTH)){
             throw new InvalidBookException("Description cannot exceed "+MAX_DESCRIPTION_LENGTH+" characters");
         }
@@ -147,10 +166,21 @@ public class AccessBooks implements IAccessBooks {
         }
     }
 
-    private static void validateCover(String cover){
+    private static void validateCover(String cover) throws InvalidBookException{
         if(cover == null){
             throw new InvalidBookException("Error with book cover");
         }
+    }
+
+    private static void validateAuthorID (int authorID) throws AuthorNotFoundException {
+        if (authorID < 0) {
+            throw new AuthorNotFoundException("Invalid Author ID: " + authorID);
+        }
+    }
+
+    private static void validateGenre(Genre genre) throws InvalidGenreException{
+        if (genre == null)
+            throw new InvalidGenreException("A valid genre must be selected");
     }
 
 }
