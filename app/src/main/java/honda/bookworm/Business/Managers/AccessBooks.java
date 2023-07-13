@@ -131,7 +131,7 @@ public class AccessBooks implements IAccessBooks {
     }
 
     //Validator functions----------------------------------------------------------------------------
-    public void validateBookInput(String bookTitle, String ISBN, String description,Genre genre, String cover){
+    private void validateBookInput(String bookTitle, String ISBN, String description,Genre genre, String cover){
         validateBookTitle(bookTitle);
         validateISBN(ISBN);
         validateDescription(description);
