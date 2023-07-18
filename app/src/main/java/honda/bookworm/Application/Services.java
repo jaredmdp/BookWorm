@@ -2,9 +2,7 @@ package honda.bookworm.Application;
 
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
-import honda.bookworm.Data.Stubs.BookPersistenceStub;
 import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
-import honda.bookworm.Data.Stubs.UserPersistenceStub;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.User;
 
@@ -17,8 +15,6 @@ public class Services {
         if (bookPersistence == null){
             if(forProduction){
                 bookPersistence = new BookPersistenceHSQLDB(Main.getDBPathName());
-            } else{
-                bookPersistence = new BookPersistenceStub();
             }
         }
         return bookPersistence;
@@ -28,8 +24,6 @@ public class Services {
         if (userPersistence == null){
             if(forProduction){
                 userPersistence = new UserPersistenceHSQLDB(Main.getDBPathName());
-            } else{
-                userPersistence = new UserPersistenceStub();
             }
         }
         return userPersistence;

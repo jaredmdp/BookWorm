@@ -78,15 +78,15 @@ public class AccessBooks implements IAccessBooks {
     }
 
     public List<Genre> getAllAvailableGenres() {
-        List<Genre> avaialableGenres;
+        List<Genre> availableGenres;
 
         try {
-            avaialableGenres = bookPersistence.getAllAvailableGenreList();
+            availableGenres = bookPersistence.getAllAvailableGenreList();
         }catch (GeneralPersistenceException gpe){
-            avaialableGenres = new ArrayList<>();
+            availableGenres = new ArrayList<>();
         }
 
-        return avaialableGenres;
+        return availableGenres;
     }
 
     public String getTrimmedBookName(Book b) {

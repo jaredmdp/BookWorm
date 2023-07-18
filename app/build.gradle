@@ -40,6 +40,9 @@ dependencies {
     // HSQLDB
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.4.1'
 
+    //Mockito
+    implementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
+
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
