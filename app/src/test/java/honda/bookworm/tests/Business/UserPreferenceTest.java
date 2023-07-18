@@ -2,24 +2,28 @@ package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import honda.bookworm.Business.Managers.UserPreference;
-import honda.bookworm.Data.Stubs.BookPersistenceStub;
-import honda.bookworm.Data.Stubs.UserPersistenceStub;
+import honda.bookworm.Data.IBookPersistence;
+import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 public class UserPreferenceTest {
-
     private UserPreference userPreference;
+    private IBookPersistence bookPersistence;
+    private IUserPersistence userPersistence;
 
     @Before
     public void setup() {
         System.out.println("\nStarting test for UserPreference");
-        userPreference = new UserPreference(new UserPersistenceStub(), new BookPersistenceStub());
+        bookPersistence = mock(IBookPersistence.class);
+        userPersistence = mock(IUserPersistence.class);
+        userPreference = new UserPreference(userPersistence, bookPersistence);
     }
 
     @Test

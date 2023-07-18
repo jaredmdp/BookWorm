@@ -110,11 +110,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
         }
     }
 
-    @Override
-    public User removeUser(User currentUser) {
-        return null;
-    }
-
     private User fromResultSet(final ResultSet result) throws SQLException {
         User parsed;
 

@@ -1,16 +1,18 @@
 package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import honda.bookworm.Business.Exceptions.InvalidSearchException;
 import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.Managers.SearchManager;
-import honda.bookworm.Data.Stubs.BookPersistenceStub;
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 
@@ -22,21 +24,30 @@ import java.util.List;
 
 
 public class SearchManagerTest {
-
     private ISearchManager accessSearch;
-
+    private IBookPersistence bookPersistence;
     @Before
     public void setup() {
         System.out.println("\nStarting test for AccessBooks");
-        accessSearch = new SearchManager(new BookPersistenceStub());
+        bookPersistence = mock(IBookPersistence.class);
+        accessSearch = new SearchManager(bookPersistence);
     }
 
     @Test
     public void testGetBooksGenreFound() {
         System.out.println("\nStarting testGetBooksGenreFound");
+        List<Book> mockBooks = new ArrayList<>();
+        mockBooks.add(new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355"));
+        mockBooks.add(new Book("Mistborn", "Brandon Sanderson", 0, Genre.Fantasy, "9780765350381"));
+        mockBooks.add(new Book("Words of Radiance", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326362"));
+
+        when(bookPersistence.getBooksByGenre(Genre.Fantasy)).thenReturn(mockBooks);
 
         List<Book> books = accessSearch.performSearchGenre("Fantasy");
-        assertEquals(books.size(), 5);
+        assertEquals(books.size(), 3);
+
+        verify(bookPersistence).getBooksByGenre(Genre.Fantasy);
+
         System.out.println("\nFinished testGetBooksGenreFound");
 
     }
@@ -54,24 +65,6 @@ public class SearchManagerTest {
     }
 
     @Test
-    public void testPerformSearchGenre() throws InvalidSearchException {
-        System.out.println("\nStarting testPerformSearchGenre");
-
-        // Test case 1: Valid genre
-        String query1 = "Fiction";
-        List<Book> result1 = accessSearch.performSearchGenre(query1);
-        assertNotNull(result1);
-        assertFalse(result1.isEmpty());
-
-        // Test case 2: Invalid genre
-        String query2 = "InvalidGenre";
-        List<Book> result2 = accessSearch.performSearchGenre(query2);
-        assertTrue(result2.isEmpty());
-
-        System.out.println("\nFinished testPerformSearchGenre");
-    }
-
-    @Test
     public void testValidateGenre_InvalidGenre() {
         System.out.println("\nStarting testValidateGenre_InvalidGenre");
 
@@ -84,12 +77,21 @@ public class SearchManagerTest {
     @Test
     public void testPerformSearchAuthor() throws InvalidSearchException {
         System.out.println("\nStarting testPerformSearchAuthor");
+        List<Book> mockBooks = new ArrayList<>();
+        mockBooks.add(new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355"));
+        mockBooks.add(new Book("Mistborn", "Brandon Sanderson", 0, Genre.Fantasy, "9780765350381"));
+        mockBooks.add(new Book("Words of Radiance", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326362"));
 
         String query = "Brandon Sanderson";
 
+        when(bookPersistence.getBooksByAuthor(query)).thenReturn(mockBooks);
+
         List<Book> result = accessSearch.performSearchAuthor(query);
 
-        assertEquals(5, result.size());
+        assertEquals(3, result.size());
+
+        verify(bookPersistence).getBooksByAuthor(query);
+
         System.out.println("\nFinished testPerformSearchAuthor");
     }
 
@@ -118,16 +120,24 @@ public class SearchManagerTest {
     public void testSearchBooksByISBN() {
         System.out.println("\nStarting testSearchBooksByISBN");
 
+        String query = "9780765326355";
+
         Book sampleBook = new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355",
                 "From #1 New York Times bestselling author Brandon Sanderson, The Way of Kings, book one of The Stormlight Archive begins an incredible new saga of epic proportion.\n" +
-                        // ... book description ...
                         "The Knights Radiant must stand again.");
-        // Test case 1: Valid ISBN
-        String query1 = "9780765326355";
-        List<Book> result1 = accessSearch.performSearchISBN(query1);
-        assertNotNull(result1);
-        assertEquals(1, result1.size());
-        assertEquals(sampleBook, result1.get(0));
+
+        List<Book> mockBooks = new ArrayList<>();
+        mockBooks.add(sampleBook);
+
+        when(bookPersistence.searchBooksByISBN(query)).thenReturn(mockBooks);
+
+        List<Book> result = accessSearch.performSearchISBN(query);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(sampleBook, result.get(0));
+
+        verify(bookPersistence).searchBooksByISBN(query);
 
         System.out.println("\nFinished testSearchBooksByISBN");
     }
@@ -158,8 +168,12 @@ public class SearchManagerTest {
 
         Book sampleBook = new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355",
                 "From #1 New York Times bestselling author Brandon Sanderson, The Way of Kings, book one of The Stormlight Archive begins an incredible new saga of epic proportion.\n" +
-                        // ... book description ...
                         "The Knights Radiant must stand again.");
+
+        List<Book> mockBooks = new ArrayList<>();
+        mockBooks.add(sampleBook);
+
+        when(bookPersistence.getBooksByTitle(query)).thenReturn(mockBooks);
 
         List<Book> result = accessSearch.performSearchTitle(query);
 
@@ -167,10 +181,10 @@ public class SearchManagerTest {
         assertEquals(1, result.size());
         assertEquals(sampleBook, result.get(0));
 
+        verify(bookPersistence).getBooksByTitle(query);
+
         System.out.println("\nFinished testPerformSearchTitle_ValidTitle");
     }
-
-
 
     @Test
     public void testPerformSearchTitle_InvalidTitle() {
@@ -184,8 +198,6 @@ public class SearchManagerTest {
         assertEquals(0, result.size());
 
         System.out.println("\nFinished testPerformSearchTitle_InvalidTitle");
-
-
     }
     
 }

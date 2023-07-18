@@ -5,6 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +19,8 @@ import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
-import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.Managers.AccessBooks;
-import honda.bookworm.Business.Managers.SearchManager;
-import honda.bookworm.Data.Stubs.BookPersistenceStub;
+import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
@@ -27,13 +28,14 @@ import honda.bookworm.Object.User;
 
 public class AccessBooksTest {
     private AccessBooks accessBooks;
-    private ISearchManager accessSearch;
+    private IBookPersistence bookPersistence;
 
     @Before
     public void setup() {
         System.out.println("\nStarting test for AccessBooks");
-        accessBooks = new AccessBooks(new BookPersistenceStub());
-        accessSearch = new SearchManager(new BookPersistenceStub());
+        bookPersistence = mock(IBookPersistence.class);
+
+        accessBooks = new AccessBooks(bookPersistence);
 
         Author testAuthor = new Author("First", "Last", "User", "Pass", 0);
         Services.setActiveUser(testAuthor);
@@ -71,10 +73,16 @@ public class AccessBooksTest {
     @Test
     public void testAddBookSuccess() {
         System.out.println("\nStarting testAddBookSuccess");
+        List<Book> mockBook = new ArrayList<>();
+        mockBook.add(new Book("Awesome Book", "First Last", 0, Genre.SciFi, "1111111111111", "asd", "", true));
+
+        when(bookPersistence.addBook(mockBook.get(0))).thenReturn(mockBook.get(0));
+        when(bookPersistence.getBooksByAuthorID(0)).thenReturn(mockBook);
 
         Book result = null;
         try {
             result = accessBooks.addBook("Awesome Book", Genre.SciFi, "1111111111111", "asd", "", true);
+
         } catch (Exception e) {
             fail();
         }
@@ -83,6 +91,9 @@ public class AccessBooksTest {
         boolean isBookAdded = bookList.contains(result);
 
         assertTrue(isBookAdded);
+
+        verify(bookPersistence).addBook(mockBook.get(0));
+        verify(bookPersistence).getBooksByAuthorID(0);
 
         System.out.println("\nFinished testAddBookSuccess");
     }
@@ -220,6 +231,9 @@ public class AccessBooksTest {
     @Test
     public void testBookByISBN_Success() {
         System.out.println("\nStarting testBookByISBN");
+        Book mockBook = new Book("Atomic Habits", "James Clear", 15, Genre.Action, "5780100220888");
+
+        when(bookPersistence.getBookByISBN("5780100220888")).thenReturn(mockBook);
 
         Book result = accessBooks.getBookByISBN("5780100220888");
         assertEquals(result.getName(), "Atomic Habits");
@@ -227,20 +241,33 @@ public class AccessBooksTest {
         assertEquals(result.getAuthor(), "James Clear");
         assertEquals(result.getAuthorID(), 15);
 
+        verify(bookPersistence).getBookByISBN("5780100220888");
+
         System.out.println("\nFinished testBookByISBN");
     }
 
     @Test
     public void testGetBookByAuthorID() {
         System.out.println("\nStarting testGetBookByAuthorID");
+
+        List<Book> mockBooks = new ArrayList<>();
+        mockBooks.add(new Book("The Way of Kings", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326355"));
+        mockBooks.add(new Book("Mistborn", "Brandon Sanderson", 0, Genre.Fantasy, "9780765350381"));
+        mockBooks.add(new Book("Words of Radiance", "Brandon Sanderson", 0, Genre.Fantasy, "9780765326362"));
+
+        when(bookPersistence.getBooksByAuthorID(0)).thenReturn(mockBooks);
+
         List<Book> newList = new ArrayList<>();
+
         try {
             newList = accessBooks.getAuthorIDBookList(0);
         } catch (AuthorNotFoundException e) {
             fail(); //should not error
         }
 
-        assertEquals(newList.size(), 5);
+        assertEquals(newList.size(), 3);
+
+        verify(bookPersistence).getBooksByAuthorID(0);
 
         System.out.println("\nFinished testGetBookByAuthorID");
     }
@@ -272,12 +299,17 @@ public class AccessBooksTest {
     @Test
     public void testGetAllAvailableGenres(){
         System.out.println("\nStarting testAllAvailableGenres");
+        List<Genre> mockGenres = new ArrayList<>();
+        mockGenres.add(Genre.Action);
+
+        when(bookPersistence.getAllAvailableGenreList()).thenReturn(mockGenres);
 
         List<Genre> allGenres = accessBooks.getAllAvailableGenres();
 
+        assertEquals(Genre.Action,allGenres.get(0));
         assertTrue(allGenres.size()<= (Genre.values()).length);
-        assertFalse(allGenres.size() > (Genre.values()).length);
 
+        verify(bookPersistence).getAllAvailableGenreList();
         System.out.println("\nFinished testAllAvailableGenres");
     }
 
