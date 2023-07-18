@@ -1,5 +1,27 @@
 package honda.bookworm.View;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Vibrator;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.honda.bookworm.R;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+
 import honda.bookworm.Application.Main;
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.IAccessBooks;
@@ -13,29 +35,6 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 import honda.bookworm.View.Extra.Book_horizontalscroll_constructor;
 import honda.bookworm.View.Extra.Messages;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.AssetManager;
-import android.os.Bundle;
-import android.os.Vibrator;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-import com.honda.bookworm.R;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
 
 public class Home_ViewHandler extends AppCompatActivity {
     private IAccessBooks accessBooks;
@@ -69,31 +68,44 @@ public class Home_ViewHandler extends AppCompatActivity {
 
         if (activeUser != null) {
             username = activeUser.getUsername();
-            fullname = activeUser.getFirstName()+" "+activeUser.getLastName();
-            profile.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.worm_skin));
+            fullname = activeUser.getFirstName() + " " + activeUser.getLastName();
+            profile.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.worm_skin));
             userFullname.setText(fullname);
-            userName.setText("@"+username);
-        }else{profile.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.inactive_grey));}
+            userName.setText("@" + username);
+        } else {
+            profile.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.inactive_grey));
+        }
     }
 
     private void buildBookView() {
-        Genre[] genres = Genre.class.getEnumConstants();
+        List<Genre> genres = accessBooks.getAllAvailableGenres();
+        processGenresRequest(genres, 0);
+    }
 
-        String genreName;
-        List<Book> bookList;
-        LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
-
-        for (Genre genre : genres) {
-            genreName = genre.toString();
-            try {
-                bookList = searchManager.performSearchGenre(genreName);
-                if (!bookList.isEmpty()) {
-                    View horizontalScrollContainer = Book_horizontalscroll_constructor.create(Home_ViewHandler.this,genreName,bookList);
-                    linearBody.addView(horizontalScrollContainer);
+    private void processGenresRequest(List<Genre> list, int i) {
+        if (i < list.size()) {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    final List<Book> bookList = searchManager.performSearchGenre(list.get(i).toString());
+                    processGenresRequest(list, i + 1);
+                    addScrollView(bookList, list.get(i).toString(), -1);
                 }
-            } catch (NullPointerException e) {
-                String msg = String.format("Invalid Genre: %s", e.getMessage());
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            };
+            new Handler().post(r);
+        }
+    }
+
+
+    private void addScrollView(List<Book> bookList, String heading, int at) {
+        LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
+        if (!bookList.isEmpty()) {
+            View horizontalScrollContainer = Book_horizontalscroll_constructor.create(Home_ViewHandler.this, heading, bookList);
+
+            if (at == -1) {
+                linearBody.addView(horizontalScrollContainer);
+            } else {
+                linearBody.addView(horizontalScrollContainer, at); //add at specific location '0 = the top'
             }
 
         }
@@ -130,25 +142,24 @@ public class Home_ViewHandler extends AppCompatActivity {
             TextView userName = findViewById(R.id.home_username);
             userName.setText("");
             viewVisibilityToggle(profileView);
-            profile.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.inactive_grey));
+            profile.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.inactive_grey));
         }
     }
 
 
     public void onSearchPressed(View view) {
-        Intent intent = new Intent(this,Search_ViewHandler.class);
+        Intent intent = new Intent(this, Search_ViewHandler.class);
         startActivity(intent);
     }
 
     public void onViewProfilePressed(View view) {
         //place holder for the User profile view intent
         sysVibrator.vibrate(5);
-        if(userManager.isUserLoggedIn()) {
+        if (userManager.isUserLoggedIn()) {
             Intent intent = new Intent(this, UserProfile_ViewHandler.class);
             startActivity(intent);
         }
     }
-
 
 
     private void copyDatabaseToDevice() {
@@ -206,7 +217,7 @@ public class Home_ViewHandler extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(bookAdded){
+        if (bookAdded) {
             startActivity(getIntent());
             finishAffinity();
         }
