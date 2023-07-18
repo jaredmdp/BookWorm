@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -321,6 +320,27 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         }
 
         return bookList;
+    }
+
+    public List<Genre> getAllAvailableGenreList(){
+        List<Genre> genreList = new ArrayList<>();
+        try(Connection c = connection()){
+            String sqlQuery = "select Genre_ID from book " +
+                    "group by genre_id " +
+                    "order by genre_id";
+            PreparedStatement statement = c.prepareStatement(sqlQuery);
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()){
+                int gID = result.getInt("Genre_ID");
+                final Genre genre= Genre.values()[gID];
+                genreList.add(genre);
+            }
+        }catch (SQLException e){
+            throw new GeneralPersistenceException(e.getMessage());
+        }
+
+        return genreList;
     }
 
 

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
-import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
-import honda.bookworm.Business.Exceptions.Users.*;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
@@ -433,6 +431,11 @@ public class BookPersistenceStub implements IBookPersistence {
             bookList = user.getFavoriteBooks();
         }
         return bookList;
+    }
+
+    @Override
+    public List<Genre> getAllAvailableGenreList() {
+        return new ArrayList<>();
     }
 
 }

@@ -269,4 +269,16 @@ public class AccessBooksTest {
         System.out.println("\nFinished testAddBookNonAuthor_Fail");
     }
 
+    @Test
+    public void testGetAllAvailableGenres(){
+        System.out.println("\nStarting testAllAvailableGenres");
+
+        List<Genre> allGenres = accessBooks.getAllAvailableGenres();
+
+        assertTrue(allGenres.size()<= (Genre.values()).length);
+        assertFalse(allGenres.size() > (Genre.values()).length);
+
+        System.out.println("\nFinished testAllAvailableGenres");
+    }
+
 }
