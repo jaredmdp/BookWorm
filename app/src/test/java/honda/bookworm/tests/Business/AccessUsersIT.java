@@ -17,15 +17,16 @@ import java.util.List;
 
 import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
 import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
+import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
 import honda.bookworm.Object.User;
 import honda.bookworm.tests.utils.TestUtils;
-import honda.bookworm.Business.IAccessUsers;
-import honda.bookworm.Business.Managers.AccessUsers;
-import honda.bookworm.Business.IUserManager;
-import honda.bookworm.Business.Managers.UserManager;
 
 public class AccessUsersIT {
     private IAccessUsers accessUsers;
@@ -153,6 +154,33 @@ public class AccessUsersIT {
         }
 
         System.out.println("Finished testAddUserFailDuplicateUser");
+    }
+
+    @Test
+    public void testFetchValidUser(){
+        System.out.println("Starting testFetchValidUser");
+        final String username = "rowling";
+        try{
+            User result = accessUsers.fetchUser(username);
+            assertNotNull(result);
+            assertEquals(username,result.getUsername());
+        }catch (UserException e){
+            fail("Must not fail to fetch: "+e.getMessage());
+        }
+        System.out.println("Finished testFetchValidUser");
+    }
+
+    @Test
+    public void testFetchInvalidUser(){
+        System.out.println("Starting testFetchInvalidUser");
+        final String username = "mustFail";
+        try{
+            User result = accessUsers.fetchUser(username);
+            fail("test failed this should not be called");
+        }catch (UserException e){
+            assertTrue( e instanceof  UserNotFoundException);
+        }
+        System.out.println("Finished testFetchInvalidUser");
     }
 
     @After

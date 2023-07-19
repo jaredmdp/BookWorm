@@ -62,6 +62,19 @@ public class AccessUsers implements IAccessUsers {
         }
     }
 
+    public User fetchUser(String username) throws UserNotFoundException{
+        User user;
+
+        try{
+            user = userPersistence.getUserByUsername(username);
+        }catch (GeneralPersistenceException e){
+            e.printStackTrace();
+            throw new UserNotFoundException(username);
+        }
+
+        return user;
+    }
+
     //Validator functions----------------------------------------------------------------------------
     public void validateUserInput(String first, String last, String username, String password) throws InvalidSignupException {
         validateName(first);
