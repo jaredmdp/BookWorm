@@ -14,7 +14,7 @@ public class UserManager implements IUserManager {
 
     public UserManager()
     {
-        userPersistence = Services.getUserPersistence(true);
+        userPersistence = Services.getUserPersistence();
     }
 
     public UserManager(IUserPersistence userPersistence){

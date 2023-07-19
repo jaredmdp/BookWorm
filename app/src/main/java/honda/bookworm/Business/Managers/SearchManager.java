@@ -15,7 +15,7 @@ public class SearchManager implements ISearchManager {
     private final IBookPersistence bookPersistence;
 
     public SearchManager() {
-        bookPersistence = Services.getBookPersistence(true);
+        bookPersistence = Services.getBookPersistence();
     }
 
     public SearchManager(IBookPersistence bookPersistence){

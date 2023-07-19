@@ -19,8 +19,8 @@ public class UserPreference implements IUserPreference {
     private IBookPersistence bookPersistence;
 
     public UserPreference() {
-        userPersistence = Services.getUserPersistence(true);
-        bookPersistence = Services.getBookPersistence(true);
+        userPersistence = Services.getUserPersistence();
+        bookPersistence = Services.getBookPersistence();
     }
 
     public UserPreference(IUserPersistence userPersistence, IBookPersistence bookPersistence){
