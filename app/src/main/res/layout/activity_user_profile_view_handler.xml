@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,9 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:elevation="10dp"
         android:paddingVertical="20dp"
-        android:translationZ="5dp"
-        android:elevation="10dp">
+        android:translationZ="5dp">
 
         <TextView
             android:id="@+id/userprofile_user_fullname"
@@ -37,6 +36,20 @@
             android:layout_below="@id/userprofile_user_fullname"
             android:text="\@user_name"
             android:textSize="15dp" />
+
+        <ToggleButton
+            android:id="@+id/userprofile_edit_toggle"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:textOn=""
+            android:textOff=""
+            android:text=""
+            android:background="@drawable/selector_toggle_editmode"
+            android:layout_marginEnd="10dp"
+            android:onClick="editProfileClicked"
+            />
 
 
     </RelativeLayout>
@@ -57,13 +70,10 @@
             android:paddingBottom="35dp">
 
 
-
         </LinearLayout>
 
 
     </ScrollView>
-
-
 
 
 </LinearLayout>

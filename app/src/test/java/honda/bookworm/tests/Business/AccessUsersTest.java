@@ -19,17 +19,17 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
-import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.Exceptions.Users.InvalidSignupException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
+import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.User;
-import honda.bookworm.Business.IAccessUsers;
-import honda.bookworm.Business.Managers.AccessUsers;
-import honda.bookworm.Business.IUserManager;
-import honda.bookworm.Business.Managers.UserManager;
-import honda.bookworm.Application.Services;
 
 public class AccessUsersTest {
 
@@ -81,6 +81,7 @@ public class AccessUsersTest {
 
         System.out.println("Finished testAddUserSuccess");
     }
+
     @Test
     public void testVerifyUserTrue() {
         System.out.println("Starting testVerifyUserTrue");
@@ -323,6 +324,28 @@ public class AccessUsersTest {
         }
 
         System.out.println("Finished testValidateUserInput");
+    }
+
+    @Test
+    public void testFetchUser(){
+        System.out.println("Starting testFetchUser");
+        final String username = "rowling";
+        final String failUsername = "fake";
+        final User user = new Author("JK","Rowling", username,"test123");
+
+        when(userPersistence.getUserByUsername(username)).thenReturn(user);
+        when(userPersistence.getUserByUsername(failUsername)).thenThrow(UserNotFoundException.class);
+
+        assertEquals(accessUsers.fetchUser(username),user);
+
+        try{
+            accessUsers.fetchUser(failUsername);
+            fail("Test Failed this line should not run");
+        }catch (Exception e){
+            assertTrue( e instanceof UserNotFoundException);
+        }
+
+        System.out.println("Finished testFetchUser");
     }
 
     @After
