@@ -25,7 +25,7 @@ public class AccessBooks implements IAccessBooks {
     private static final int MIN_DESCRIPTION_LENGTH = 1;
     private static final int ISBN_LENGTH = 13;
 
-    public AccessBooks() {bookPersistence = Services.getBookPersistence(true);}
+    public AccessBooks() {bookPersistence = Services.getBookPersistence();}
 
     public AccessBooks(IBookPersistence bookPersistence){
         this.bookPersistence = bookPersistence;

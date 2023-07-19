@@ -18,7 +18,7 @@ public class AccessUsers implements IAccessUsers {
 
     public AccessUsers()
     {
-        userPersistence = Services.getUserPersistence(true);
+        userPersistence = Services.getUserPersistence();
     }
 
     public AccessUsers(IUserPersistence userPersistence){
