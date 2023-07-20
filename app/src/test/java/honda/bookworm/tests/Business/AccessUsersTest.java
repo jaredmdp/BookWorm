@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
 import honda.bookworm.Business.Exceptions.Users.InvalidSignupException;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
@@ -331,11 +333,12 @@ public class AccessUsersTest {
         System.out.println("Starting testFetchUser");
         final String username = "rowling";
         final String failUsername = "fake";
+        final String fail = "";
         final User user = new Author("JK","Rowling", username,"test123");
 
         when(userPersistence.getUserByUsername(username)).thenReturn(user);
         when(userPersistence.getUserByUsername(failUsername)).thenThrow(UserNotFoundException.class);
-
+        when(userPersistence.getUserByUsername(fail)).thenThrow(GeneralPersistenceException.class);
         assertEquals(accessUsers.fetchUser(username),user);
 
         try{
@@ -345,7 +348,53 @@ public class AccessUsersTest {
             assertTrue( e instanceof UserNotFoundException);
         }
 
+        try{
+            accessUsers.fetchUser(fail);
+            fail("Test Failed this line should not run");
+        }catch (Exception e){
+            assertTrue( e instanceof UserNotFoundException);
+        }
+
         System.out.println("Finished testFetchUser");
+    }
+
+    @Test
+    public void testfetchUsernameOfAuthorValid(){
+        System.out.println("Starting testfetchUsernameOfAuthorValid");
+        final String username = "testUser123";
+        final int id = 42;
+
+        when(userPersistence.getUsernameFromAuthorID(id)).thenReturn(username);
+        String result = accessUsers.fetchUsernameOfAuthor(id);
+        assertEquals(result,username);
+
+        System.out.println("Finished testfetchUsernameOfAuthorValid");
+    }
+
+    @Test
+    public void testfetchUsernameOfAuthorInvalid(){
+        System.out.println("Starting testfetchUsernameOfAuthorInvalid");
+        final int over9000 = 9001;
+        final int fail = -1;
+        when(userPersistence.getUsernameFromAuthorID(over9000)).thenThrow(AuthorNotFoundException.class);
+        when(userPersistence.getUsernameFromAuthorID(fail)).thenThrow(GeneralPersistenceException.class);
+
+        try{
+            accessUsers.fetchUsernameOfAuthor(over9000);
+            fail("Exception should have been thrown");
+        }catch (Exception e){
+            assert (e instanceof AuthorNotFoundException);
+        }
+
+        try{
+            accessUsers.fetchUsernameOfAuthor(fail);
+            fail("Exception should have been thrown");
+        }catch (Exception e){
+            assert (e instanceof AuthorNotFoundException);
+        }
+
+
+        System.out.println("Finished testfetchUsernameOfAuthorInvalid");
     }
 
     @After

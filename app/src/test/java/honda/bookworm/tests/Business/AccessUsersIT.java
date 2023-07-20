@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
 import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
 import honda.bookworm.Business.Exceptions.Users.UserException;
@@ -181,6 +182,34 @@ public class AccessUsersIT {
             assertTrue( e instanceof  UserNotFoundException);
         }
         System.out.println("Finished testFetchInvalidUser");
+    }
+
+    @Test
+    public void testfetchUsernameOfAuthorValid(){
+        System.out.println("Starting testfetchUsernameOfAuthorValid");
+        final String username = "rowling";
+        final int id = 8;
+        try{
+            String result = accessUsers.fetchUsernameOfAuthor(id);
+            assertEquals(result,username);
+        }catch (Exception e){
+            fail("No exceptions should be thrown");
+        }
+        System.out.println("Finished testfetchUsernameOfAuthorValid");
+    }
+
+    @Test
+    public void testfetchUsernameOfAuthorInvalid(){
+        System.out.println("Starting testfetchUsernameOfAuthorInvalid");
+        final int over9000 = 9001;
+        try{
+            accessUsers.fetchUsernameOfAuthor(over9000);
+            fail("Exception should have been thrown");
+        }catch (Exception e){
+           assert (e instanceof AuthorNotFoundException);
+        }
+
+        System.out.println("Finished testfetchUsernameOfAuthorInvalid");
     }
 
     @After

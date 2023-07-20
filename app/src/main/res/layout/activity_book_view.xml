@@ -56,7 +56,8 @@
                 android:text="Author: "
                 android:textIsSelectable="true"
                 android:textSize="16dp"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:onClick="onAuthorNameClicked"/>
 
             <TextView
                 android:id="@+id/book_view_book_genre"
