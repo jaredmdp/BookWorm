@@ -41,7 +41,7 @@ public class FullIT {
         this.accessUsers = new AccessUsers(persistence);
         this.manager = new UserManager(persistence);
         this.accessBooks = new AccessBooks(bPersistence);
-        this.searchManager = new SearchManager(bPersistence);
+        this.searchManager = new SearchManager(bPersistence,persistence);
     }
 
     @Test

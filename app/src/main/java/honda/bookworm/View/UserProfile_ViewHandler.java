@@ -35,7 +35,6 @@ public class UserProfile_ViewHandler extends AppCompatActivity {
     private IAccessBooks accessBooks;
     private IUserManager userManager;
     private IUserPreference userPreference;
-    private IAccessUsers accessUsers;
 
     private User activeUser;
     GenreFavoritingConstructor genrefavouriter;
@@ -54,10 +53,11 @@ public class UserProfile_ViewHandler extends AppCompatActivity {
 
         try{
             requestedUser = bundle.getString(REQUEST_CODE);
-            accessUsers = new AccessUsers();
+            IAccessUsers accessUsers = new AccessUsers();
             activeUser = accessUsers.fetchUser(requestedUser);
             setup();
         }catch (UserNotFoundException unfe){
+            //this is a failsafe and should ideally never happen
             Toast.makeText(this,unfe.getMessage(),Toast.LENGTH_LONG).show();
             onBackPressed();
             finish();
@@ -67,9 +67,9 @@ public class UserProfile_ViewHandler extends AppCompatActivity {
         }
     }
 
-    private void setup(){
-        if(!userManager.isUserLoggedIn() ||
-                !activeUser.getUsername().equals(userManager.getActiveUser().getUsername())){
+    private void setup() {
+        if (!userManager.isUserLoggedIn() ||
+                !activeUser.getUsername().equals(userManager.getActiveUser().getUsername())) {
             findViewById(R.id.userprofile_edit_toggle).setVisibility(View.GONE);
         }
 

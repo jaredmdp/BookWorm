@@ -2,8 +2,6 @@ package honda.bookworm.Data;
 
 import java.util.List;
 
-import honda.bookworm.Object.Author;
-import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
@@ -14,4 +12,6 @@ public interface IUserPersistence {
     boolean isGenreFavoriteOfUser(User user, Genre genre);
     boolean toggleUserGenreFavorite(User user, Genre genre);
     List<Genre> getFavoriteGenreList(User user);
+    String getUsernameFromAuthorID(int authorID);
+    List<User> searchUsersByQuery(String query);
 }

@@ -1,9 +1,10 @@
 package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,8 +19,11 @@ import honda.bookworm.Business.Exceptions.InvalidSearchException;
 import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.Managers.SearchManager;
 import honda.bookworm.Data.IBookPersistence;
+import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.BookPersistenceHSQLDB;
+import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
 import honda.bookworm.Object.Book;
+import honda.bookworm.Object.User;
 import honda.bookworm.tests.utils.TestUtils;
 
 public class SearchManagerIT {
@@ -30,7 +34,8 @@ public class SearchManagerIT {
     public void setup() throws IOException {
         this.tempDB = TestUtils.copyDB();
         final IBookPersistence persistence = new BookPersistenceHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
-        this.accessSearch = new SearchManager(persistence);
+        final IUserPersistence uPersistence = new UserPersistenceHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
+        this.accessSearch = new SearchManager(persistence,uPersistence);
     }
 
     @Test
@@ -135,6 +140,60 @@ public class SearchManagerIT {
         String query = "Harry Pawter: Alternative life where hes just a muggle lol";
         List<Book> newList = accessSearch.performSearchTitle(query);
         assertTrue(newList.isEmpty());
+    }
+
+    @Test
+    public void testPerformSearchUser_PartialQuery() throws InvalidSearchException {
+        String query = "en";
+
+        List<User> result = accessSearch.performSearchUser(query);
+
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    public void testPerformSearchUser() throws InvalidSearchException {
+        String query = "Jane Austen";
+
+        List<User> result = accessSearch.performSearchUser(query);
+
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void testPerformSearchFirstNameUser() throws InvalidSearchException {
+        String query = "Jane";
+
+        List<User> result = accessSearch.performSearchUser(query);
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testPerformSearchLastNameUser() throws InvalidSearchException {
+        String query = "Austen";
+
+        List<User> result = accessSearch.performSearchUser(query);
+
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void testPerformSearchUser_InvalidUser() {
+        String query = "SomeRandom User";
+        List<User> result = accessSearch.performSearchUser(query);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testPerformSearchUser_InvalidQuery() {
+        String query = "SomeRandom User.*&";
+        try {
+            accessSearch.performSearchAuthor(query);
+            fail("This line should not run");
+        }catch (Exception e){
+            assert (e instanceof  InvalidSearchException);
+        }
     }
 
     @After

@@ -9,13 +9,15 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
+import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
-import honda.bookworm.Business.Exceptions.Users.*;
-import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 
 public class UserPersistenceHSQLDB implements IUserPersistence {
 
@@ -245,4 +247,61 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
         return genreList;
     }
 
+    public List<User> searchUsersByQuery(String query){
+        List<User> results = new ArrayList<>();
+        String sql = "SELECT u.*, a.author_id from User u "+
+                "LEFT JOIN author a ON u.username= a.username "+
+                "WHERE LOWER(u.username) LIKE LOWER(?) "+
+                "OR LOWER(u.first_name) LIKE LOWER(?) "+
+                "OR LOWER(u.last_name) LIKE LOWER(?) " +
+                "OR (LOWER(u.first_name) || ' ' || LOWER(u.last_name)) LIKE LOWER(?)";
+        String searchValue = "%" + query + "%";
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            statement.setString(1, searchValue);
+            statement.setString(2, searchValue);
+            statement.setString(3, searchValue);
+            statement.setString(4, searchValue);
+
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final User user = fromResultSet(result);
+                results.add(user);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new GeneralPersistenceException("User: " + query + " does not exist");
+        }
+
+        return results;
+    }
+
+    public String getUsernameFromAuthorID(int authorID) throws AuthorNotFoundException, GeneralPersistenceException{
+        String username = "";
+
+        try(Connection c = connection()){
+            String sqlQuery = "SELECT * from Author where author_id = ?";
+            PreparedStatement statement = c.prepareStatement(sqlQuery);
+            statement.setInt(1,authorID);
+            ResultSet result = statement.executeQuery();
+
+            if(result.next()){
+                username = result.getString("username");
+            }else{
+                throw new AuthorNotFoundException("No Author found by AuthorID: "+authorID);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            throw new GeneralPersistenceException(e.getMessage());
+        }
+        return username;
+    }
 }

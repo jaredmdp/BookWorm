@@ -7,4 +7,5 @@ public interface IAccessUsers {
     void verifyUser(String username, String password);
     void validateUserInput(String first, String last, String username, String password);
     User fetchUser (String username);
+    String fetchUsernameOfAuthor(int authorID);
 }

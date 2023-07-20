@@ -1,5 +1,6 @@
 package honda.bookworm.Business.Managers;
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
 import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
 import honda.bookworm.Business.Exceptions.Users.InvalidSignupException;
@@ -59,6 +60,7 @@ public class AccessUsers implements IAccessUsers {
             }
         } catch (GeneralPersistenceException e) {
             e.printStackTrace();
+            throw new UserNotFoundException(username);
         }
     }
 
@@ -73,6 +75,17 @@ public class AccessUsers implements IAccessUsers {
         }
 
         return user;
+    }
+
+    public String fetchUsernameOfAuthor(int authorID) throws AuthorNotFoundException {
+        String username;
+        try{
+            username = userPersistence.getUsernameFromAuthorID(authorID);
+        }catch (GeneralPersistenceException e){
+            e.printStackTrace();
+            throw new AuthorNotFoundException("AuthorID: "+authorID);
+        }
+     return username;
     }
 
     //Validator functions----------------------------------------------------------------------------
