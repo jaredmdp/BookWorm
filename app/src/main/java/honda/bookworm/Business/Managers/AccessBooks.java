@@ -35,7 +35,7 @@ public class AccessBooks implements IAccessBooks {
             throws DuplicateISBNException, InvalidBookException, IllegalStateException, InvalidGenreException {
         User current = Services.getActiveUser();
 
-        if(!(current instanceof Author)) {
+        if(!(current.canAuthorBooks())) {
             throw new IllegalStateException("Only Authors can insert books");
         }
 
