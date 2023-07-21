@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.ICommentManager;
@@ -23,7 +24,6 @@ public class CommentManagerIT {
 
     private ICommentManager commentManager;
     private File tempDB;
-    private final String testISBN = "9780044403371";
     private final String testUser = "TestUser";
 
     @Before
@@ -38,23 +38,47 @@ public class CommentManagerIT {
     }
 
     @Test
-    public void testAddComment() {
+    public void testLeaveComment() {
         System.out.println("Starting testAddComment");
 
-        Comment expected = new Comment(testUser, testISBN, "Test");
+        String testISBN = "9780199219761";
+
+        long startTime = System.currentTimeMillis();
 
         Comment result = commentManager.leaveComment(testISBN, "Test");
+        Comment expected = commentManager.getCommentsOnBook(testISBN).get(0);
 
-        assert(expected.getUsername() == result.getUsername());
-        assert(expected.getISBN() == result.getISBN());
-        assert(expected.getComment() == result.getComment());
+        assert(expected.getUsername().equals(result.getUsername()));
+        assert(expected.getISBN().equals(result.getISBN()));
+        assert(expected.getComment().equals(result.getComment()));
+        assert(expected.getTime() == result.getTime());
 
-        Timestamp resultTime = Timestamp.valueOf(result.getTime());
-        Timestamp expectedCloseTo = new Timestamp(System.currentTimeMillis());
-
-        assert(expectedCloseTo.compareTo(resultTime) <= 1000 && expectedCloseTo.compareTo(resultTime) >=0);
+        //should have been inserted in a reasonable amount of time
+        long timeDiff = expected.getTime() - startTime;
+        assert(timeDiff >= 0 && timeDiff <= 1000);
 
         System.out.println("Finished testAddComment");
+    }
+
+    @Test
+    public void testGetCommentsOnBook(){
+        System.out.println("Starting testGetCommentsOnBook");
+
+        String bookISBN = "9780044403371";
+
+        List<Comment> comments = commentManager.getCommentsOnBook(bookISBN);
+
+        for(int i=0; i<comments.size(); i++){
+            assert(comments.get(i).getISBN().equals(bookISBN));
+            assert(comments.get(i).getUsername() != null);
+            assert(comments.get(i).getComment() != null);
+
+            if(i <comments.size() - 1){
+                assert(comments.get(i).getTime() > comments.get(i+1).getTime());
+            }
+        }
+
+        System.out.println("Finished testGetCommentsOnBook");
     }
 
     @After

@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidCommentException;
 import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.ICommentManager;
@@ -69,6 +70,6 @@ public class CommentManagerTest {
 
         verify(commentPersistence, times(0)).addComment(any(Comment.class));
 
-        System.out.println("Finished testLeaveCommentSuccess");
+        System.out.println("Finished testLeaveCommentFailure");
     }
 }

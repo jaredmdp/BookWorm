@@ -6,13 +6,13 @@ public class Comment {
     public String username;
     public String ISBN;
     public String comment;
-    public String timeStamp;
+    public long timeStamp;
 
     public Comment(String username, String ISBN, String comment) {
         this.username = username;
         this.ISBN = ISBN;
         this. comment = comment;
-        timeStamp = "";
+        timeStamp = System.currentTimeMillis();
     }
 
     public String getUsername(){return username;}
@@ -21,9 +21,9 @@ public class Comment {
 
     public String getComment(){return comment;}
 
-    public String getTime(){return timeStamp;}
+    public long getTime(){return timeStamp;}
 
-    public void setTime(String time){timeStamp = time;}
+    public void setTime(long time){timeStamp = time;}
 
     public boolean equals(Object compare) {
         if (this == compare) {
@@ -39,6 +39,6 @@ public class Comment {
         return  Objects.equals(username, comment.username) &&
                 Objects.equals(ISBN, comment.ISBN) &&
                 Objects.equals(this.comment, comment.comment) &&
-                Objects.equals(timeStamp, comment.timeStamp);
+                timeStamp == comment.timeStamp;
     }
 }
