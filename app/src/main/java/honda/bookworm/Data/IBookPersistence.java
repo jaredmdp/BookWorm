@@ -7,7 +7,10 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 public interface IBookPersistence {
+
     Book getBookByISBN(String ISBN); //All ISBNS are 13 digits
+
+    public List<Book> getMostFavoriteBooks();
 
     List<Book> searchBooksByISBN(String query);
 

@@ -83,7 +83,6 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
         if (success) {
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
             onBackPressed();
-            Home_ViewHandler.bookAdded = true;
             finish();
         } else {
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();

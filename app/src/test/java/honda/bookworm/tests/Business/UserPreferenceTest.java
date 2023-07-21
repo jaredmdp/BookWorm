@@ -1,15 +1,26 @@
 package honda.bookworm.tests.Business;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Managers.UserPreference;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
+import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
@@ -24,6 +35,55 @@ public class UserPreferenceTest {
         bookPersistence = mock(IBookPersistence.class);
         userPersistence = mock(IUserPersistence.class);
         userPreference = new UserPreference(userPersistence, bookPersistence);
+    }
+
+    @Test
+    public void testGetBookRecommendationsWithNoActiveUser() throws GeneralPersistenceException {
+        System.out.println("Starting testGetBookRecommendationsWithNoActiveUser");
+        List<Book> mostFavoriteBooks = new ArrayList<>();
+        Services.setActiveUser(null);
+        mostFavoriteBooks.add(new Book("Book1", "Author1", 1, Genre.Fiction, "1234567890", "", "", true));
+        mostFavoriteBooks.add(new Book("Book2", "Author2", 1, Genre.Romance, "2345678901", "", "", true));
+        mostFavoriteBooks.add(new Book("Book3", "Author3", 1, Genre.Mystery, "3456789012", "", "", true));
+
+        when(bookPersistence.getMostFavoriteBooks()).thenReturn(mostFavoriteBooks);
+
+        List<Book> result = userPreference.getBookRecommendations();
+
+        assertEquals(3, result.size()); // Expecting all 3 most favorite books to be recommended
+        System.out.println("Finished testGetBookRecommendationsWithNoActiveUser");
+    }
+
+    @Test
+    public void testGetBookRecommendationsWithActiveUser() throws GeneralPersistenceException {
+        System.out.println("Starting testGetBookRecommendationsWithActiveUser");
+
+        // Create an active user and set it in the Services
+        User activeUser = new User("john_doe", "John", "Doe", "password");
+        Services.setActiveUser(activeUser);
+
+        List<Book> userFavoriteFantasy = new ArrayList<>();
+        userFavoriteFantasy.add(new Book("Book4", "Author4", 1, Genre.Fantasy, "4567890123", "", "", true));
+        userFavoriteFantasy.add(new Book("Book5", "Author5", 1, Genre.Fantasy, "5678901234", "", "", true));
+
+        List<Book> userFavoriteMystery = new ArrayList<>();
+        userFavoriteMystery.add(new Book("Book1", "Author1", 1, Genre.Mystery, "1234567890", "", "", true));
+        userFavoriteMystery.add(new Book("Book2", "Author2", 1, Genre.Mystery, "2345678901", "", "", true));
+        userFavoriteMystery.add(new Book("Book3", "Author3", 1, Genre.Mystery, "3456789012", "", "", true));
+
+        List<Genre> favoriteGenreList = new ArrayList<>();
+        favoriteGenreList.add(Genre.Mystery);
+        favoriteGenreList.add(Genre.Fantasy);
+
+        when(userPersistence.getFavoriteGenreList(activeUser)).thenReturn(favoriteGenreList);
+        when(bookPersistence.getBooksByGenre(Genre.Fantasy)).thenReturn(userFavoriteFantasy);
+        when(bookPersistence.getBooksByGenre(Genre.Mystery)).thenReturn(userFavoriteMystery);
+
+        List<Book> result = userPreference.getBookRecommendations();
+
+        // Expecting all 5 books
+        assertEquals(5, result.size());
+        System.out.println("Finished testGetBookRecommendationsWithActiveUser");
     }
 
     @Test
@@ -115,4 +175,5 @@ public class UserPreferenceTest {
         assertTrue(userPreference.getFavoriteBookList(user).isEmpty());
         System.out.println("Finished testGetFavoriteBookListWithValidUserNoFavorites");
     }
+
 }
