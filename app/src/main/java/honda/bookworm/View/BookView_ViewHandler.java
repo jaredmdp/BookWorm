@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Business.Exceptions.InvalidCommentException;
+import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IAccessUsers;
+import honda.bookworm.Business.ICommentManager;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.Managers.CommentManager;
 import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Business.Managers.UserPreference;
 import honda.bookworm.Object.Book;
@@ -34,7 +41,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
     private IUserManager userManager;
     private IAccessBooks accessBooks;
     private IAccessUsers accessUsers;
-
+    private ICommentManager commentManager;
     private IUserPreference userPreference;
 
     @Override
@@ -46,6 +53,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
         accessBooks = new AccessBooks();
         userPreference = new UserPreference();
         accessUsers = new AccessUsers();
+        commentManager = new CommentManager();
 
         Bundle bookInfo = getIntent().getExtras();
         String bookISBN = bookInfo.getString("isbn");
@@ -167,5 +175,17 @@ public class BookView_ViewHandler extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void submitComment(View view){
+        EditText commentInput = (EditText) findViewById(R.id.book_view_comment_input);
+
+        try{
+            commentManager.leaveComment(book.getISBN(), commentInput.getText().toString());
+        } catch(UserException | InvalidCommentException | GeneralPersistenceException e){
+            Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
+        }
+
+        commentInput.setText("");
     }
 }

@@ -23,7 +23,7 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
 
     public Comment addComment(Comment newComment) throws GeneralPersistenceException {
         try (final Connection c = connection()) {
-            final PreparedStatement statement = c.prepareStatement("INSERT INTO Comment (user_username, ISBN, comment_text, time) VALUES (?, ?, ?, ?)");
+            final PreparedStatement statement = c.prepareStatement("INSERT INTO COMMENT (user_username, ISBN, comment_text, time) VALUES (?, ?, ?, ?)");
 
             Timestamp commentTime = new Timestamp(System.currentTimeMillis());
 
@@ -39,7 +39,6 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
 
             return newComment;
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Failed to add comment");
         }
     }
