@@ -1,5 +1,7 @@
 package honda.bookworm.Business.Managers;
 
+import java.util.List;
+
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidCommentException;
@@ -39,6 +41,14 @@ public class CommentManager implements ICommentManager {
             return commentPersistence.addComment(newComment);
         } catch(GeneralPersistenceException e){
             throw new GeneralPersistenceException("Could not save comment, try again");
+        }
+    }
+
+    public List<Comment> getCommentsOnBook(String ISBN) throws GeneralPersistenceException{
+        try{
+            return commentPersistence.getCommentsByISBN(ISBN);
+        } catch(GeneralPersistenceException e){
+            throw new GeneralPersistenceException("Couldn't get comments, try reloading the page");
         }
     }
 
