@@ -225,7 +225,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
         return result;
     }
 
-    public List<Genre> getFavoriteGenreList(User user) {
+    public List<Genre> getFavoriteGenreList(User user) throws InvalidGenreException {
         List<Genre> genreList = new ArrayList<>();
         try(Connection c = connection()){
             String sqlQuery = "SELECT g.* FROM favoritegenre fg "
@@ -242,6 +242,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             }
         }catch (SQLException e){
             e.printStackTrace();
+            throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
 
         return genreList;

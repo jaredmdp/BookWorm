@@ -58,6 +58,38 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         return result;
     }
 
+    @Override
+    public List<Book> getMostFavoriteBooks() {
+        String mostFav = "(SELECT fb.ISBN FROM PUBLIC.FavoriteBook fb " +
+                "GROUP BY fb.ISBN ORDER BY COUNT(*) DESC " +
+                "LIMIT 6)";
+        String sql = "Select b.*, u.first_name, u.last_name from PUBLIC.Book b "+
+                "join author a on a.author_id = b.author_id " +
+                "join user u on u.username=a.username "+
+                "where b.ISBN IN "+mostFav;
+
+        List<Book> bookList = new ArrayList<>();
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final Book book = fromResultSet(result);
+                bookList.add(book);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Error retrieving most favorite books");
+        }
+
+        return bookList;
+    }
+
     public List<Book> searchBooksByISBN(String ISBN) throws GeneralPersistenceException {
 
         String sql = "SELECT b.*, u.first_name, u.last_name " +

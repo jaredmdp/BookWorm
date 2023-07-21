@@ -23,13 +23,14 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import honda.bookworm.Application.Main;
-import honda.bookworm.Application.Services;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.IUserManager;
+import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Business.Managers.AccessBooks;
 import honda.bookworm.Business.Managers.SearchManager;
 import honda.bookworm.Business.Managers.UserManager;
+import honda.bookworm.Business.Managers.UserPreference;
 import honda.bookworm.Object.Book;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
@@ -40,8 +41,8 @@ public class Home_ViewHandler extends AppCompatActivity {
     private IAccessBooks accessBooks;
     private IUserManager userManager;
     private ISearchManager searchManager;
+    private IUserPreference userPreference;
     private Vibrator sysVibrator;
-    protected static boolean bookAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class Home_ViewHandler extends AppCompatActivity {
         accessBooks = new AccessBooks();
         userManager = new UserManager();
         searchManager = new SearchManager();
-        bookAdded = false;
+        userPreference = new UserPreference();
 
         sysVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         customizeToUser();
@@ -78,8 +79,14 @@ public class Home_ViewHandler extends AppCompatActivity {
     }
 
     private void buildBookView() {
+        processRecommendedRequest();
         List<Genre> genres = accessBooks.getAllAvailableGenres();
         processGenresRequest(genres, 0);
+    }
+
+    private void processRecommendedRequest() {
+        final List<Book> bookList = userPreference.getBookRecommendations();
+        addScrollView(bookList, "Recommended Books", 0);
     }
 
     private void processGenresRequest(List<Genre> list, int i) {
@@ -137,12 +144,13 @@ public class Home_ViewHandler extends AppCompatActivity {
         sysVibrator.vibrate(250);
         LinearLayout profileView = findViewById(R.id.home_userProfile_options);
         ImageButton profile = findViewById(R.id.home_userProfile_button);
-        if (Services.getActiveUser() != null) {
+        if (userManager.isUserLoggedIn()) {
             userManager.logOutActiveUser();
             TextView userName = findViewById(R.id.home_username);
             userName.setText("");
             viewVisibilityToggle(profileView);
             profile.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.inactive_grey));
+            onRestart();
         }
     }
 
@@ -217,9 +225,10 @@ public class Home_ViewHandler extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (bookAdded) {
-            startActivity(getIntent());
-            finishAffinity();
-        }
+        LinearLayout linearBody = findViewById(R.id.home_linear_content_body);
+        LinearLayout profileView = findViewById(R.id.home_userProfile_options);
+        linearBody.removeAllViews();
+        buildBookView();
+        profileView.setVisibility(View.GONE);
     }
 }

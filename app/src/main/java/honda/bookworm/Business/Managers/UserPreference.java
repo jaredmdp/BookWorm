@@ -2,10 +2,13 @@ package honda.bookworm.Business.Managers;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
@@ -92,6 +95,60 @@ public class UserPreference implements IUserPreference {
             bookList = bookPersistence.getFavoriteBookList(user);
         }
         return bookList;
+    }
+
+    @Override
+    public List<Book> getBookRecommendations() {
+        List<Book> bookList = new ArrayList<>();
+        List<Book> userFavoriteBooks;
+        User activeUser = Services.getActiveUser();
+
+        try {
+            if(activeUser != null) {
+                bookList = getBooksByUserFavoriteGenres();
+                userFavoriteBooks = getFavoriteBookList(activeUser);
+
+                //make sure the user's favorites are not being recommended to read
+                bookList.removeAll(userFavoriteBooks);
+            }
+            if (activeUser == null || bookList.isEmpty()) {
+                bookList = bookPersistence.getMostFavoriteBooks();
+            }
+        } catch (GeneralPersistenceException e) {
+            e.printStackTrace();
+            throw new InvalidBookException("Can't find recommended books");
+        }
+
+        //return random 10 books
+        Collections.shuffle(bookList);
+        int numRecommendations = Math.min(7, bookList.size());
+        return bookList.subList(0, numRecommendations);
+    }
+
+    private List<Book> getBooksByUserFavoriteGenres() throws InvalidGenreException, GeneralPersistenceException {
+        User activeUser = Services.getActiveUser();
+        List<Genre> favoriteGenres;
+
+        try {
+            favoriteGenres = userPersistence.getFavoriteGenreList(activeUser);
+        } catch (GeneralPersistenceException e) {
+            e.printStackTrace();
+            throw new InvalidGenreException("Could not get favorite genre list");
+        }
+
+        List<Book> booksByUserFavoriteGenres = new ArrayList<>();
+
+        for (Genre favoriteGenre : favoriteGenres) {
+            try {
+                List<Book> allBooksByGenre = bookPersistence.getBooksByGenre(favoriteGenre);
+                booksByUserFavoriteGenres.addAll(allBooksByGenre);
+            } catch (GeneralPersistenceException e) {
+                e.printStackTrace();
+                throw new InvalidGenreException("Could not get books for genre");
+            }
+        }
+
+        return booksByUserFavoriteGenres;
     }
 
 }

@@ -1,5 +1,6 @@
 package honda.bookworm.tests.Business;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -10,9 +11,11 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
@@ -45,6 +48,40 @@ public class UserPreferenceIT {
         this.accessUsers = new AccessUsers(persistence);
         this.manager = new UserManager(persistence);
         this.userPreference = new UserPreference(persistence,bPersistence);
+    }
+
+    @Test
+    public void testRecommendedBooksNoActiveUser() {
+        System.out.println("\nStarting testRecommendedBooksNoActiveUser");
+        List<Book> recommended = new ArrayList<>();
+
+        try {
+            recommended = userPreference.getBookRecommendations();
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(recommended.size(), 6);
+
+        System.out.println("\nFinished testRecommendedBooksNoActiveUser");
+    }
+
+    @Test
+    public void testRecommendedBooksWithActiveUser() {
+        System.out.println("\nStarting testRecommendedBooksNoActiveUser");
+        List<Book> recommended = new ArrayList<>();
+
+        accessUsers.verifyUser("martin", "got123");
+
+        try {
+            recommended = userPreference.getBookRecommendations();
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(recommended.size(), 7);
+
+        System.out.println("\nFinished testRecommendedBooksNoActiveUser");
     }
 
     @Test
