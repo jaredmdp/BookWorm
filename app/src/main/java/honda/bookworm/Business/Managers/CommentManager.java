@@ -1,6 +1,7 @@
 package honda.bookworm.Business.Managers;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidCommentException;
 import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.ICommentManager;
@@ -23,7 +24,7 @@ public class CommentManager implements ICommentManager {
         this.commentPersistence = commentPersistence;
     }
 
-    public Comment leaveComment(String ISBN, String comment) throws UserException, InvalidCommentException {
+    public Comment leaveComment(String ISBN, String comment) throws UserException, InvalidCommentException, GeneralPersistenceException {
         User currentUser = Services.getActiveUser();
 
         if(currentUser == null){
@@ -34,7 +35,11 @@ public class CommentManager implements ICommentManager {
 
         Comment newComment = new Comment(currentUser.getUsername(), ISBN, comment);
 
-        return commentPersistence.addComment(newComment);
+        try{
+            return commentPersistence.addComment(newComment);
+        } catch(GeneralPersistenceException e){
+            throw new GeneralPersistenceException("Could not save comment, try again");
+        }
     }
 
     //Validator functions----------------------------------------------------------------------------

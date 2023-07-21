@@ -11,11 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:overScrollMode="never"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:overScrollMode="never">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,6 +107,44 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/book_view_comment_input"
+                    android:layout_width="349dp"
+                    android:layout_height="match_parent"
+                    android:background="?colorPrimary"
+                    android:hint="Leave a Comment!"
+                    android:maxLength="280"
+                    android:maxLines="8"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8sp"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userlogin_login_heading" />
+
+                <ImageView
+                    android:id="@+id/book_view_comment_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:onClick="submitComment"
+                    android:tint="@color/grass_green"
+                    app:srcCompat="@android:drawable/ic_menu_send" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/book_view_comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -126,18 +164,17 @@
             android:id="@+id/book_view_fav_book_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:minWidth="25dp"
+            android:layout_gravity="end"
             android:layout_margin="10dp"
-            android:textOn=""
-            android:textOff=""
             android:background="@drawable/selector_toggle_favorite"
             android:backgroundTint="@color/worm_skin"
-            android:layout_gravity="end"
-            android:onClick="isFavoriteClicked"
             android:elevation="25dp"
-            android:visibility="gone"
-            />
+            android:minWidth="25dp"
+            android:minHeight="25dp"
+            android:onClick="isFavoriteClicked"
+            android:textOff=""
+            android:textOn=""
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/book_view_book_purchase_link"
@@ -148,7 +185,7 @@
             android:text="Purchase Book"
             android:visibility="visible"
             app:backgroundTint="@color/grass_green"
-            app:cornerRadius="25dp"/>
+            app:cornerRadius="25dp" />
 
     </LinearLayout>
 
