@@ -58,7 +58,7 @@ export default function Navbar() {
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
           >
-            Logo
+            BookWorm
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
@@ -267,7 +267,7 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: "Inspiration",
+    label: "Video",
     children: [
       {
         label: "Explore Design Work",
@@ -282,7 +282,7 @@ const NAV_ITEMS: Array<NavItem> = [
     ],
   },
   {
-    label: "Find Work",
+    label: "Features",
     children: [
       {
         label: "Job Board",
@@ -297,11 +297,11 @@ const NAV_ITEMS: Array<NavItem> = [
     ],
   },
   {
-    label: "Learn Design",
+    label: "Vision Statement",
     href: "#",
   },
   {
-    label: "Hire Designers",
+    label: "Meet the Team",
     href: "#",
   },
 ];
