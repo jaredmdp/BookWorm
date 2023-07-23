@@ -21,6 +21,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import Image from "next/image";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -52,6 +53,19 @@ export default function Navbar() {
             aria-label={"Toggle Navigation"}
           />
         </Flex>
+
+        <Flex>
+          <Box pr="4">
+            <Image
+              src={"/Images/bookWorm_mascot.png"}
+              alt={"bookworm logo"}
+              width={50}
+              height={50}
+              objectFit={"cover"}
+            />
+          </Box>
+        </Flex>
+
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
           <Text
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
