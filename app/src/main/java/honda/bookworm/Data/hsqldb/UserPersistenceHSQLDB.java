@@ -100,7 +100,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.executeUpdate();
             statement.close();
 
-            if(currentUser instanceof Author)
+            if(currentUser.canAuthorBooks())
             {
                 addAuthor(currentUser);
             }
