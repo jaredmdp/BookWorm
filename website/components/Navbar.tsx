@@ -112,10 +112,10 @@ const DesktopNav = () => {
             {navItem.children && (
               <PopoverContent
                 border={0}
-                boxShadow={"m"}
+                boxShadow={"xl"}
                 bg={popoverContentBgColor}
                 p={4}
-                rounded={"m"}
+                rounded={"xl"}
                 minW={"sm"}
               >
                 <Stack>
