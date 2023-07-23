@@ -58,7 +58,9 @@ export default function Navbar() {
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
           >
-            BookWorm
+            <Button as={"a"} href="/" variant={"link"}>
+              BookWorm
+            </Button>
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
