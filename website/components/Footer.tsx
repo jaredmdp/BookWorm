@@ -55,7 +55,7 @@ export default function Footer() {
         py={4}
         direction={{ base: "column", md: "row" }}
         spacing={4}
-        position="fixed"
+        position="sticky"
         bottom={0}
         left={0}
         right={0}

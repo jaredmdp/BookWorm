@@ -57,12 +57,21 @@ export default function FeaturePage() {
             alignSelf={"flex-start"}
             rounded={"md"}
           >
-            Our Story
+            Feature
           </Text>
-          <Heading>A digital Product design agency</Heading>
-          <Text color={"gray.500"} fontSize={"lg"}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore
+          <Heading fontSize={"3xl"}>Add Books</Heading>
+          <Text color={"gray.500"} fontSize={"md"}>
+            As an author, you have the privilege of adding your own books to our
+            system.
+          </Text>
+          <Text color={"gray.500"} fontSize={"md"}>
+            Simply fill in the book details, including the title, ISBN, genre,
+            and description. Don't forget to provide an eye-catching image for
+            your book.
+          </Text>
+          <Text color={"gray.500"} fontSize={"md"}>
+            Once you submit the information, your custom book will be displayed
+            among our collection for readers to explore.
           </Text>
           <Stack
             spacing={4}
@@ -77,30 +86,23 @@ export default function FeaturePage() {
                 <Icon as={IoAnalyticsSharp} color={"yellow.500"} w={5} h={5} />
               }
               iconBg={useColorModeValue("yellow.100", "yellow.900")}
-              text={"Business Planning"}
+              text={"Optional marketing quote"}
             />
             <Feature
               icon={<Icon as={IoLogoBitcoin} color={"green.500"} w={5} h={5} />}
               iconBg={useColorModeValue("green.100", "green.900")}
-              text={"Financial Planning"}
-            />
-            <Feature
-              icon={
-                <Icon as={IoSearchSharp} color={"purple.500"} w={5} h={5} />
-              }
-              iconBg={useColorModeValue("purple.100", "purple.900")}
-              text={"Market Analysis"}
+              text={"Optional marketing quote"}
             />
           </Stack>
         </Stack>
         <Flex>
           <Image
             rounded={"md"}
+            src={"/Images/addBooks.png"}
             alt={"feature image"}
-            src={
-              "https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            }
             objectFit={"cover"}
+            width={450}
+            height={450}
           />
         </Flex>
       </SimpleGrid>
