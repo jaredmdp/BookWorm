@@ -32,7 +32,7 @@ export default function Navbar() {
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
-        px={{ base: 4 }}
+        px={{ base: 10 }}
         borderBottom={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.900")}
@@ -73,31 +73,7 @@ export default function Navbar() {
           justify={"flex-end"}
           direction={"row"}
           spacing={6}
-        >
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"#"}
-          >
-            Sign In
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            href={"#"}
-            _hover={{
-              bg: "pink.300",
-            }}
-          >
-            Sign Up
-          </Button>
-        </Stack>
+        ></Stack>
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -136,10 +112,10 @@ const DesktopNav = () => {
             {navItem.children && (
               <PopoverContent
                 border={0}
-                boxShadow={"xl"}
+                boxShadow={"m"}
                 bg={popoverContentBgColor}
                 p={4}
-                rounded={"xl"}
+                rounded={"m"}
                 minW={"sm"}
               >
                 <Stack>
@@ -270,18 +246,6 @@ interface NavItem {
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Video",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "#",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
-      },
-    ],
   },
   {
     label: "Features",
@@ -292,7 +256,37 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "#",
   },
   {
-    label: "Meet the Team",
+    label: "Retrospective",
     href: "#",
+  },
+  {
+    label: "Meet the Team",
+    children: [
+      {
+        label: "Jared Mandap",
+        subLabel: "Backend and Website developer",
+        href: "#",
+      },
+      {
+        label: "Arsalan Siddiqui",
+        subLabel: "Frontend Wizard",
+        href: "#",
+      },
+      {
+        label: "Fidelio Ciandy",
+        subLabel: "Backand and Quality Assurance",
+        href: "#",
+      },
+      {
+        label: "Roba Geleta",
+        subLabel: "Architechtural Planner",
+        href: "#",
+      },
+      {
+        label: "Noah Wu",
+        subLabel: "Backend and Systems Design",
+        href: "#",
+      },
+    ],
   },
 ];
