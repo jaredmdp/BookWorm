@@ -12,12 +12,10 @@ import {
   useColorModeValue,
   Spacer,
 } from "@chakra-ui/react";
-import {
-  IoAnalyticsSharp,
-  IoLogoBitcoin,
-  IoSearchSharp,
-} from "react-icons/io5";
+import { IoSearchSharp } from "react-icons/io5";
 import { ReactElement } from "react";
+import { AiOutlinePlusCircle, AiOutlineHome } from "react-icons/ai";
+import { BiSolidUserDetail } from "react-icons/bi";
 
 interface FeatureProps {
   text: string;
@@ -85,15 +83,15 @@ export default function FeaturePage() {
           >
             <Feature
               icon={
-                <Icon as={IoAnalyticsSharp} color={"yellow.500"} w={5} h={5} />
+                <Icon as={BiSolidUserDetail} color={"yellow.500"} w={5} h={5} />
               }
               iconBg={useColorModeValue("yellow.100", "yellow.900")}
-              text={"Optional marketing quote"}
+              text={"View book details and available purchase links"}
             />
             <Feature
-              icon={<Icon as={IoLogoBitcoin} color={"green.500"} w={5} h={5} />}
+              icon={<Icon as={AiOutlineHome} color={"green.500"} w={5} h={5} />}
               iconBg={useColorModeValue("green.100", "green.900")}
-              text={"Optional marketing quote"}
+              text={"View list of books to browse"}
             />
           </Stack>
         </Stack>
@@ -108,7 +106,9 @@ export default function FeaturePage() {
           />
         </Flex>
       </SimpleGrid>
+
       <Spacer height="70px" />
+
       {/* // SearchBooks feature */}
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Flex>
@@ -155,15 +155,15 @@ export default function FeaturePage() {
           >
             <Feature
               icon={
-                <Icon as={IoAnalyticsSharp} color={"yellow.500"} w={5} h={5} />
+                <Icon as={IoSearchSharp} color={"yellow.500"} w={5} h={5} />
               }
               iconBg={useColorModeValue("yellow.100", "yellow.900")}
-              text={"Optional marketing quote"}
+              text={"Search for Author Names and Usernames"}
             />
             <Feature
-              icon={<Icon as={IoLogoBitcoin} color={"green.500"} w={5} h={5} />}
+              icon={<Icon as={IoSearchSharp} color={"green.500"} w={5} h={5} />}
               iconBg={useColorModeValue("green.100", "green.900")}
-              text={"Optional marketing quote"}
+              text={"Search for Books by Title"}
             />
           </Stack>
         </Stack>
@@ -210,15 +210,27 @@ export default function FeaturePage() {
           >
             <Feature
               icon={
-                <Icon as={IoAnalyticsSharp} color={"yellow.500"} w={5} h={5} />
+                <Icon
+                  as={AiOutlinePlusCircle}
+                  color={"yellow.500"}
+                  w={5}
+                  h={5}
+                />
               }
               iconBg={useColorModeValue("yellow.100", "yellow.900")}
-              text={"Optional marketing quote"}
+              text={"Add custom book Images"}
             />
             <Feature
-              icon={<Icon as={IoLogoBitcoin} color={"green.500"} w={5} h={5} />}
+              icon={
+                <Icon
+                  as={AiOutlinePlusCircle}
+                  color={"green.500"}
+                  w={5}
+                  h={5}
+                />
+              }
               iconBg={useColorModeValue("green.100", "green.900")}
-              text={"Optional marketing quote"}
+              text={"Add author created books"}
             />
           </Stack>
         </Stack>

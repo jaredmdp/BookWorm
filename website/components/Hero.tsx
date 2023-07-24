@@ -39,7 +39,7 @@ export default function Hero() {
                 position: "absolute",
                 bottom: 1,
                 left: 0,
-                bg: "red.400",
+                bg: "red.300",
                 zIndex: -1,
               }}
             >
@@ -64,11 +64,14 @@ export default function Hero() {
               size={"lg"}
               fontWeight={"normal"}
               px={6}
-              colorScheme={"red"}
-              bg={"red.400"}
-              _hover={{ bg: "red.500" }}
+              color={"white"}
+              bg={"red.300"}
+              _hover={{ bg: "red.400" }}
+              as={"a"}
+              href="/FeaturePage"
+              variant={"link"}
             >
-              Get started
+              View our Features
             </Button>
             <Button
               rounded={"full"}
@@ -77,7 +80,7 @@ export default function Hero() {
               px={6}
               leftIcon={<PlayIcon h={4} w={4} color={"gray.300"} />}
             >
-              How It Works
+              Watch our Presentation
             </Button>
           </Stack>
         </Stack>
