@@ -81,8 +81,12 @@ public class BookView_ViewHandler extends AppCompatActivity {
         description.setText(String.format("%s %s", description.getText(), book.getDescription()));
 
         if (!book.getCover().equals("")) {
+            coverView.setTag(true);
+            System.out.println(coverView.getTag());
             coverView.setForeground(null);
             coverView.setImageBitmap(ImageConverter.DecodeToBitmap(book.getCover()));
+        } else {
+            coverView.setTag(false);
         }
 
         description.post(new Runnable() {
