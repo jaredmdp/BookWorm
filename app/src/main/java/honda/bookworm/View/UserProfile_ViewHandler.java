@@ -102,7 +102,7 @@ public class UserProfile_ViewHandler extends AppCompatActivity {
         if (activeUser instanceof  Author) {
             Author author = (Author) activeUser;
             writtenBooks = accessBooks.getAuthorIDBookList(author.getAuthorID());
-            authorWrittenBooks = Book_horizontalscroll_constructor.create(UserProfile_ViewHandler.this, "Books by you", writtenBooks);
+            authorWrittenBooks = Book_horizontalscroll_constructor.create(UserProfile_ViewHandler.this, "Written Books", writtenBooks);
             linearBody.addView(authorWrittenBooks);
 
             if (writtenBooks.isEmpty()) {
@@ -127,7 +127,7 @@ public class UserProfile_ViewHandler extends AppCompatActivity {
         if(favoriteBooks.isEmpty()){
             TextView tv = horizontalScrollContainer.findViewById(R.id.books_horizontal_msg_on_empty);
             tv.setVisibility(View.VISIBLE);
-            tv.setText("No favorite books found. Try favoriting the books that catches you attention and try comming back");
+            tv.setText("No favorite books found.");
         }
     }
 
