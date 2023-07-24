@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.honda.bookworm.R;
 
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidCommentException;
 import honda.bookworm.Business.Exceptions.Users.UserException;
@@ -58,7 +59,13 @@ public class BookView_ViewHandler extends AppCompatActivity {
         Bundle bookInfo = getIntent().getExtras();
         String bookISBN = bookInfo.getString("isbn");
 
-        this.book = accessBooks.getBookByISBN(bookISBN);
+        try{
+            this.book = accessBooks.getBookByISBN(bookISBN);
+        } catch(InvalidISBNException e)
+        {
+            //what do we want to happen
+        }
+
 
         assignValues();
         applyHideOnScroll();
