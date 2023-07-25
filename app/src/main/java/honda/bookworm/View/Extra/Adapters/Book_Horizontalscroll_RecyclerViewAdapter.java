@@ -58,6 +58,7 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
         }
 
         holder.bookTitle.setText(bookList.get(position).getName());
+        holder.parent.setTag(bookList.get(position).getName());
     }
 
     @Override
@@ -67,6 +68,7 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
 
     public class BookCardHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        View parent;
         ImageView bookImage;
         TextView bookTitle;
         private int minWidth,maxWidth;
@@ -76,6 +78,7 @@ public class Book_Horizontalscroll_RecyclerViewAdapter extends RecyclerView.Adap
             super(itemView);
             bookImage = itemView.findViewById(R.id.book_card_image);
             bookTitle = itemView.findViewById(R.id.book_card_title);
+            parent = itemView;
 
             minWidth = bookImage.getMinimumWidth();
             maxWidth = bookImage.getMaxWidth();

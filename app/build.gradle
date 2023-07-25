@@ -33,6 +33,7 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
+    implementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 
     //Integration tests
     testImplementation group: 'com.google.guava', name: 'guava', version: '25.1-jre'

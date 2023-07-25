@@ -6,6 +6,7 @@ import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 
 public interface IUserPersistence {
+    void removeUser(String username);
     List<User> getAllUsers();
     User getUserByUsername(String currentUsername);
     User addUser(User currentUser);
