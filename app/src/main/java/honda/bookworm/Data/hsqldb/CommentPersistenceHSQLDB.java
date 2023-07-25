@@ -20,11 +20,11 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
         this.dbPath = dbPath;
     }
 
-    private Connection connection() throws SQLException {
+    private synchronized Connection connection() throws SQLException {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
     }
 
-    public Comment addComment(Comment newComment) throws GeneralPersistenceException {
+    public synchronized Comment addComment(Comment newComment) throws GeneralPersistenceException {
         try (final Connection c = connection()) {
             final PreparedStatement statement = c.prepareStatement("INSERT INTO COMMENT (user_username, ISBN, comment_text, time) VALUES (?, ?, ?, ?)");
 
@@ -44,7 +44,7 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
         }
     }
 
-    public List<Comment> getCommentsByISBN(String ISBN) throws GeneralPersistenceException {
+    public synchronized List<Comment> getCommentsByISBN(String ISBN) throws GeneralPersistenceException {
         try(final Connection c = connection()){
             final PreparedStatement statement = c.prepareStatement("SELECT * FROM COMMENT WHERE ISBN = ? ORDER BY time DESC");
 
@@ -65,7 +65,7 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
         }
     }
 
-    private Comment fromResultSet(ResultSet result) throws SQLException {
+    private synchronized Comment fromResultSet(ResultSet result) throws SQLException {
         final String username = result.getString("user_username");
         final String ISBN = result.getString("ISBN");
         final String comment = result.getString("comment_text");
