@@ -269,11 +269,12 @@ export default function FeaturePage() {
             allowing you to favorite books and genres for easy access. Embrace a
             personalized journey through the world of books with our account
             creation and tailored recommendations.
-            <Text color={"gray.500"} fontSize={"md"}>
-              Discover user discussions and comments while exploring each book's
-              details. Engage with fellow readers, and share your thoughts.
-            </Text>
           </Text>
+          <Text color={"gray.500"} fontSize={"md"}>
+            Discover user discussions and comments while exploring each book's
+            details. Engage with fellow readers, and share your thoughts.
+          </Text>
+
           <Stack
             spacing={4}
             divider={
