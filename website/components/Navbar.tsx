@@ -275,32 +275,6 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Meet the Team",
-    children: [
-      {
-        label: "Jared Mandap",
-        subLabel: "Backend and Website developer",
-        href: "#",
-      },
-      {
-        label: "Arsalan Siddiqui",
-        subLabel: "Frontend Wizard",
-        href: "#",
-      },
-      {
-        label: "Fidelio Ciandy",
-        subLabel: "Backend and Quality Assurance",
-        href: "#",
-      },
-      {
-        label: "Roba Geleta",
-        subLabel: "Architechtural Planner",
-        href: "#",
-      },
-      {
-        label: "Noah Wu",
-        subLabel: "Backend and Systems Design",
-        href: "#",
-      },
-    ],
+    href: "/TeamPage",
   },
 ];
