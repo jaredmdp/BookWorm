@@ -61,17 +61,14 @@ export default function FeaturePage() {
           </Text>
           <Heading fontSize={"3xl"}>Home View and Book Details</Heading>
           <Text color={"gray.500"} fontSize={"md"}>
-            Browse a collection of books, conveniently organized by genres,
-            granting you the freedom to explore and find captivating titles that
-            match your interests. Our intuitive design ensures a seamless and
-            enjoyable browsing experience.
+            Browse a collection of books, conveniently organized by personalized
+            recommendations, and genres. Our intuitive design ensures a seamless
+            and enjoyable browsing experience.
           </Text>
           <Text color={"gray.500"} fontSize={"md"}>
             Delve deeper into each book with our Book Details feature. Uncover
             essential information such as the author, publication date, and a
-            concise summary of the plot. Easily access knowledge about each
-            book, empowering you to make well-informed decisions on your
-            literary journey.
+            concise summary of the plot.
           </Text>
           <Stack
             spacing={4}
@@ -136,7 +133,7 @@ export default function FeaturePage() {
           </Text>
           <Heading fontSize={"3xl"}>Search for books</Heading>
           <Text color={"gray.500"} fontSize={"md"}>
-            With our Search Bar, you can effortlessly discover users, authors,
+            With the Search Bar, you can effortlessly discover users, authors,
             and books that match your interests. Whether you're looking for your
             favorite author's latest books, a specific book title, an intriguing
             genre, or an ISBN number, our Search Bar has got you covered!
@@ -164,6 +161,138 @@ export default function FeaturePage() {
               icon={<Icon as={IoSearchSharp} color={"green.500"} w={5} h={5} />}
               iconBg={useColorModeValue("green.100", "green.900")}
               text={"Search for Books by Title"}
+            />
+          </Stack>
+        </Stack>
+      </SimpleGrid>
+
+      <Spacer height="70px" />
+
+      {/* Login Feature */}
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+        <Stack spacing={4}>
+          <Text
+            textTransform={"uppercase"}
+            color={"blue.400"}
+            fontWeight={600}
+            fontSize={"sm"}
+            bg={useColorModeValue("blue.50", "blue.900")}
+            p={2}
+            alignSelf={"flex-start"}
+            rounded={"md"}
+          >
+            Feature
+          </Text>
+          <Heading fontSize={"3xl"}>Login and Sign-up</Heading>
+          <Text color={"gray.500"} fontSize={"md"}>
+            You can create your own account and unlock personalized features.
+            Registering and logging in grants you access to your user profile,
+            where you can favorite books and genres, tailoring your browsing
+            experience to your unique interests.
+          </Text>
+          <Stack
+            spacing={4}
+            divider={
+              <StackDivider
+                borderColor={useColorModeValue("gray.100", "gray.700")}
+              />
+            }
+          >
+            <Feature
+              icon={
+                <Icon
+                  as={AiOutlinePlusCircle}
+                  color={"yellow.500"}
+                  w={5}
+                  h={5}
+                />
+              }
+              iconBg={useColorModeValue("yellow.100", "yellow.900")}
+              text={"Access to additional features by logging in"}
+            />
+            <Feature
+              icon={
+                <Icon
+                  as={AiOutlinePlusCircle}
+                  color={"green.500"}
+                  w={5}
+                  h={5}
+                />
+              }
+              iconBg={useColorModeValue("green.100", "green.900")}
+              text={"Get tailored viewing experience"}
+            />
+          </Stack>
+        </Stack>
+        <Flex>
+          <Image
+            rounded={"md"}
+            src={"/Images/userSignUp.png"}
+            alt={"feature image"}
+            objectFit={"cover"}
+            width={500}
+            height={500}
+          />
+        </Flex>
+      </SimpleGrid>
+
+      <Spacer height="70px" />
+
+      {/* // Comments and recommendations feature */}
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+        <Flex>
+          <Image
+            rounded={"md"}
+            src={"/Images/commentsAndProfile.png"}
+            alt={"feature image"}
+            objectFit={"cover"}
+            width={500}
+            height={500}
+          />
+        </Flex>
+        <Stack spacing={4}>
+          <Text
+            textTransform={"uppercase"}
+            color={"blue.400"}
+            fontWeight={600}
+            fontSize={"sm"}
+            bg={useColorModeValue("blue.50", "blue.900")}
+            p={2}
+            alignSelf={"flex-start"}
+            rounded={"md"}
+          >
+            Feature
+          </Text>
+          <Heading fontSize={"3xl"}>Comments and User Profile</Heading>
+          <Text color={"gray.500"} fontSize={"md"}>
+            Your user profile becomes a hub for managing your interactions,
+            allowing you to favorite books and genres for easy access. Embrace a
+            personalized journey through the world of books with our account
+            creation and tailored recommendations.
+            <Text color={"gray.500"} fontSize={"md"}>
+              Discover user discussions and comments while exploring each book's
+              details. Engage with fellow readers, and share your thoughts.
+            </Text>
+          </Text>
+          <Stack
+            spacing={4}
+            divider={
+              <StackDivider
+                borderColor={useColorModeValue("gray.100", "gray.700")}
+              />
+            }
+          >
+            <Feature
+              icon={
+                <Icon as={IoSearchSharp} color={"yellow.500"} w={5} h={5} />
+              }
+              iconBg={useColorModeValue("yellow.100", "yellow.900")}
+              text={"User tailored profiles"}
+            />
+            <Feature
+              icon={<Icon as={IoSearchSharp} color={"green.500"} w={5} h={5} />}
+              iconBg={useColorModeValue("green.100", "green.900")}
+              text={"Discussions through comments"}
             />
           </Stack>
         </Stack>
