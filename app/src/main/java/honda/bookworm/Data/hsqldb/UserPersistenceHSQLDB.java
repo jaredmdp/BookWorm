@@ -105,7 +105,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     }
 
     @Override
-    public User addUser(User currentUser) {
+    public User addUser(User currentUser) throws GeneralPersistenceException{
         try (final Connection c = connection()) {
             String sql = "INSERT INTO user VALUES(?, ?, ?, ?)";
 
@@ -126,7 +126,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             return currentUser;
         } catch (final SQLException e) {
             e.printStackTrace();
-            throw new DuplicateUserException("For User " + currentUser);
+            throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
     }
 
@@ -150,7 +150,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
     }
 
-    private void addAuthor(User user) {
+    private void addAuthor(User user) throws GeneralPersistenceException {
         try (final Connection c = connection()) {
             String sqlIn = "INSERT INTO author (username) VALUES(?)";
             String sqlGet = "SELECT author_id FROM author where username=?";

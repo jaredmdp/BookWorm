@@ -39,13 +39,13 @@ public class AccessUsers implements IAccessUsers {
             newUser = new User(first, last, username, password);
         }
 
-        result = userPersistence.addUser(newUser);
-
-        if (result != null) {
+        try{
+            result = userPersistence.addUser(newUser);
             Services.setActiveUser(result);
+            return result;
+        } catch(GeneralPersistenceException e){
+            throw new DuplicateUserException("This username is already used");
         }
-
-        return result;
     }
 
     public void verifyUser(String username, String password) throws UserNotFoundException, InvalidPasswordException {
