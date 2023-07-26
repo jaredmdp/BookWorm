@@ -15,15 +15,18 @@ import com.honda.bookworm.R;
 import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Object.Factories.IUserFactory;
+import honda.bookworm.Object.Factories.UserFactory;
+import honda.bookworm.Object.User;
 
 public class UserSignup_ViewHandler extends AppCompatActivity {
-
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private EditText usernameEditText;
     private EditText passwordEditText;
     private CheckBox isAuthorCheckbox;
     private IAccessUsers accessUsers;
+    private IUserFactory userFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
         isAuthorCheckbox = findViewById(R.id.signup_is_author_checkbox);
 
         accessUsers = new AccessUsers();
+        userFactory = new UserFactory();
     }
 
 
@@ -44,7 +48,7 @@ public class UserSignup_ViewHandler extends AppCompatActivity {
         String message = "";
 
         try {
-            accessUsers.addNewUser(firstName, lastName, username, password, isAuthor);
+            accessUsers.addNewUser(userFactory.make(firstName, lastName, username, password, isAuthor ? "Author":"User"));
             signUpState = true;
         } catch (UserException e) {
             message = e.getMessage();

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
@@ -45,12 +46,17 @@ public class CommentManagerTest {
         System.out.println("Starting testLeaveCommentSuccess");
 
         Comment expected = new Comment(loggedIn.getUsername(), testISBN, "Test");
+        ArgumentCaptor<Comment> captor = ArgumentCaptor.forClass(Comment.class);
 
         when(commentPersistence.addComment(expected)).thenReturn(expected);
         commentManager.leaveComment(testISBN, "Test");
 
-        verify(commentPersistence).addComment(expected);
-        verify(commentPersistence, times(1)).addComment(expected);
+        verify(commentPersistence).addComment(captor.capture());
+        verify(commentPersistence, times(1)).addComment(any(Comment.class));
+
+        assert(captor.getValue().getUsername() == expected.getUsername());
+        assert(captor.getValue().getComment() == expected.getComment());
+        assert(captor.getValue().getISBN() == expected.getISBN());
 
         System.out.println("Finished testLeaveCommentSuccess");
     }
@@ -71,5 +77,15 @@ public class CommentManagerTest {
         verify(commentPersistence, times(0)).addComment(any(Comment.class));
 
         System.out.println("Finished testLeaveCommentFailure");
+    }
+
+    @Test
+    public void testFailureDueToPersistenceException(){
+        System.out.println("Starting testFailureDueToPersistenceException");
+
+        when(commentPersistence.getCommentsByISBN("12345678910")).thenThrow(GeneralPersistenceException.class);
+        assertThrows(GeneralPersistenceException.class, ()-> commentManager.getCommentsOnBook("12345678910"));
+
+        System.out.println("Finished testFailureDueToPersistenceException");
     }
 }

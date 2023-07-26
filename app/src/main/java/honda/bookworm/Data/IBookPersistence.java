@@ -22,8 +22,7 @@ public interface IBookPersistence {
 
     List<Book> getBooksByGenre(Genre genre);
 
-    public List<Book> getBooksByAuthorID(int authorID);
-
+    List<Book> getBooksByAuthorID(int authorID);
     boolean isBookFavoriteOfUser(User user, String isbn);
 
     boolean toggleUserBookFavorite(User user, String isbn);
@@ -31,4 +30,5 @@ public interface IBookPersistence {
     List<Book> getFavoriteBookList(User user);
 
     List<Genre> getAllAvailableGenreList();
+    void removeBookByISBN(String isbn);
 }
