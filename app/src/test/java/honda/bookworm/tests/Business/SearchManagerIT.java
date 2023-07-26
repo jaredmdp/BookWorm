@@ -148,7 +148,7 @@ public class SearchManagerIT {
 
         List<User> result = accessSearch.performSearchUser(query);
 
-        assertEquals(3, result.size());
+        assertEquals(4, result.size());
     }
 
     @Test

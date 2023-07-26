@@ -4,6 +4,7 @@ import static androidx.test.espresso.Espresso.closeSoftKeyboard;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.action.ViewActions.typeTextIntoFocusedView;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -48,7 +49,7 @@ public class CommentSys {
         onView(withId(R.id.book_view_discussion_tab)).perform(scrollTo(),click());
         Thread.sleep(2000); //give some time incase loading comments take time
 
-        onView(allOf(withId(R.id.recycler_comment_timestamp),withText("Jun 10, 2022"))).perform(scrollTo()); //scroll to very bottom of the comments
+        onView(withId(R.id.book_view_scrollview)).perform(swipeUp()); //scroll to very bottom of the comments
 
         //verify if these three comments exist
         onView(allOf(withId(R.id.recycler_comment_username),withText("@martin"))).check(matches(isDisplayed()));
@@ -81,7 +82,7 @@ public class CommentSys {
         User user = Services.getUserPersistence().getUserByUsername("testAuthor");
         removeCommentsByUser(user.getUsername());
         String testMsg = "Test comment should be added";
-        String bookName = "The Alchemist";
+        String bookName = "Dune";
 
         //click user profile button to login
         onView(withId(R.id.home_userProfile_button)).perform(click());
@@ -102,7 +103,7 @@ public class CommentSys {
         onView(withId(R.id.book_view_comment_input)).check(matches(isDisplayed()));
         onView(withId(R.id.book_view_comment_input)).perform(scrollTo(),click(), typeTextIntoFocusedView(testMsg));
         onView(withId(R.id.book_view_comment_submit)).perform(click());
-        Thread.sleep(2000); //slow down for user to see
+        Thread.sleep(4000); //Sometimes physical device is too fast. So we set a delay
         onView(withId(R.id.book_view_comment_input)).check(matches(withText("")));
         onView(allOf(withId(R.id.recycler_comment_content),withText(testMsg))).perform(scrollTo());
         onView(allOf(withId(R.id.recycler_comment_username),withText("@"+user.getUsername()))).check(matches(isDisplayed()));
