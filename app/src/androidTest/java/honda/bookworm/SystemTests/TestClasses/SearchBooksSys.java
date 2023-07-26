@@ -3,7 +3,6 @@ package honda.bookworm.SystemTests.TestClasses;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.pressKey;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -36,7 +35,7 @@ public class SearchBooksSys {
     @Test
     public void searchBooksGenre(){
         //click search logo button
-        onView(withId(R.id.home_proceed_to_search)).perform(scrollTo(), click());
+        onView(withId(R.id.home_proceed_to_search)).perform(click());
 
         //search by genre
         onView(withId(R.id.search_search_input)).perform(typeText("Fiction"));
@@ -55,7 +54,7 @@ public class SearchBooksSys {
     @Test
     public void searchBookAuthor(){
         //click search logo button
-        onView(withId(R.id.home_proceed_to_search)).perform(scrollTo(), click());
+        onView(withId(R.id.home_proceed_to_search)).perform(click());
 
         //click the author button
         onView(withId(R.id.search_for_author)).perform(click());
@@ -77,7 +76,7 @@ public class SearchBooksSys {
     @Test
     public void searchBookTitle() throws InterruptedException {
         //click search logo button
-        onView(withId(R.id.home_proceed_to_search)).perform(scrollTo(), click());
+        onView(withId(R.id.home_proceed_to_search)).perform(click());
 
         //slow the app down. sometimes the test run too fast and unable to scroll
         Thread.sleep(2000);
@@ -107,7 +106,7 @@ public class SearchBooksSys {
     @Test
     public void searchBookISBN() throws InterruptedException {
         //click search logo button
-        onView(withId(R.id.home_proceed_to_search)).perform(scrollTo(), click());
+        onView(withId(R.id.home_proceed_to_search)).perform(click());
 
         //slow the app down. sometimes the test run too fast and unable to scroll
         Thread.sleep(2000);

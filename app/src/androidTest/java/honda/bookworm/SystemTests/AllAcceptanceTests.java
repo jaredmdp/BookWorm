@@ -6,9 +6,11 @@ import org.junit.runners.Suite;
 import honda.bookworm.SystemTests.TestClasses.AddBooksSys;
 import honda.bookworm.SystemTests.TestClasses.BookDetailsSys;
 import honda.bookworm.SystemTests.TestClasses.BookImageSys;
+import honda.bookworm.SystemTests.TestClasses.CommentSys;
 import honda.bookworm.SystemTests.TestClasses.CreateProfileSys;
 import honda.bookworm.SystemTests.TestClasses.FavBookSys;
 import honda.bookworm.SystemTests.TestClasses.OpenProfileSys;
+import honda.bookworm.SystemTests.TestClasses.ProfileNavSys;
 import honda.bookworm.SystemTests.TestClasses.RecommendBooksSys;
 import honda.bookworm.SystemTests.TestClasses.SearchBooksSys;
 import honda.bookworm.SystemTests.TestClasses.ViewBooksSys;
@@ -23,7 +25,9 @@ import honda.bookworm.SystemTests.TestClasses.ViewBooksSys;
         AddBooksSys.class,
         OpenProfileSys.class,
         BookImageSys.class,
-        RecommendBooksSys.class
+        CommentSys.class,
+        RecommendBooksSys.class,
+        ProfileNavSys.class
 })
 
 public class AllAcceptanceTests {
