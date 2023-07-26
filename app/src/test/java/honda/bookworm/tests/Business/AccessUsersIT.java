@@ -26,6 +26,7 @@ import honda.bookworm.Business.Managers.AccessUsers;
 import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
+import honda.bookworm.Object.Author;
 import honda.bookworm.Object.User;
 import honda.bookworm.tests.utils.TestUtils;
 
@@ -46,8 +47,8 @@ public class AccessUsersIT {
     public void testGetAllUsers(){
         System.out.println("\nStarting testGetAllUsers");
 
-        accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
-        accessUsers.addNewUser("John", "Depp", "jondepp", "password2", false);
+        accessUsers.addNewUser(new User("John", "Doe", "johndoe", "password1"));
+        accessUsers.addNewUser(new User("John", "Depp", "jondepp", "password2"));
 
         List<User> users = manager.getAllUsers();
 
@@ -64,12 +65,12 @@ public class AccessUsersIT {
         int initialSize = manager.getAllUsers().size();
         int expectedSize = initialSize + 1;
 
-        accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
+        accessUsers.addNewUser(new User("hello", "test", "hellotest", "password1"));
 
         assertEquals(expectedSize, manager.getAllUsers().size());
 
         //adds author variant
-        accessUsers.addNewUser("hello", "test", "hellotest2", "password1", true);
+        accessUsers.addNewUser(new Author("hello", "test", "hellotest2", "password1"));
         expectedSize = expectedSize + 1;
 
         assertEquals(expectedSize, manager.getAllUsers().size());
@@ -83,12 +84,12 @@ public class AccessUsersIT {
 
         int initialSize = manager.getAllUsers().size();
         int expectedSize = initialSize + 1;
-        accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
+        accessUsers.addNewUser(new User("hello", "test", "hellotest", "password1"));
         assertEquals(expectedSize, manager.getAllUsers().size());
 
         try {
             //insert same user
-            accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
+            accessUsers.addNewUser(new User("hello", "test", "hellotest", "password1"));
             fail();
         } catch (DuplicateUserException e) {
             System.out.println("Error: Duplicate user: " + e.getMessage());
@@ -101,7 +102,7 @@ public class AccessUsersIT {
     public void testVerifyUserTrue() {
         System.out.println("\nStarting testVerifyUserTrue");
 
-        accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
+        accessUsers.addNewUser(new User("John", "Doe", "johndoe", "password1"));
         String username = "johndoe";
         String password = "password1";
 
@@ -128,7 +129,7 @@ public class AccessUsersIT {
         System.out.println("Starting testVerifyUserFalsePasswordWrong");
 
         //add user
-        accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
+        accessUsers.addNewUser(new User("John", "Doe", "johndoe", "password1"));
 
         //this is the wrong password
         String username = "johndoe";
@@ -144,10 +145,10 @@ public class AccessUsersIT {
         System.out.println("Starting testAddUserFailDuplicateUser");
 
         //insert user to DB
-        User newUser =  accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
+        User newUser =  accessUsers.addNewUser(new User("John", "Doe", "johndoe", "password1"));
 
         try {
-            User result = accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
+            User result = accessUsers.addNewUser(new User("John", "Doe", "johndoe", "password1"));
             assertNotEquals(result, newUser);
         } catch (DuplicateUserException e){
             System.out.println("Failed to insert user: " + e.getMessage());

@@ -9,6 +9,7 @@ import honda.bookworm.tests.Business.CommentManagerTest;
 import honda.bookworm.tests.Business.SearchManagerTest;
 import honda.bookworm.tests.Business.UserPreferenceTest;
 import honda.bookworm.tests.Object.BookTest;
+import honda.bookworm.tests.Object.UserFactoryTest;
 import honda.bookworm.tests.Object.UserTest;
 import honda.bookworm.tests.Object.AuthorTest;
 import honda.bookworm.tests.Business.StringValidatorTest;
@@ -23,7 +24,8 @@ import honda.bookworm.tests.Business.StringValidatorTest;
         AccessUsersTest.class,
         SearchManagerTest.class,
         UserPreferenceTest.class,
-        CommentManagerTest.class
+        CommentManagerTest.class,
+        UserFactoryTest.class
 })
 
 public class AllUnitTests {

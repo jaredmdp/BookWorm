@@ -26,18 +26,11 @@ public class AccessUsers implements IAccessUsers {
         this.userPersistence = userPersistence;
     }
 
-    public User addNewUser(String first, String last, String username, String password, boolean isAuthor) throws DuplicateUserException{
-        User newUser;
+    public User addNewUser(User newUser) throws DuplicateUserException{
         User result;
 
         //form validation checks
-        validateUserInput(first, last, username, password);
-
-        if (isAuthor) {
-            newUser = new Author(first, last, username, password);
-        } else {
-            newUser = new User(first, last, username, password);
-        }
+        validateUserInput(newUser.getFirstName(), newUser.getLastName(), newUser.getUsername(), newUser.getPassword());
 
         try{
             result = userPersistence.addUser(newUser);

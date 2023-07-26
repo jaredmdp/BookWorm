@@ -18,6 +18,7 @@ import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Data.hsqldb.CommentPersistenceHSQLDB;
 import honda.bookworm.Data.hsqldb.UserPersistenceHSQLDB;
 import honda.bookworm.Object.Comment;
+import honda.bookworm.Object.User;
 import honda.bookworm.tests.utils.TestUtils;
 
 public class CommentManagerIT {
@@ -34,7 +35,7 @@ public class CommentManagerIT {
 
         final IUserPersistence persistenceUser = new UserPersistenceHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
         AccessUsers addTestUser = new AccessUsers(persistenceUser);
-        addTestUser.addNewUser("First", "Last", testUser, "Password", false);
+        addTestUser.addNewUser(new User("First", "Last", testUser, "Password"));
     }
 
     @Test

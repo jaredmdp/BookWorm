@@ -66,12 +66,12 @@ public class AccessUsersTest {
         int expectedSize = initialSize + 1;
 
         //test 1st user, reader variant
-        accessUsers.addNewUser("hello", "test", "hellotest", "password1", false);
+        accessUsers.addNewUser(new User("hello", "test", "hellotest", "password1"));
         addedUsers.add(mockUsers.get(0));
         assertEquals(expectedSize, userManager.getAllUsers().size());
 
         //test 2nd user, author variant
-        accessUsers.addNewUser("hello", "test", "hellotest2", "password1", true);
+        accessUsers.addNewUser(new Author("hello", "test", "hellotest2", "password1"));
         addedUsers.add(mockUsers.get(1));
         expectedSize++;
         assertEquals(expectedSize, userManager.getAllUsers().size());
@@ -146,7 +146,7 @@ public class AccessUsersTest {
         User newUser = new User("John", "Doe", "johndoe", "password1");
 
         try {
-            User result = accessUsers.addNewUser("John", "Doe", "johndoe", "password1", false);
+            User result = accessUsers.addNewUser(new User("John", "Doe", "johndoe", "password1"));
             assertNotEquals(result, newUser);
         } catch (Exception e){
             System.out.println("Failed to insert user: " + e.getMessage());
@@ -164,7 +164,7 @@ public class AccessUsersTest {
 
         try{
             assertFalse(userManager.getAllUsers().contains(newUser)); //not inserting a duplicate user
-            accessUsers.addNewUser("Johnathon", "Doe the Third", "johnthe3", "123", false);
+            accessUsers.addNewUser(newUser);
         } catch(Exception e){
             System.out.println("Failed to insert user: " + e.getMessage());
         }
@@ -181,7 +181,7 @@ public class AccessUsersTest {
         User newUser = new User("", "", "", "password1");
 
         try {
-            User result = accessUsers.addNewUser("", "", "", "password1", false);
+            User result = accessUsers.addNewUser(new User("", "", "", "password1"));
             assertNotNull(result);
             assertEquals(result, newUser);
         } catch (Exception e){
@@ -201,7 +201,7 @@ public class AccessUsersTest {
         User newUser = new User("spongebob", "squarepants", "s", "password1");
 
         try {
-            User result = accessUsers.addNewUser("spongebob", "squarepants", "s", "password1", false);
+            User result = accessUsers.addNewUser(new User("spongebob", "squarepants", "s", "password1"));
             assertNotNull(result);
             assertEquals(result, newUser);
         } catch (Exception e){
