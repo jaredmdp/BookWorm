@@ -16,15 +16,15 @@ import honda.bookworm.Object.Comment;
 public class CommentPersistenceHSQLDB implements ICommentPersistence {
     private final String dbPath;
 
-    public CommentPersistenceHSQLDB(final String dbPath){
+    public  CommentPersistenceHSQLDB(final String dbPath){
         this.dbPath = dbPath;
     }
 
-    private synchronized Connection connection() throws SQLException {
+    private  Connection connection() throws SQLException {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
     }
 
-    public synchronized Comment addComment(Comment newComment) throws GeneralPersistenceException {
+    public Comment addComment(Comment newComment) throws GeneralPersistenceException {
         try (final Connection c = connection()) {
             final PreparedStatement statement = c.prepareStatement("INSERT INTO COMMENT (user_username, ISBN, comment_text, time) VALUES (?, ?, ?, ?)");
 
@@ -44,7 +44,7 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
         }
     }
 
-    public synchronized List<Comment> getCommentsByISBN(String ISBN) throws GeneralPersistenceException {
+    public List<Comment> getCommentsByISBN(String ISBN) throws GeneralPersistenceException {
         try(final Connection c = connection()){
             final PreparedStatement statement = c.prepareStatement("SELECT * FROM COMMENT WHERE ISBN = ? ORDER BY time DESC");
 
@@ -65,7 +65,22 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
         }
     }
 
-    private synchronized Comment fromResultSet(ResultSet result) throws SQLException {
+    public void removeAllCommentsOfUser(String username){
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("DELETE FROM COMMENT where user_username = ?");
+            statement.setString(1, username);
+            statement.executeUpdate();
+
+            statement.close();
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Persistance issue occured.");
+        }
+
+    }
+
+
+    private Comment fromResultSet(ResultSet result) throws SQLException {
         final String username = result.getString("user_username");
         final String ISBN = result.getString("ISBN");
         final String comment = result.getString("comment_text");
