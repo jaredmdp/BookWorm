@@ -2,10 +2,9 @@ package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -17,6 +16,7 @@ import java.util.List;
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.Managers.UserPreference;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
@@ -174,6 +174,29 @@ public class UserPreferenceTest {
         System.out.println("Starting testGetFavoriteBookListWithValidUserNoFavorites");
         assertTrue(userPreference.getFavoriteBookList(user).isEmpty());
         System.out.println("Finished testGetFavoriteBookListWithValidUserNoFavorites");
+    }
+
+    @Test
+    public void testMockGenrealPersistenceExceptions(){
+        System.out.println("Starting testMockGenrealPersistenceExceptions");
+        User fakeUser = new User("","","","");
+        User fakeUser2 = new User("123","456","asd","");
+        List<Genre> genreList = new ArrayList<>();
+        genreList.add(null);
+
+        when(bookPersistence.getMostFavoriteBooks()).thenThrow(GeneralPersistenceException.class);
+        assertThrows(InvalidBookException.class,()->userPreference.getBookRecommendations());
+
+        Services.setActiveUser(fakeUser);
+        when(userPersistence.getFavoriteGenreList(fakeUser)).thenThrow(GeneralPersistenceException.class);
+        assertThrows(InvalidGenreException.class,()->userPreference.getBookRecommendations());
+
+        Services.setActiveUser(fakeUser2);
+        when(userPersistence.getFavoriteGenreList(fakeUser2)).thenReturn(genreList);
+        when(bookPersistence.getBooksByGenre(null)).thenThrow(GeneralPersistenceException.class);
+        assertThrows(InvalidGenreException.class,()->userPreference.getBookRecommendations());
+
+        System.out.println("Finished testMockGenrealPersistenceExceptions");
     }
 
 }

@@ -228,5 +228,37 @@ public class SearchManagerTest {
 
         System.out.println("\nFinished testPerformSearchUser_InvalidUserSymbols");
     }
+
+    @Test
+    public void testSearchTitleMockPersistenceException(){
+        System.out.println("\nStarting testSearchTitleMockPersistenceException");
+
+        when(bookPersistence.getBooksByTitle(null)).thenThrow(GeneralPersistenceException.class);
+        assertThrows(InvalidSearchException.class,()->accessSearch.performSearchTitle(null));
+
+        System.out.println("\nFinished testSearchTitleMockPersistenceException");
+    }
+
+    @Test
+    public void testSearchISBNMockPersistenceException(){
+        System.out.println("\nStarting testSearchISBNMockPersistenceException");
+
+        when(bookPersistence.getBooksByAuthor("fail")).thenThrow(GeneralPersistenceException.class);
+        assertThrows(InvalidSearchException.class,()->accessSearch.performSearchAuthor("fail"));
+
+        System.out.println("\nFinished testSearchISBNMockPersistenceException");
+    }
+
+    @Test
+    public void testSearchGenreMockPersistenceException(){
+        System.out.println("\nStarting testSearchGenreMockPersistenceException");
+
+        when(bookPersistence.getBooksByGenre(Genre.Adult)).thenThrow(GeneralPersistenceException.class);
+        assertThrows(InvalidSearchException.class,()->accessSearch.performSearchGenre("adult"));
+
+        System.out.println("\nFinished testSearchGenreMockPersistenceException");
+    }
+
+
     
 }

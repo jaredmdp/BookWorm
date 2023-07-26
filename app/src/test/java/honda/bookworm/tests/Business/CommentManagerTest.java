@@ -78,4 +78,14 @@ public class CommentManagerTest {
 
         System.out.println("Finished testLeaveCommentFailure");
     }
+
+    @Test
+    public void testFailureDueToPersistenceException(){
+        System.out.println("Starting testFailureDueToPersistenceException");
+
+        when(commentPersistence.getCommentsByISBN("12345678910")).thenThrow(GeneralPersistenceException.class);
+        assertThrows(GeneralPersistenceException.class, ()-> commentManager.getCommentsOnBook("12345678910"));
+
+        System.out.println("Finished testFailureDueToPersistenceException");
+    }
 }
