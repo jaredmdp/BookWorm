@@ -250,7 +250,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             final PreparedStatement statement = c.prepareStatement ("SELECT b.*, u.first_name, u.last_name FROM Book b "
                     + "join author a on a.author_id=b.author_id "
                     + "join user u on u.username=a.username "
-                    + "where b.genre_id= ?");
+                    + "where b.genre_id= ?"
+                    + "ORDER BY b.book_name");
             statement.setInt(1, genre.ordinal());
 
             final ResultSet result = statement.executeQuery();
