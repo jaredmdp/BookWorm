@@ -68,14 +68,14 @@ public class Home_ViewHandler extends AppCompatActivity {
     }
 
     private void customizeToUser() {
-        User activeUser = userManager.getActiveUser();
         TextView userFullname = findViewById(R.id.home_user_fullname);
         TextView userName = findViewById(R.id.home_username);
         ImageButton profile = findViewById(R.id.home_userProfile_button);
         String username;
         String fullname;
 
-        if (activeUser != null) {
+        if (userManager.isUserLoggedIn()) {
+            User activeUser = userManager.getActiveUser();
             username = activeUser.getUsername();
             fullname = activeUser.getFirstName() + " " + activeUser.getLastName();
             profile.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.worm_skin));
@@ -129,7 +129,7 @@ public class Home_ViewHandler extends AppCompatActivity {
     public void onUserPressed(View view) {
         LinearLayout profileView = findViewById(R.id.home_userProfile_options);
         Intent intent;
-        if (userManager.getActiveUser() != null) {
+        if (userManager.isUserLoggedIn()) {
             viewVisibilityToggle(profileView);
         } else {
             intent = new Intent(getApplicationContext(), UserLogin_ViewHandler.class);
