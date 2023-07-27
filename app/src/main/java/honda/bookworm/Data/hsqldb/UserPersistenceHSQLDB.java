@@ -32,6 +32,24 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     }
 
     @Override
+    public void removeUser(String username) {
+        try (final Connection c = connection()) {
+            String sql = "DELETE from USER where username = ?";
+
+            final PreparedStatement statement = c.prepareStatement (sql);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+
+            statement.close();
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new UserNotFoundException("No Users found");
+        }
+    }
+
+    @Override
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         try (final Connection c = connection()) {
@@ -87,7 +105,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     }
 
     @Override
-    public User addUser(User currentUser) {
+    public User addUser(User currentUser) throws GeneralPersistenceException{
         try (final Connection c = connection()) {
             String sql = "INSERT INTO user VALUES(?, ?, ?, ?)";
 
@@ -100,7 +118,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.executeUpdate();
             statement.close();
 
-            if(currentUser instanceof Author)
+            if(currentUser.canAuthorBooks())
             {
                 addAuthor(currentUser);
             }
@@ -108,7 +126,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             return currentUser;
         } catch (final SQLException e) {
             e.printStackTrace();
-            throw new DuplicateUserException("For User " + currentUser);
+            throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
     }
 
@@ -132,7 +150,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
     }
 
-    private void addAuthor(User user) {
+    private void addAuthor(User user) throws GeneralPersistenceException {
         try (final Connection c = connection()) {
             String sqlIn = "INSERT INTO author (username) VALUES(?)";
             String sqlGet = "SELECT author_id FROM author where username=?";

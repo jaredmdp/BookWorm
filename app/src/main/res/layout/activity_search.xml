@@ -40,6 +40,7 @@
             android:textStyle="bold" />
 
         <HorizontalScrollView
+            android:id="@+id/search_horizontal_scroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none">

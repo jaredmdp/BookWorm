@@ -16,11 +16,11 @@ import honda.bookworm.Object.Comment;
 public class CommentPersistenceHSQLDB implements ICommentPersistence {
     private final String dbPath;
 
-    public CommentPersistenceHSQLDB(final String dbPath){
+    public  CommentPersistenceHSQLDB(final String dbPath){
         this.dbPath = dbPath;
     }
 
-    private Connection connection() throws SQLException {
+    private  Connection connection() throws SQLException {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
     }
 
@@ -64,6 +64,21 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
             throw new GeneralPersistenceException("Failed to retrieve comments");
         }
     }
+
+    public void removeAllCommentsOfUser(String username){
+        try(final Connection c = connection()){
+            final PreparedStatement statement = c.prepareStatement("DELETE FROM COMMENT where user_username = ?");
+            statement.setString(1, username);
+            statement.executeUpdate();
+
+            statement.close();
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new GeneralPersistenceException("Persistance issue occured.");
+        }
+
+    }
+
 
     private Comment fromResultSet(ResultSet result) throws SQLException {
         final String username = result.getString("user_username");

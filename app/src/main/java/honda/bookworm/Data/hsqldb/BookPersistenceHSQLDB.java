@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import honda.bookworm.Business.Exceptions.Books.BookException;
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
@@ -249,7 +250,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             final PreparedStatement statement = c.prepareStatement ("SELECT b.*, u.first_name, u.last_name FROM Book b "
                     + "join author a on a.author_id=b.author_id "
                     + "join user u on u.username=a.username "
-                    + "where b.genre_id= ?");
+                    + "where b.genre_id= ?"
+                    + "ORDER BY b.book_name");
             statement.setInt(1, genre.ordinal());
 
             final ResultSet result = statement.executeQuery();
@@ -362,6 +364,24 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
         }
 
         return genreList;
+    }
+
+    @Override
+    public void removeBookByISBN(String isbn) {
+        try (final Connection c = connection()) {
+            String sql = "DELETE from BOOK where book.isbn = ?";
+
+            final PreparedStatement statement = c.prepareStatement (sql);
+            statement.setString(1, isbn);
+
+            statement.executeUpdate();
+
+            statement.close();
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            throw new BookException("No Books found");
+        }
     }
 
 

@@ -43,7 +43,7 @@ public class User_RecyclerViewAdapter extends RecyclerView.Adapter<User_Recycler
         holder.username.setText("@"+u.getUsername());
         holder.fullName.setText(u.getFirstName()+" "+u.getLastName());
 
-        if(u instanceof Author)
+        if(u.canAuthorBooks())
             holder.image.setImageResource(R.drawable.icon_author_pen);
         else
             holder.image.setImageResource(R.drawable.icon_person);

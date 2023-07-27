@@ -29,6 +29,8 @@ import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Business.Managers.AccessBooks;
+import honda.bookworm.Business.Managers.AccessUsers;
+import honda.bookworm.Business.Managers.CommentManager;
 import honda.bookworm.Business.Managers.SearchManager;
 import honda.bookworm.Business.Managers.UserManager;
 import honda.bookworm.Business.Managers.UserPreference;
@@ -50,14 +52,19 @@ public class Home_ViewHandler extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         copyDatabaseToDevice();
+        startAllPersistence();
+        sysVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+        customizeToUser();
+        buildBookView();
+    }
+
+    private void startAllPersistence(){
         accessBooks = new AccessBooks();
         userManager = new UserManager();
         searchManager = new SearchManager();
         userPreference = new UserPreference();
-
-        sysVibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
-        customizeToUser();
-        buildBookView();
+        new CommentManager(); // start it in services
+        new AccessUsers(); //start it in services
     }
 
     private void customizeToUser() {

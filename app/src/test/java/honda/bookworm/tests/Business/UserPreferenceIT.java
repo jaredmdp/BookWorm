@@ -134,7 +134,7 @@ public class UserPreferenceIT {
             result = userPreference.isGenreFavourite(u, Genre.Action); // null user, valid genre
             assert(!result);
 
-            u = accessUsers.addNewUser("Test","User", "testUser","pass123",false);
+            u = accessUsers.addNewUser(new User("Test","User", "testUser","pass123"));
             result = userPreference.isGenreFavourite(u, Genre.Action); // valid user and genre but not favorite
             assert(!result);
 
@@ -257,7 +257,7 @@ public class UserPreferenceIT {
             result = userPreference.isBookFavourite(u, "9780199536269"); // null user, valid isbn
             assert(!result);
 
-            u = accessUsers.addNewUser("Test","User", "testUser","pass123",false);
+            u = accessUsers.addNewUser(new User("Test","User", "testUser","pass123"));
             result = userPreference.isBookFavourite(u, "9780199536269"); // valid user and isbn but not favorite
             assert(!result);
 
