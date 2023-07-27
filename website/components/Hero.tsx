@@ -61,7 +61,7 @@ export default function Hero() {
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
-            direction={{ base: "column", sm: "row" }}
+            direction={{ base: "column", sm: "row" }} // Change direction to "row"
             justify="center" // Center the buttons horizontally
           >
             <Button
@@ -82,11 +82,33 @@ export default function Hero() {
               size={"lg"}
               fontWeight={"normal"}
               px={6}
+              bg={"gray.200"}
+              _hover={{ bg: "gray.300" }}
               leftIcon={<PlayIcon h={4} w={4} color={"red.300"} />}
               as={"a"}
               href="/Video"
             >
               Watch our Presentation
+            </Button>
+          </Stack>
+          <Stack
+            spacing={{ base: 4, sm: 6 }}
+            direction={{ base: "row", sm: "row" }}
+            justify="center"
+          >
+            <Button
+              rounded={"full"}
+              size={"lg"}
+              fontWeight={"normal"}
+              px={6}
+              bg={"gray.200"}
+              _hover={{ bg: "gray.300" }}
+              leftIcon={<DownloadIcon w={4} h={4} color={"red.300"} />}
+              as={"a"}
+              href="https://docs.google.com/uc?export=download&id=13OENbTDhxhBTFO15s23B-FoSnVonk6bB"
+              download="bookworm.apk"
+            >
+              Download the APK
             </Button>
           </Stack>
         </Stack>
@@ -99,6 +121,19 @@ const PlayIcon = createIcon({
   displayName: "PlayIcon",
   viewBox: "0 0 58 58",
   d: "M28.9999 0.562988C13.3196 0.562988 0.562378 13.3202 0.562378 29.0005C0.562378 44.6808 13.3196 57.438 28.9999 57.438C44.6801 57.438 57.4374 44.6808 57.4374 29.0005C57.4374 13.3202 44.6801 0.562988 28.9999 0.562988ZM39.2223 30.272L23.5749 39.7247C23.3506 39.8591 23.0946 39.9314 22.8332 39.9342C22.5717 39.9369 22.3142 39.8701 22.0871 39.7406C21.86 39.611 21.6715 39.4234 21.5408 39.1969C21.4102 38.9705 21.3421 38.7133 21.3436 38.4519V19.5491C21.3421 19.2877 21.4102 19.0305 21.5408 18.8041C21.6715 18.5776 21.86 18.3899 22.0871 18.2604C22.3142 18.1308 22.5717 18.064 22.8332 18.0668C23.0946 18.0696 23.3506 18.1419 23.5749 18.2763L39.2223 27.729C39.4404 27.8619 39.6207 28.0486 39.7458 28.2713C39.8709 28.494 39.9366 28.7451 39.9366 29.0005C39.9366 29.2559 39.8709 29.507 39.7458 29.7297C39.6207 29.9523 39.4404 30.1391 39.2223 30.272Z",
+});
+
+const DownloadIcon = createIcon({
+  displayName: "DownloadIcon",
+  viewBox: "0 0 26 27",
+  d: `
+    M25.462,19.105v6.848H4.515v-6.848H0.489v8.861c0,1.111,0.9,2.012,2.016,2.012h24.967c1.115,0,2.016-0.9,2.016-2.012
+    v-8.861H25.462z
+    M14.62,18.426l-5.764-6.965c0,0-0.877-0.828,0.074-0.828s3.248,0,3.248,0s0-0.557,0-1.416c0-2.449,0-6.906,0-8.723
+    c0,0-0.129-0.494,0.615-0.494c0.75,0,4.035,0,4.572,0c0.536,0,0.524,0.416,0.524,0.416c0,1.762,0,6.373,0,8.742
+    c0,0.768,0,1.266,0,1.266s1.842,0,2.998,0c1.154,0,0.285,0.867,0.285,0.867s-4.904,6.51-5.588,7.193
+    C15.092,18.979,14.62,18.426,14.62,18.426z
+  `,
 });
 
 export const Blob = (props: IconProps) => {
