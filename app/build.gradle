@@ -33,12 +33,16 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
+    implementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 
     //Integration tests
     testImplementation group: 'com.google.guava', name: 'guava', version: '25.1-jre'
 
     // HSQLDB
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.4.1'
+
+    //Mockito
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
 
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

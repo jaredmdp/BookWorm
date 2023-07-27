@@ -1,5 +1,6 @@
 package honda.bookworm.Business.Managers;
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
 import honda.bookworm.Business.Exceptions.Users.InvalidPasswordException;
 import honda.bookworm.Business.Exceptions.Users.InvalidSignupException;
@@ -18,33 +19,26 @@ public class AccessUsers implements IAccessUsers {
 
     public AccessUsers()
     {
-        userPersistence = Services.getUserPersistence(true);
+        userPersistence = Services.getUserPersistence();
     }
 
     public AccessUsers(IUserPersistence userPersistence){
         this.userPersistence = userPersistence;
     }
 
-    public User addNewUser(String first, String last, String username, String password, boolean isAuthor) throws DuplicateUserException{
-        User newUser;
+    public User addNewUser(User newUser) throws DuplicateUserException{
         User result;
 
         //form validation checks
-        validateUserInput(first, last, username, password);
+        validateUserInput(newUser.getFirstName(), newUser.getLastName(), newUser.getUsername(), newUser.getPassword());
 
-        if (isAuthor) {
-            newUser = new Author(first, last, username, password);
-        } else {
-            newUser = new User(first, last, username, password);
-        }
-
-        result = userPersistence.addUser(newUser);
-
-        if (result != null) {
+        try{
+            result = userPersistence.addUser(newUser);
             Services.setActiveUser(result);
+            return result;
+        } catch(GeneralPersistenceException e){
+            throw new DuplicateUserException("This username is already used");
         }
-
-        return result;
     }
 
     public void verifyUser(String username, String password) throws UserNotFoundException, InvalidPasswordException {
@@ -58,8 +52,30 @@ public class AccessUsers implements IAccessUsers {
                 throw new InvalidPasswordException("Incorrect password provided");
             }
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
+            throw new UserNotFoundException(username);
         }
+    }
+
+    public User fetchUser(String username) throws UserNotFoundException{
+        User user;
+
+        try{
+            user = userPersistence.getUserByUsername(username);
+        }catch (GeneralPersistenceException e){
+            throw new UserNotFoundException(username);
+        }
+
+        return user;
+    }
+
+    public String fetchUsernameOfAuthor(int authorID) throws AuthorNotFoundException {
+        String username;
+        try{
+            username = userPersistence.getUsernameFromAuthorID(authorID);
+        }catch (GeneralPersistenceException e){
+            throw new AuthorNotFoundException("AuthorID: "+authorID);
+        }
+     return username;
     }
 
     //Validator functions----------------------------------------------------------------------------

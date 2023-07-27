@@ -11,11 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:overScrollMode="never"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:overScrollMode="never">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
+                android:onClick="onAuthorNameClicked"
                 android:text="Author: "
                 android:textIsSelectable="true"
                 android:textSize="16dp"
@@ -78,8 +79,6 @@
                 android:textSize="16dp"
                 app:layout_constraintStart_toStartOf="parent" />
 
-
-            <!--        place holders for description and purchase link-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,58 +97,114 @@
                     android:id="@+id/book_view_book_description_toggle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:onClick="expandCollapseDescription"
                     android:paddingBottom="6dp"
                     android:text="[Expand]"
+                    android:onClick="expandCollapseDescription"
                     android:textColor="@color/text_link_blue" />
 
+            </LinearLayout>
+
+
+            <ToggleButton
+                android:id="@+id/book_view_fav_book_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:background="@drawable/selector_toggle_favorite"
+                android:backgroundTint="@color/worm_skin"
+                android:elevation="25dp"
+                android:minWidth="25dp"
+                android:minHeight="25dp"
+                android:onClick="isFavoriteClicked"
+                android:textOff=""
+                android:textOn=""
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/book_view_book_purchase_link"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:autoLink="web"
+                android:text="Purchase Book"
+                android:visibility="visible"
+                app:backgroundTint="@color/grass_green"
+                app:cornerRadius="25dp" />
+
+            <TextView
+                android:id="@+id/book_view_discussion_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Discussions"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="?colorPrimary"
+                android:drawableRight="@drawable/ic_arrow_right_24"
+                android:layout_marginVertical="5dp"
+                android:onClick="onDiscussionTabClicked"
+                android:drawableTint="@color/inactive_grey"/>
+
+            <LinearLayout
+                android:id="@+id/book_view_discussion_section"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_weight="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:background="?colorPrimary"
+                    android:translationZ="5dp"
+                    android:layout_marginBottom="5dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="280"
+                        app:hintEnabled="false"
+                       >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/book_view_comment_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:maxLength="280"
+                            android:maxLines="8"
+                            android:padding="5dp"
+                            android:textSize="16sp"
+                            android:hint="Leave a comment." />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/book_view_comment_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="submitComment"
+                        app:tint="@color/grass_green"
+                        android:background="@android:color/transparent"
+                        app:srcCompat="@android:drawable/ic_menu_send"
+                        android:layout_gravity="center_vertical"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/book_view_discussions"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="300dp"
+                    android:layout_weight="1"/>
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-
-    <LinearLayout
-        android:id="@+id/book_view_floating_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ToggleButton
-            android:id="@+id/book_view_fav_book_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="25dp"
-            android:minWidth="25dp"
-            android:layout_margin="10dp"
-            android:textOn=""
-            android:textOff=""
-            android:background="@drawable/selector_toggle_favorite"
-            android:backgroundTint="@color/worm_skin"
-            android:layout_gravity="end"
-            android:onClick="isFavoriteClicked"
-            android:elevation="25dp"
-            android:visibility="gone"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/book_view_book_purchase_link"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:autoLink="web"
-            android:text="Purchase Book"
-            android:visibility="visible"
-            app:backgroundTint="@color/grass_green"
-            app:cornerRadius="25dp"/>
-
-    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

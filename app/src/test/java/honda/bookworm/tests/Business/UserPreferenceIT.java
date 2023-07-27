@@ -1,5 +1,6 @@
 package honda.bookworm.tests.Business;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -10,12 +11,16 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.Users.UserException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.AccessUsers;
@@ -45,6 +50,40 @@ public class UserPreferenceIT {
         this.accessUsers = new AccessUsers(persistence);
         this.manager = new UserManager(persistence);
         this.userPreference = new UserPreference(persistence,bPersistence);
+    }
+
+    @Test
+    public void testRecommendedBooksNoActiveUser() {
+        System.out.println("\nStarting testRecommendedBooksNoActiveUser");
+        List<Book> recommended = new ArrayList<>();
+
+        try {
+            recommended = userPreference.getBookRecommendations();
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(recommended.size(), 6);
+
+        System.out.println("\nFinished testRecommendedBooksNoActiveUser");
+    }
+
+    @Test
+    public void testRecommendedBooksWithActiveUser() {
+        System.out.println("\nStarting testRecommendedBooksNoActiveUser");
+        List<Book> recommended = new ArrayList<>();
+
+        accessUsers.verifyUser("martin", "got123");
+
+        try {
+            recommended = userPreference.getBookRecommendations();
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(recommended.size(), 7);
+
+        System.out.println("\nFinished testRecommendedBooksNoActiveUser");
     }
 
     @Test
@@ -95,7 +134,7 @@ public class UserPreferenceIT {
             result = userPreference.isGenreFavourite(u, Genre.Action); // null user, valid genre
             assert(!result);
 
-            u = accessUsers.addNewUser("Test","User", "testUser","pass123",false);
+            u = accessUsers.addNewUser(new User("Test","User", "testUser","pass123"));
             result = userPreference.isGenreFavourite(u, Genre.Action); // valid user and genre but not favorite
             assert(!result);
 
@@ -182,14 +221,6 @@ public class UserPreferenceIT {
         System.out.println("\nStarting testBookFavoriteToggle");
         boolean result;
 
-        //test with a no active user. invalid user cant access it
-        try{
-            result = userPreference.bookFavouriteToggle("9780199536269");
-            assertFalse("this should not be called",result);
-        }catch (Exception e){
-            assert(e instanceof GeneralPersistenceException);
-        }
-
         //log in to user
         accessUsers.verifyUser("rowling","harrypotter");
         try{
@@ -202,12 +233,11 @@ public class UserPreferenceIT {
             fail("This should not be called");
         }
 
-
         try{
             result = userPreference.bookFavouriteToggle("178019953629");
             assertFalse("this should not be called",result);
         }catch (Exception e){
-            assert(e instanceof InvalidISBNException);
+            assert(e instanceof UserException);
         }
 
         System.out.println("\nFinished testBookFavoriteToggle");
@@ -227,7 +257,7 @@ public class UserPreferenceIT {
             result = userPreference.isBookFavourite(u, "9780199536269"); // null user, valid isbn
             assert(!result);
 
-            u = accessUsers.addNewUser("Test","User", "testUser","pass123",false);
+            u = accessUsers.addNewUser(new User("Test","User", "testUser","pass123"));
             result = userPreference.isBookFavourite(u, "9780199536269"); // valid user and isbn but not favorite
             assert(!result);
 

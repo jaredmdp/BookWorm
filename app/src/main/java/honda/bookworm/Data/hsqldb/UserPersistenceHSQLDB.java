@@ -9,13 +9,15 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
+import honda.bookworm.Business.Exceptions.Users.DuplicateUserException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Data.IUserPersistence;
 import honda.bookworm.Object.Author;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
-import honda.bookworm.Business.Exceptions.Users.*;
-import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 
 public class UserPersistenceHSQLDB implements IUserPersistence {
 
@@ -27,6 +29,23 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
     private Connection connection() throws SQLException {
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
+    }
+
+    @Override
+    public void removeUser(String username) {
+        try (final Connection c = connection()) {
+            String sql = "DELETE from USER where username = ?";
+
+            final PreparedStatement statement = c.prepareStatement (sql);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+
+            statement.close();
+
+        } catch (final SQLException e) {
+            throw new UserNotFoundException("No Users found");
+        }
     }
 
     @Override
@@ -47,7 +66,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new UserNotFoundException("No Users found");
         }
         return allUsers;
@@ -73,7 +91,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("For Username: " + currentUsername);
         }
 
@@ -85,7 +102,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
     }
 
     @Override
-    public User addUser(User currentUser) {
+    public User addUser(User currentUser) throws GeneralPersistenceException{
         try (final Connection c = connection()) {
             String sql = "INSERT INTO user VALUES(?, ?, ?, ?)";
 
@@ -98,21 +115,15 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.executeUpdate();
             statement.close();
 
-            if(currentUser instanceof Author)
+            if(currentUser.canAuthorBooks())
             {
                 addAuthor(currentUser);
             }
 
             return currentUser;
         } catch (final SQLException e) {
-            e.printStackTrace();
-            throw new DuplicateUserException("For User " + currentUser);
+            throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
-    }
-
-    @Override
-    public User removeUser(User currentUser) {
-        return null;
     }
 
     private User fromResultSet(final ResultSet result) throws SQLException {
@@ -135,7 +146,7 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
     }
 
-    private void addAuthor(User user) {
+    private void addAuthor(User user) throws GeneralPersistenceException {
         try (final Connection c = connection()) {
             String sqlIn = "INSERT INTO author (username) VALUES(?)";
             String sqlGet = "SELECT author_id FROM author where username=?";
@@ -155,13 +166,12 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
     }
 
     @Override
-    public boolean isGenreFavoriteOfUser(User user, Genre genre) throws UserNotFoundException {
+    public boolean isGenreFavoriteOfUser(User user, Genre genre) {
         String sql = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS rowExists " +
                 "FROM favoritegenre " +
                 "WHERE user_username = ? AND genre_id = ?";
@@ -178,11 +188,8 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             if (resultSet.next()) {
                 result = resultSet.getBoolean("rowExists");
             }
-        } catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
-            if (e instanceof NullPointerException) {
-                throw new UserNotFoundException("User does not exist");
-            }
+        } catch (SQLException e) {
+            throw new GeneralPersistenceException("Unable to check user favorites");
         }
 
         return result;
@@ -208,21 +215,8 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             c.commit();
             statement.close();
 
-        } catch (final SQLException | NullPointerException e) {
-
-            if (e instanceof SQLIntegrityConstraintViolationException) {
-                throw new InvalidGenreException("Could not find " + genre + " in system");
-            } else if (e instanceof NullPointerException) {
-                if(genre == null) {
-                    throw new InvalidGenreException("Invalid genre value");
-                }
-                else {
-                    throw new UserNotFoundException("User does not exist");
-                }
-
-            } else {
-                e.printStackTrace();
-            }
+        } catch (final SQLException e) {
+            throw new GeneralPersistenceException("Unable to change favorite genre");
         }
 
         return result;
@@ -244,10 +238,65 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
                 genreList.add(genre);
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
 
         return genreList;
     }
 
+    public List<User> searchUsersByQuery(String query){
+        List<User> results = new ArrayList<>();
+        String sql = "SELECT u.*, a.author_id from User u "+
+                "LEFT JOIN author a ON u.username= a.username "+
+                "WHERE LOWER(u.username) LIKE LOWER(?) "+
+                "OR LOWER(u.first_name) LIKE LOWER(?) "+
+                "OR LOWER(u.last_name) LIKE LOWER(?) " +
+                "OR (LOWER(u.first_name) || ' ' || LOWER(u.last_name)) LIKE LOWER(?)";
+        String searchValue = "%" + query + "%";
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            statement.setString(1, searchValue);
+            statement.setString(2, searchValue);
+            statement.setString(3, searchValue);
+            statement.setString(4, searchValue);
+
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final User user = fromResultSet(result);
+                results.add(user);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            throw new GeneralPersistenceException("User: " + query + " does not exist");
+        }
+
+        return results;
+    }
+
+    public String getUsernameFromAuthorID(int authorID) throws AuthorNotFoundException, GeneralPersistenceException{
+        String username = "";
+
+        try(Connection c = connection()){
+            String sqlQuery = "SELECT * from Author where author_id = ?";
+            PreparedStatement statement = c.prepareStatement(sqlQuery);
+            statement.setInt(1,authorID);
+            ResultSet result = statement.executeQuery();
+
+            if(result.next()){
+                username = result.getString("username");
+            }else{
+                throw new AuthorNotFoundException("No Author found by AuthorID: "+authorID);
+            }
+
+        }catch (SQLException e){
+            throw new GeneralPersistenceException(e.getMessage());
+        }
+        return username;
+    }
 }

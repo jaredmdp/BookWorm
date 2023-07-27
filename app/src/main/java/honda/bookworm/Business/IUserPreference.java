@@ -17,4 +17,6 @@ public interface IUserPreference {
     boolean bookFavouriteToggle(String isbn);
 
     List<Book> getFavoriteBookList(User user);
+
+    List<Book> getBookRecommendations();
 }
