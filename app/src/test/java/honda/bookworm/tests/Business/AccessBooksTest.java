@@ -296,12 +296,7 @@ public class AccessBooksTest {
     @Test
     public void testGetBookByAuthorID_Fail() {
         System.out.println("\nStarting testGetBookByAuthorID_Fail");
-        try {
-            assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
-        } catch (AuthorNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
         System.out.println("\nFinished testGetBookByAuthorID_Fail");
     }
 

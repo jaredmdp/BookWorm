@@ -96,11 +96,15 @@ public class CreateProfileSys {
     }
 
     private void removeUser(){
-        try {
+        try{
             userPersistence.getUserByUsername("newAuthor");
             userPersistence.removeUser("newAuthor");
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
         }
+        catch(UserNotFoundException e){
+            assert(e.getMessage().contains("User not found:"));
+            //it is expected that we may try to clear our test users and they are not there
+            //this is meant to act as a guarantee that we don't insert a duplicate while testing
+        }
+
     }
 }

@@ -195,7 +195,6 @@ public class BookView_ViewHandler extends AppCompatActivity {
             commentManager.leaveComment(book.getISBN(), commentInput.getText().toString());
             populateCommentSection();
         } catch(UserException | InvalidCommentException | GeneralPersistenceException e){
-            e.printStackTrace();
             Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
         }
 

@@ -9,7 +9,6 @@ public class Main {
         try {
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Unable to set dB path name");
         }
         dbName = name;

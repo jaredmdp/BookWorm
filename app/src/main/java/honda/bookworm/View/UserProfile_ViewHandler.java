@@ -15,6 +15,7 @@ import com.honda.bookworm.R;
 
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Books.BookException;
 import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IAccessUsers;
@@ -100,16 +101,24 @@ public class UserProfile_ViewHandler extends AppCompatActivity {
         String fullName;
 
         if (activeUser instanceof  Author) {
-            Author author = (Author) activeUser;
-            writtenBooks = accessBooks.getAuthorIDBookList(author.getAuthorID());
-            authorWrittenBooks = Book_horizontalscroll_constructor.create(UserProfile_ViewHandler.this, "Written Books", writtenBooks);
-            linearBody.addView(authorWrittenBooks);
+            try{
+                Author author = (Author) activeUser;
+                writtenBooks = accessBooks.getAuthorIDBookList(author.getAuthorID());
+                authorWrittenBooks = Book_horizontalscroll_constructor.create(UserProfile_ViewHandler.this, "Written Books", writtenBooks);
+                linearBody.addView(authorWrittenBooks);
 
-            if (writtenBooks.isEmpty()) {
-                fullName = activeUser.getFirstName() + " " + activeUser.getLastName();
+                if (writtenBooks.isEmpty()) {
+                    fullName = activeUser.getFirstName() + " " + activeUser.getLastName();
+                    TextView tv = authorWrittenBooks.findViewById(R.id.books_horizontal_msg_on_empty);
+                    tv.setVisibility(View.VISIBLE);
+                    tv.setText("We dont have any books written by "+fullName+" in our record.");
+                }
+
+            } catch(BookException e){
+                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                 TextView tv = authorWrittenBooks.findViewById(R.id.books_horizontal_msg_on_empty);
                 tv.setVisibility(View.VISIBLE);
-                tv.setText("We dont have any books written by "+fullName+" in our record.");
+                tv.setText("We were unable to find this authors written books, try reloading");
             }
         }
 

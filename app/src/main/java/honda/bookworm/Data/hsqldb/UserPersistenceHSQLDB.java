@@ -44,7 +44,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
 
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new UserNotFoundException("No Users found");
         }
     }
@@ -67,7 +66,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new UserNotFoundException("No Users found");
         }
         return allUsers;
@@ -93,7 +91,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("For Username: " + currentUsername);
         }
 
@@ -125,7 +122,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
 
             return currentUser;
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
     }
@@ -170,7 +166,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
     }
@@ -194,7 +189,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
                 result = resultSet.getBoolean("rowExists");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Unable to check user favorites");
         }
 
@@ -244,7 +238,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
                 genreList.add(genre);
             }
         }catch (SQLException e){
-            e.printStackTrace();
             throw new GeneralPersistenceException("Persistence operation encountered an unexpected error.");
         }
 
@@ -280,7 +273,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("User: " + query + " does not exist");
         }
 
@@ -303,7 +295,6 @@ public class UserPersistenceHSQLDB implements IUserPersistence {
             }
 
         }catch (SQLException e){
-            e.printStackTrace();
             throw new GeneralPersistenceException(e.getMessage());
         }
         return username;

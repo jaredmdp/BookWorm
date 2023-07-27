@@ -40,7 +40,6 @@ public class UserPreference implements IUserPreference {
                 isFavourite = userPersistence.isGenreFavoriteOfUser(user, genre);
             }
         }catch (GeneralPersistenceException e){
-            e.printStackTrace();
             throw new UserException("Unable to determine user favorite genres");
         }
         return isFavourite;
@@ -53,7 +52,6 @@ public class UserPreference implements IUserPreference {
                 favState = userPersistence.toggleUserGenreFavorite(Services.getActiveUser(), genre);
             }
         } catch (GeneralPersistenceException e){
-            e.printStackTrace();
             throw new UserException("Unable to change user favorite genres");
         }
 
@@ -119,7 +117,6 @@ public class UserPreference implements IUserPreference {
                 bookList = bookPersistence.getMostFavoriteBooks();
             }
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
             throw new InvalidBookException("Can't find recommended books");
         }
 
@@ -136,7 +133,6 @@ public class UserPreference implements IUserPreference {
         try {
             favoriteGenres = userPersistence.getFavoriteGenreList(activeUser);
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
             throw new InvalidGenreException("Could not get favorite genre list");
         }
 
@@ -147,7 +143,6 @@ public class UserPreference implements IUserPreference {
                 List<Book> allBooksByGenre = bookPersistence.getBooksByGenre(favoriteGenre);
                 booksByUserFavoriteGenres.addAll(allBooksByGenre);
             } catch (GeneralPersistenceException e) {
-                e.printStackTrace();
                 throw new InvalidGenreException("Could not get books for genre");
             }
         }

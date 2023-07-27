@@ -52,7 +52,6 @@ public class AccessUsers implements IAccessUsers {
                 throw new InvalidPasswordException("Incorrect password provided");
             }
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
             throw new UserNotFoundException(username);
         }
     }
@@ -63,7 +62,6 @@ public class AccessUsers implements IAccessUsers {
         try{
             user = userPersistence.getUserByUsername(username);
         }catch (GeneralPersistenceException e){
-            e.printStackTrace();
             throw new UserNotFoundException(username);
         }
 
@@ -75,7 +73,6 @@ public class AccessUsers implements IAccessUsers {
         try{
             username = userPersistence.getUsernameFromAuthorID(authorID);
         }catch (GeneralPersistenceException e){
-            e.printStackTrace();
             throw new AuthorNotFoundException("AuthorID: "+authorID);
         }
      return username;

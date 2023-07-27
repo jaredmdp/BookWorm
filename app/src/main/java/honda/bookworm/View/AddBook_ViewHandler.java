@@ -168,7 +168,6 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
                 bookImage.setImageBitmap(this.bookImage);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IOException("Unable to import image"+e.getMessage());
         }
     }
