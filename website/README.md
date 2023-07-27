@@ -1,14 +1,15 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app)
 
-## Visit our website!
+## Visit our website
 
-- [BookWorm](https://bookworm.vercel.app/)
+- [BookWorm](https://bookwormhonda.vercel.app/)
 
 or if you choose to run it on your local machine follow the instructions
 
 ## Getting Started
 
 ### Requirements (only one of the following)
+
 - Node Package Manager
 - Yarn Package Manager
 - Performant NPM
