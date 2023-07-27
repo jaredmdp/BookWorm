@@ -73,7 +73,6 @@ public class CommentPersistenceHSQLDB implements ICommentPersistence {
 
             statement.close();
         } catch(SQLException e){
-            e.printStackTrace();
             throw new GeneralPersistenceException("Persistance issue occured.");
         }
 

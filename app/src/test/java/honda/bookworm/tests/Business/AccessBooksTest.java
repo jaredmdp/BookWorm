@@ -17,6 +17,8 @@ import java.util.List;
 
 import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Managers.AccessBooks;
@@ -247,6 +249,25 @@ public class AccessBooksTest {
     }
 
     @Test
+    public void testBookByISBN_Exception() {
+        System.out.println("\nStarting testBookByISBN_Exception");
+        Book mockBook = new Book("Atomic Habits", "James Clear", 15, Genre.Action, "5780100220888");
+
+        when(bookPersistence.getBookByISBN("5780100220888")).thenThrow(GeneralPersistenceException.class);
+
+        try{
+            Book result = accessBooks.getBookByISBN("5780100220888");
+            fail("Should not reach here, exception should be thrown.");
+        }
+        catch(Exception e)
+        {
+            assert (e instanceof InvalidISBNException);
+        }
+
+        System.out.println("\nFinished testBookByISBN_Exception");
+    }
+
+    @Test
     public void testGetBookByAuthorID() {
         System.out.println("\nStarting testGetBookByAuthorID");
 
@@ -275,12 +296,7 @@ public class AccessBooksTest {
     @Test
     public void testGetBookByAuthorID_Fail() {
         System.out.println("\nStarting testGetBookByAuthorID_Fail");
-        try {
-            assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
-        } catch (AuthorNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
         System.out.println("\nFinished testGetBookByAuthorID_Fail");
     }
 

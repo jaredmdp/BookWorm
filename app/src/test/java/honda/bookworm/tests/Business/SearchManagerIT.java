@@ -77,11 +77,7 @@ public class SearchManagerIT {
         String query = "9780007123803"; //return of the King book
 
         List<Book> result = null;
-        try {
-            result = accessSearch.performSearchISBN(query);
-        } catch (InvalidSearchException e) {
-            e.printStackTrace();
-        }
+        result = accessSearch.performSearchISBN(query);
 
         assert result != null;
         assertEquals(1, result.size());
@@ -95,7 +91,7 @@ public class SearchManagerIT {
         try {
             result = accessSearch.performSearchISBN(query);
         } catch (InvalidSearchException e) {
-            e.printStackTrace();
+            assert(false);//a wrong search should return nothing, not die
         }
 
         assertTrue(result.isEmpty());

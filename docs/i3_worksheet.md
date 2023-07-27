@@ -60,4 +60,4 @@ One feature, the [purchase book](https://code.cs.umanitoba.ca/3350-summer2023/te
 
 ## Velocity/teamwork
 
-After examining the [Velocity Graph](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/157-devtask-iteration-3-worksheet/docs/Velocity.png), we noticed definite improvements in our estimations. As we expect a significant workload in the second sprint, we have decided to allocate more time for estimation to ensure realistic timeframes and successful project completion. As a result, we anticipate better time estimation results in iteration 2 compared to iteration 1, as reflected in the completion of all committed work.
+After examining the [Velocity Graph](.\docs\Velocity.png), we noticed definite improvements in our estimations. As we expect a significant workload in the second sprint, we have decided to allocate more time for estimation to ensure realistic timeframes and successful project completion. As a result, we anticipate better time estimation results in iteration 2 compared to iteration 1, as reflected in the completion of all committed work.

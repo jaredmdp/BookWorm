@@ -23,8 +23,10 @@ import com.honda.bookworm.R;
 
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidCommentException;
+import honda.bookworm.Business.Exceptions.Users.AuthorNotFoundException;
 import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IAccessUsers;
@@ -66,7 +68,13 @@ public class BookView_ViewHandler extends AppCompatActivity {
         Bundle bookInfo = getIntent().getExtras();
         String bookISBN = bookInfo.getString("isbn");
 
-        this.book = accessBooks.getBookByISBN(bookISBN);
+        try{
+            this.book = accessBooks.getBookByISBN(bookISBN);
+        } catch(InvalidISBNException e)
+        {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+
 
         try {
             this.author_username = accessUsers.fetchUsernameOfAuthor(book.getAuthorID());
@@ -155,13 +163,21 @@ public class BookView_ViewHandler extends AppCompatActivity {
     private void setUpFavoriting() {
         ToggleButton favButton = findViewById(R.id.book_view_fav_book_toggle);
         if (userManager.isUserLoggedIn()) {
-            favButton.setVisibility(View.VISIBLE);
-            favButton.setChecked(userPreference.isBookFavourite(userManager.getActiveUser(), book.getISBN()));
+            try{
+                favButton.setVisibility(View.VISIBLE);
+                favButton.setChecked(userPreference.isBookFavourite(userManager.getActiveUser(), book.getISBN()));
+            } catch(UserException e){
+                Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     public void isFavoriteClicked(View view) {
-        ((ToggleButton) view).setChecked(userPreference.bookFavouriteToggle(book.getISBN()));
+        try{
+            ((ToggleButton) view).setChecked(userPreference.bookFavouriteToggle(book.getISBN()));
+        }catch(UserException e){
+            Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onAuthorNameClicked(View view) {
@@ -179,7 +195,6 @@ public class BookView_ViewHandler extends AppCompatActivity {
             commentManager.leaveComment(book.getISBN(), commentInput.getText().toString());
             populateCommentSection();
         } catch(UserException | InvalidCommentException | GeneralPersistenceException e){
-            e.printStackTrace();
             Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
         }
 

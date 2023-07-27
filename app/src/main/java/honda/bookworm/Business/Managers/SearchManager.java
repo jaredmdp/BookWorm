@@ -37,7 +37,6 @@ public class SearchManager implements ISearchManager {
                 result = bookPersistence.getBooksByGenre(genre);
             }
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
             throw new InvalidSearchException("Invalid genre");
         }
 
@@ -52,7 +51,6 @@ public class SearchManager implements ISearchManager {
         try {
             result = bookPersistence.getBooksByAuthor(query);
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
             throw new InvalidSearchException("Could not find author");
         }
 
@@ -67,7 +65,6 @@ public class SearchManager implements ISearchManager {
         try {
             result = bookPersistence.searchBooksByISBN(query);
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
             throw new InvalidSearchException("Invalid ISBN: " + query);
         }
 
@@ -80,7 +77,6 @@ public class SearchManager implements ISearchManager {
         try {
             result = bookPersistence.getBooksByTitle(query);
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
             throw new InvalidSearchException("Invalid Title: " + query);
         }
 

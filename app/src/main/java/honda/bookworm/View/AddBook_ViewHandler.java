@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.IUserManager;
@@ -149,7 +150,7 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ImageImporter.handleActivityResult(requestCode, resultCode, data, this);
+        ImageImporter.handleActivityResult(requestCode, resultCode, data, this, this);
     }
 
     /* this is called automatically.
@@ -158,7 +159,7 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
        with the imported image
      */
     @Override
-    public void onImageImported(Uri imageUri) {
+    public void onImageImported(Uri imageUri) throws IOException {
         ImageView bookImage = findViewById(R.id.addbook_image);
         try{
             Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
@@ -167,7 +168,7 @@ public class AddBook_ViewHandler extends AppCompatActivity implements ImageImpor
                 bookImage.setImageBitmap(this.bookImage);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Unable to import image"+e.getMessage());
         }
     }
 

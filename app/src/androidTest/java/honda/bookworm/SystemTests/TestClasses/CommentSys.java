@@ -114,11 +114,7 @@ public class CommentSys {
 
     private  void removeCommentsByUser(String username){
         ICommentPersistence cp = Services.getCommentPersistence();
-        try {
-            cp.removeAllCommentsOfUser(username);
-        }catch (GeneralPersistenceException e){
-            e.printStackTrace();
-        }
+        cp.removeAllCommentsOfUser(username);
     }
 
 
