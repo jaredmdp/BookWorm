@@ -185,8 +185,6 @@ public class BookView_ViewHandler extends AppCompatActivity {
             Intent userProfile = new Intent(this, UserProfile_ViewHandler.class);
             userProfile.putExtra(UserProfile_ViewHandler.REQUEST_CODE, author_username);
             startActivity(userProfile);
-        }catch (AuthorNotFoundException e){
-            Toast.makeText(getApplicationContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
         }
     }
 
