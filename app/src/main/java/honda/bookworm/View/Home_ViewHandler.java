@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import honda.bookworm.Application.Main;
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.IAccessBooks;
 import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.IUserManager;
@@ -189,8 +190,8 @@ public class Home_ViewHandler extends AppCompatActivity {
 
             Main.setDBPathName(dataDirectory.toString() + "/" + Main.getDBPathName());
 
-        } catch (final IOException ioe) {
-            Messages.warning(this, "Unable to access application data: " + ioe.getMessage());
+        } catch (final IOException | GeneralPersistenceException e) {
+            Messages.warning(this, "Unable to access application data: " + e.getMessage());
         }
     }
 

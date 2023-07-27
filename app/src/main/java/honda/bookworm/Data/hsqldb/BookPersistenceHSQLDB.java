@@ -285,11 +285,9 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             if (resultSet.next()) {
                 result = resultSet.getBoolean("rowExists");
             }
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            if (e instanceof NullPointerException) {
-                throw new UserNotFoundException("User does not exist");
-            }
+            throw new GeneralPersistenceException("Unable to access user favorite books");
         }
 
         return result;
@@ -315,17 +313,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             c.commit();
             statement.close();
 
-        } catch (final SQLException | NullPointerException e) {
-
-            if (e instanceof SQLIntegrityConstraintViolationException) {
-                if(Objects.requireNonNull(e.getMessage()).contains("101124")){
-                    throw new InvalidISBNException(isbn);
-                }
-            } else if (e instanceof NullPointerException) {
-                throw new UserNotFoundException("User does not exist");
-            } else {
-                e.printStackTrace();
-            }
+        } catch (final SQLException e) {
+            throw new GeneralPersistenceException("Unable to change favorite book");
         }
 
         return result;
@@ -348,7 +337,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
                 bookList.add(book);
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new GeneralPersistenceException("Unable to retrieve user favorite books");
         }
 
         return bookList;

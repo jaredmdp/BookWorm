@@ -9,6 +9,8 @@ import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.Users.UserException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Data.IBookPersistence;
 import honda.bookworm.Data.IUserPersistence;
@@ -39,6 +41,7 @@ public class UserPreference implements IUserPreference {
             }
         }catch (GeneralPersistenceException e){
             e.printStackTrace();
+            throw new UserException("Unable to determine user favorite genres");
         }
         return isFavourite;
     }
@@ -46,11 +49,12 @@ public class UserPreference implements IUserPreference {
     public boolean genreFavouriteToggle(Genre genre) {
         boolean favState = false;
         try {
-            if (Services.getActiveUser() != null) {
+            if (Services.getActiveUser() != null && genre!=null) {
                 favState = userPersistence.toggleUserGenreFavorite(Services.getActiveUser(), genre);
             }
         } catch (GeneralPersistenceException e){
             e.printStackTrace();
+            throw new UserException("Unable to change user favorite genres");
         }
 
         return favState;
@@ -71,7 +75,7 @@ public class UserPreference implements IUserPreference {
                 isFavourite = bookPersistence.isBookFavoriteOfUser(user, isbn);
             }
         }catch (GeneralPersistenceException e){
-            e.printStackTrace();
+            throw new UserException("Unable to determine user favorite books");
         }
         return isFavourite;
     }
@@ -79,11 +83,11 @@ public class UserPreference implements IUserPreference {
     public boolean bookFavouriteToggle(String isbn) {
         boolean favState = false;
         try {
-            if (Services.getActiveUser() != null && isbn != null) {
+            if (Services.getActiveUser() != null) {
                 favState = bookPersistence.toggleUserBookFavorite(Services.getActiveUser(), isbn);
             }
         } catch (GeneralPersistenceException e){
-            e.printStackTrace();
+            throw new UserException("Unable to change favorite books");
         }
 
         return favState;

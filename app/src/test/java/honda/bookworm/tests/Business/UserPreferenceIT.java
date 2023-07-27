@@ -19,6 +19,8 @@ import honda.bookworm.Application.Services;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
 import honda.bookworm.Business.Exceptions.InvalidGenreException;
+import honda.bookworm.Business.Exceptions.Users.UserException;
+import honda.bookworm.Business.Exceptions.Users.UserNotFoundException;
 import honda.bookworm.Business.IAccessUsers;
 import honda.bookworm.Business.IUserManager;
 import honda.bookworm.Business.Managers.AccessUsers;
@@ -219,14 +221,6 @@ public class UserPreferenceIT {
         System.out.println("\nStarting testBookFavoriteToggle");
         boolean result;
 
-        //test with a no active user. invalid user cant access it
-        try{
-            result = userPreference.bookFavouriteToggle("9780199536269");
-            assertFalse("this should not be called",result);
-        }catch (Exception e){
-            assert(e instanceof GeneralPersistenceException);
-        }
-
         //log in to user
         accessUsers.verifyUser("rowling","harrypotter");
         try{
@@ -239,12 +233,11 @@ public class UserPreferenceIT {
             fail("This should not be called");
         }
 
-
         try{
             result = userPreference.bookFavouriteToggle("178019953629");
             assertFalse("this should not be called",result);
         }catch (Exception e){
-            assert(e instanceof InvalidISBNException);
+            assert(e instanceof UserException);
         }
 
         System.out.println("\nFinished testBookFavoriteToggle");

@@ -1,17 +1,16 @@
 package honda.bookworm.Application;
 
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+
 public class Main {
     private static String dbName="BookWormDB";
 
-    public static void setDBPathName(final String name) {
+    public static void setDBPathName(final String name) throws GeneralPersistenceException {
         try {
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
-        } catch (InstantiationException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new GeneralPersistenceException("Unable to set dB path name");
         }
         dbName = name;
     }

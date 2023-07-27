@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.honda.bookworm.R;
 
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
@@ -33,7 +35,13 @@ public class GenreFavoritingConstructor {
     public GenreFavoritingConstructor(Context context, IUserPreference userPreference, User user) {
         this.container = LayoutInflater.from(context).inflate(R.layout.sub_view_genre_favoriting, null, false);
         this.userPreferences = userPreference;
-        this.favGenreList = userPreference.getFavoriteGenreList(user);
+
+        try{
+            this.favGenreList = userPreference.getFavoriteGenreList(user);
+        } catch(UserException e){
+            Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
+        }
+
         this.favGenreAdapter = new GenreAdapter(context, favGenreList);
         this.setup();
     }
@@ -63,7 +71,13 @@ public class GenreFavoritingConstructor {
                 if (genreSpinner.getSelectedItem() instanceof Genre) {
                     Genre g = (Genre) genreSpinner.getSelectedItem();
                     favGenreList.add(g);
-                    userPreferences.genreFavouriteToggle(g);
+
+                    try{
+                        userPreferences.genreFavouriteToggle(g);
+                    }catch(UserException e){
+                        Toast.makeText(v.getContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
+                    }
+
                     addFavGenre(g);
                     favGenreAdapter.update();
                     genreSpinner.setSelection(0);
@@ -89,7 +103,13 @@ public class GenreFavoritingConstructor {
             @Override
             public void onClick(View v) {
                 favGenreList.remove(g);
-                userPreferences.genreFavouriteToggle(g);
+
+                try{
+                    userPreferences.genreFavouriteToggle(g);
+                }catch(UserException e){
+                    Toast.makeText(v.getContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
+                }
+
                 genreContainer.removeView(pill);
                 favGenreAdapter.update();
                 containerMsgCheck();
