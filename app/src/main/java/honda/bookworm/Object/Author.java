@@ -34,6 +34,12 @@ public class Author extends User {
 
     public void setAuthorID(int authorID) {this.authorID = authorID;}
 
+    @Override
+    public boolean canAuthorBooks()
+    {
+        return true;
+    }
+
     public String toString() {
         return "Author: " +
                 "firstName:'" + getFirstName() + '\'' +

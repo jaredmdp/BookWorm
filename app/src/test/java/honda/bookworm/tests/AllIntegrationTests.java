@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 
 import honda.bookworm.tests.Business.AccessBooksIT;
 import honda.bookworm.tests.Business.AccessUsersIT;
-import honda.bookworm.tests.Business.FullIT;
+import honda.bookworm.tests.Business.CommentManagerIT;
 import honda.bookworm.tests.Business.SearchManagerIT;
 import honda.bookworm.tests.Business.UserPreferenceIT;
 
@@ -15,7 +15,7 @@ import honda.bookworm.tests.Business.UserPreferenceIT;
         AccessUsersIT.class,
         SearchManagerIT.class,
         UserPreferenceIT.class,
-        FullIT.class
+        CommentManagerIT.class,
 })
 
 public class AllIntegrationTests {

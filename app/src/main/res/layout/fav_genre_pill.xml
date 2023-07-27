@@ -30,5 +30,6 @@
         android:src="@drawable/icon_remove"
         android:background="@android:color/transparent"
         app:tint="@color/white"
+        android:visibility="gone"
         />
 </LinearLayout>

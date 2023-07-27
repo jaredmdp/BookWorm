@@ -1,70 +1,65 @@
 package honda.bookworm.View.Extra;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.honda.bookworm.R;
 
 import java.util.List;
 
+import honda.bookworm.Business.Exceptions.Users.UserException;
 import honda.bookworm.Business.IUserPreference;
 import honda.bookworm.Object.Genre;
 import honda.bookworm.Object.User;
 import honda.bookworm.View.Extra.Adapters.GenreAdapter;
 
 public class GenreFavoritingConstructor {
-    private Context context;
-   private IUserPreference userPreferences;
-   private GenreAdapter favGenreAdapter;
-   private List<Genre> favGenreList;
-   private boolean isActiveUser;
-   private View container;
-   private Spinner genreSpinner;
-   private TextView noGenresFound, addFavGenres;
-   private ImageButton doneButton , addButton;
-   private FlexboxLayout genreContainer;
+    private IUserPreference userPreferences;
+    private GenreAdapter favGenreAdapter;
+    private List<Genre> favGenreList;
+    private View container;
+    private Spinner genreSpinner;
+    private TextView noGenresFound;
+    private ImageButton addButton;
+    private FlexboxLayout genreContainer;
+    private boolean inEditMode;
 
 
-    public GenreFavoritingConstructor(Context context, IUserPreference userPreference, User user){
-        this.context = context;
-        this.container = LayoutInflater.from(context).inflate(R.layout.sub_view_genre_favoriting,null,false);
+    public GenreFavoritingConstructor(Context context, IUserPreference userPreference, User user) {
+        this.container = LayoutInflater.from(context).inflate(R.layout.sub_view_genre_favoriting, null, false);
         this.userPreferences = userPreference;
-        this.favGenreList = userPreference.getFavoriteGenreList(user);
-        this.favGenreAdapter = new GenreAdapter(context,favGenreList);
-        this.isActiveUser= true;
+
+        try{
+            this.favGenreList = userPreference.getFavoriteGenreList(user);
+        } catch(UserException e){
+            Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
+        }
+
+        this.favGenreAdapter = new GenreAdapter(context, favGenreList);
         this.setup();
     }
 
-    public GenreFavoritingConstructor(Context context,User user, IUserPreference userPreference, boolean isActiveUser){
-        this(context,userPreference,user);
-        this.isActiveUser = isActiveUser;
+    public View getView() {
+        return container;
     }
 
-    public View getView(){return container; }
-
-    private void setup(){
+    private void setup() {
+        inEditMode = false;
         noGenresFound = container.findViewById(R.id.userfavgenre_no_fav_genres);
         genreContainer = container.findViewById(R.id.userfavgenre_container);
+        addButton = container.findViewById(R.id.userfavgenre_add_genre);
+        this.genreSpinner = container.findViewById(R.id.userfavgenre_genre_spinner);
+        genreSpinner.setAdapter(favGenreAdapter);
+        addFavouriteGenreClicked(addButton);
 
-        if(isActiveUser) {
-            container.findViewById(R.id.userfavgenre_spinner_container).setVisibility(View.VISIBLE);
-            doneButton = container.findViewById(R.id.userfavgenre_done_changes);
-            addButton = container.findViewById(R.id.userfavgenre_add_genre);
-            addFavGenres = container.findViewById(R.id.userfavgenre_addgenretext);
-            this.genreSpinner = container.findViewById(R.id.userfavgenre_genre_spinner);
-            genreSpinner.setAdapter(favGenreAdapter);
-            addFavouriteGenreClicked(addButton);
-            genreDoneClicked(doneButton);
-        }else {
-            container.findViewById(R.id.userfavgenre_spinner_container).setVisibility(View.GONE);
-        }
-
-        for (Genre g: favGenreList) {
+        for (Genre g : favGenreList) {
             addFavGenre(g);
         }
     }
@@ -73,70 +68,92 @@ public class GenreFavoritingConstructor {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(genreSpinner.getVisibility() == View.GONE){
-                    genreSpinner.setVisibility(View.VISIBLE);
-                    doneButton.setVisibility(View.VISIBLE);
-                    addFavGenres.setVisibility(View.GONE);
-                }else{
-                    if(genreSpinner.getSelectedItem() instanceof  Genre){
-                        Genre g = (Genre )genreSpinner.getSelectedItem();
-                        favGenreList.add(g);
+                if (genreSpinner.getSelectedItem() instanceof Genre) {
+                    Genre g = (Genre) genreSpinner.getSelectedItem();
+                    favGenreList.add(g);
+
+                    try{
                         userPreferences.genreFavouriteToggle(g);
-                        addFavGenre(g);
-                        favGenreAdapter.update();
-                        genreSpinner.setSelection(0);
-                        containerMsgCheck();
+                    }catch(UserException e){
+                        Toast.makeText(v.getContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
                     }
+
+                    addFavGenre(g);
+                    favGenreAdapter.update();
+                    genreSpinner.setSelection(0);
+                    containerMsgCheck();
                 }
             }
         });
     }
 
-    public void genreDoneClicked(View view) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                view.setVisibility(View.GONE);
-                genreSpinner.setVisibility(View.GONE);
-                addFavGenres.setVisibility(View.VISIBLE);
-                genreSpinner.setSelection(0);
-            }
-        });
-    }
 
-    private void addFavGenre(Genre g){
-        View genrePill = LayoutInflater.from(container.getContext()).inflate(R.layout.fav_genre_pill,genreContainer,false);
+    private void addFavGenre(Genre g) {
+        View genrePill = LayoutInflater.from(container.getContext()).inflate(R.layout.fav_genre_pill, genreContainer, false);
         genreContainer.addView(genrePill);
-        fillGenrePill(genrePill,g);
+        fillGenrePill(genrePill, g);
         containerMsgCheck();
     }
 
-    private void fillGenrePill(View pill, Genre g){
+    private void fillGenrePill(View pill, Genre g) {
         ((TextView) pill.findViewById(R.id.fav_genre_pill_text))
                 .setText(g.toString());
+        View rmvButton = pill.findViewById(R.id.fav_genre_pill_remove);
+        rmvButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favGenreList.remove(g);
 
-        if(isActiveUser) {
-            pill.findViewById(R.id.fav_genre_pill_remove)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            favGenreList.remove(g);
-                            userPreferences.genreFavouriteToggle(g);
-                            genreContainer.removeView(pill);
-                            favGenreAdapter.update();
-                            containerMsgCheck();
-                        }
-                    });
-        }else{
-            pill.findViewById(R.id.fav_genre_pill_remove).setVisibility(View.GONE);
+                try{
+                    userPreferences.genreFavouriteToggle(g);
+                }catch(UserException e){
+                    Toast.makeText(v.getContext(), e.getMessage() , Toast.LENGTH_SHORT).show();
+                }
+
+                genreContainer.removeView(pill);
+                favGenreAdapter.update();
+                containerMsgCheck();
+            }
+        });
+
+        if (inEditMode) {
+            rmvButton.setVisibility(View.VISIBLE);
         }
     }
 
+    public void enterEditMode() {
+        View spinnerContainer = container.findViewById(R.id.userfavgenre_spinner_container);
+        spinnerContainer.setVisibility(View.VISIBLE);
+        inEditMode = true;
 
-    private void containerMsgCheck(){
-        if(genreContainer.getChildCount()>1){
+        for (int i = 1; i < genreContainer.getChildCount(); i++) {
+            View pill = genreContainer.getChildAt(i);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (pill.getSourceLayoutResId() == R.layout.fav_genre_pill) {
+                    pill.findViewById(R.id.fav_genre_pill_remove).setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    public void exitEditMode() {
+        View spinnerContainer = container.findViewById(R.id.userfavgenre_spinner_container);
+        spinnerContainer.setVisibility(View.GONE);
+        inEditMode = false;
+        for (int i = 1; i < genreContainer.getChildCount(); i++) {
+            View pill = genreContainer.getChildAt(i);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (pill.getSourceLayoutResId() == R.layout.fav_genre_pill) {
+                    pill.findViewById(R.id.fav_genre_pill_remove).setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    private void containerMsgCheck() {
+        if (genreContainer.getChildCount() > 1) {
             this.noGenresFound.setVisibility(View.GONE);
-        }else {
+        } else {
             this.noGenresFound.setVisibility(View.VISIBLE);
         }
     }

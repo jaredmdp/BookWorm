@@ -21,7 +21,9 @@ import honda.bookworm.Business.Exceptions.InvalidSearchException;
 import honda.bookworm.Business.ISearchManager;
 import honda.bookworm.Business.Managers.SearchManager;
 import honda.bookworm.Object.Book;
+import honda.bookworm.Object.User;
 import honda.bookworm.View.Extra.Adapters.Book_RecyclerViewAdapter;
+import honda.bookworm.View.Extra.Adapters.User_RecyclerViewAdapter;
 
 public class Search_ViewHandler extends AppCompatActivity {
 
@@ -31,7 +33,7 @@ public class Search_ViewHandler extends AppCompatActivity {
     TextView searchResultHeading;
     TextView searchResultParagraph;
 
-    ISearchManager accessBooks;
+    ISearchManager searchManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class Search_ViewHandler extends AppCompatActivity {
         radioSelectChange();
         searchQueryListener();
 
-        accessBooks = new SearchManager();
+        searchManager = new SearchManager();
     }
 
     private void radioSelectChange() {
@@ -54,14 +56,16 @@ public class Search_ViewHandler extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 search.setInputType(InputType.TYPE_CLASS_TEXT);
                 if (checkedId == R.id.search_for_genre) {
-                    search.setQueryHint("Search by Genre");
+                    search.setQueryHint("Search Books by Genre");
                 } else if (checkedId == R.id.search_for_author) {
-                    search.setQueryHint("Search by Author");
+                    search.setQueryHint("Search Books by Author");
                 } else if (checkedId == R.id.search_for_book_title) {
-                    search.setQueryHint("Search by Book Title");
+                    search.setQueryHint("Search Books by Title");
                 } else if (checkedId == R.id.search_for_isbn) {
-                    search.setQueryHint("Search by ISBN");
+                    search.setQueryHint("Search Books by ISBN");
                     search.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }else if(checkedId == R.id.search_for_users) {
+                    search.setQueryHint("Search for Users");
                 }
                 search.setQuery("", false);
             }
@@ -79,16 +83,20 @@ public class Search_ViewHandler extends AppCompatActivity {
                     // Search queries called from here
                     try {
                         if (checkedId == R.id.search_for_genre) {
-                            bookList = accessBooks.performSearchGenre(query);
+                            bookList = searchManager.performSearchGenre(query);
                         } else if (checkedId == R.id.search_for_author) {
-                            bookList = accessBooks.performSearchAuthor(query);
+                            bookList = searchManager.performSearchAuthor(query);
                         } else if (checkedId == R.id.search_for_book_title) {
-                            bookList = accessBooks.performSearchTitle(query);
+                            bookList = searchManager.performSearchTitle(query);
                         } else if (checkedId == R.id.search_for_isbn) {
-                            bookList = accessBooks.performSearchISBN(query);
+                            bookList = searchManager.performSearchISBN(query);
                         }
-
                         updateRecyclerView(bookList, query);
+
+                        if(checkedId == R.id.search_for_users){
+                            List<User> userList = searchManager.performSearchUser(query);
+                            updateRecyclerViewUser(userList, query);
+                        }
 
                     } catch (InvalidSearchException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -129,5 +137,29 @@ public class Search_ViewHandler extends AppCompatActivity {
         searchResultHeading.setVisibility(View.VISIBLE);
         searchResultParagraph.setVisibility(View.VISIBLE);
     }
+
+    public void updateRecyclerViewUser(List<User> userList, String resultHeading) {
+        RecyclerView bookRecycler = findViewById(R.id.search_book_recycler);
+
+        if (!userList.isEmpty()) {
+            User_RecyclerViewAdapter userAdapter = new User_RecyclerViewAdapter(Search_ViewHandler.this, userList);
+            bookRecycler.setAdapter(userAdapter);
+            bookRecycler.setLayoutManager(new LinearLayoutManager(this));
+            bookRecycler.setVisibility(View.VISIBLE);
+
+            int resCount = userList.size();
+            String resMsg = resCount + " result" + (resCount < 2 ? "" : "s") + " found.";
+            searchResultHeading.setText("Searched For: "+resultHeading);
+            searchResultParagraph.setText(resMsg);
+        } else {
+            bookRecycler.setVisibility(View.GONE);
+            searchResultHeading.setText("No results found");
+            searchResultParagraph.setText(R.string.searchError);
+        }
+
+        searchResultHeading.setVisibility(View.VISIBLE);
+        searchResultParagraph.setVisibility(View.VISIBLE);
+    }
+
 
 }

@@ -1,9 +1,11 @@
 package honda.bookworm.tests.Business;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.After;
@@ -122,12 +124,20 @@ public class AccessBooksIT {
     @Test
     public void testGetBookByAuthorID_Fail() {
         System.out.println("\nStarting testGetBookByAuthorID_Fail");
-        try {
-            assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
-        } catch (AuthorNotFoundException e) {
-            e.printStackTrace();
-        }
+        assertThrows(AuthorNotFoundException.class, () -> accessBooks.getAuthorIDBookList(-100));
         System.out.println("\nFinished testGetBookByAuthorID_Fail");
+    }
+
+    @Test
+    public void testGetAllAvailableGenres(){
+        System.out.println("\nStarting testAllAvailableGenres");
+
+        List<Genre> allGenres = accessBooks.getAllAvailableGenres();
+
+        assertTrue(allGenres.size()<= (Genre.values()).length);
+        assertFalse(allGenres.size() > (Genre.values()).length);
+
+        System.out.println("\nFinished testAllAvailableGenres");
     }
 
     @After

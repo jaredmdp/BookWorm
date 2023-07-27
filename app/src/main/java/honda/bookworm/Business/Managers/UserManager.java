@@ -14,7 +14,7 @@ public class UserManager implements IUserManager {
 
     public UserManager()
     {
-        userPersistence = Services.getUserPersistence(true);
+        userPersistence = Services.getUserPersistence();
     }
 
     public UserManager(IUserPersistence userPersistence){
@@ -22,10 +22,7 @@ public class UserManager implements IUserManager {
     }
 
     public boolean isAuthorActive(){
-        if(getActiveUser() instanceof Author){
-            return true;
-        }
-        return false;
+        return getActiveUser() instanceof Author;
     }
 
     public User getActiveUser(){

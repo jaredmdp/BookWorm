@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import honda.bookworm.Application.Services;
+import honda.bookworm.Business.Exceptions.Books.BookException;
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidBookException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
@@ -25,7 +26,7 @@ public class AccessBooks implements IAccessBooks {
     private static final int MIN_DESCRIPTION_LENGTH = 1;
     private static final int ISBN_LENGTH = 13;
 
-    public AccessBooks() {bookPersistence = Services.getBookPersistence(true);}
+    public AccessBooks() {bookPersistence = Services.getBookPersistence();}
 
     public AccessBooks(IBookPersistence bookPersistence){
         this.bookPersistence = bookPersistence;
@@ -35,7 +36,7 @@ public class AccessBooks implements IAccessBooks {
             throws DuplicateISBNException, InvalidBookException, IllegalStateException, InvalidGenreException {
         User current = Services.getActiveUser();
 
-        if(!(current instanceof Author)) {
+        if(!(current.canAuthorBooks())) {
             throw new IllegalStateException("Only Authors can insert books");
         }
 
@@ -50,7 +51,7 @@ public class AccessBooks implements IAccessBooks {
     }
 
     @Override
-    public List<Book> getAuthorIDBookList (int authorID) throws AuthorNotFoundException {
+    public List<Book> getAuthorIDBookList (int authorID) throws BookException {
         List<Book> bookList = new ArrayList<>();
 
         validateAuthorID(authorID);
@@ -58,7 +59,7 @@ public class AccessBooks implements IAccessBooks {
         try {
             bookList = bookPersistence.getBooksByAuthorID(authorID);
         } catch (GeneralPersistenceException e) {
-            e.printStackTrace();
+            throw new BookException("Could not get written books for this author");
         }
 
         return bookList;
@@ -71,10 +72,22 @@ public class AccessBooks implements IAccessBooks {
         try{
             book = bookPersistence.getBookByISBN(isbn);
         }catch (GeneralPersistenceException e){
-            e.printStackTrace();
+            throw new InvalidISBNException("Could not get item. "+e.getMessage());
         }
 
         return book;
+    }
+
+    public List<Genre> getAllAvailableGenres() {
+        List<Genre> availableGenres;
+
+        try {
+            availableGenres = bookPersistence.getAllAvailableGenreList();
+        }catch (GeneralPersistenceException gpe){
+            availableGenres = new ArrayList<>();
+        }
+
+        return availableGenres;
     }
 
     public String getTrimmedBookName(Book b) {

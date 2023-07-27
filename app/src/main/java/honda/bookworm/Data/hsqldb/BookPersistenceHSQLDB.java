@@ -6,11 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import honda.bookworm.Business.Exceptions.Books.BookException;
 import honda.bookworm.Business.Exceptions.Books.DuplicateISBNException;
 import honda.bookworm.Business.Exceptions.Books.InvalidISBNException;
 import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
@@ -53,10 +53,40 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException(e.getMessage());
         }
         return result;
+    }
+
+    @Override
+    public List<Book> getMostFavoriteBooks() {
+        String mostFav = "(SELECT fb.ISBN FROM PUBLIC.FavoriteBook fb " +
+                "GROUP BY fb.ISBN ORDER BY COUNT(*) DESC " +
+                "LIMIT 6)";
+        String sql = "Select b.*, u.first_name, u.last_name from PUBLIC.Book b "+
+                "join author a on a.author_id = b.author_id " +
+                "join user u on u.username=a.username "+
+                "where b.ISBN IN "+mostFav;
+
+        List<Book> bookList = new ArrayList<>();
+
+        try (final Connection c = connection()) {
+            final PreparedStatement statement = c.prepareStatement(sql);
+
+            final ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                final Book book = fromResultSet(result);
+                bookList.add(book);
+            }
+
+            statement.close();
+            result.close();
+        } catch (final SQLException e) {
+            throw new GeneralPersistenceException("Error retrieving most favorite books");
+        }
+
+        return bookList;
     }
 
     public List<Book> searchBooksByISBN(String ISBN) throws GeneralPersistenceException {
@@ -85,7 +115,6 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Invalid ISBN");
         }
 
@@ -118,7 +147,6 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Invalid Title");
         }
 
@@ -142,7 +170,6 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
 
             return newBook;
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new DuplicateISBNException("For ISBN " + newBook.getISBN());
         }
     }
@@ -170,8 +197,7 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
-            throw new GeneralPersistenceException("Author ID: " + authorID + " does not exist");
+            throw new GeneralPersistenceException("Failed to retrieve books for author");
         }
 
         return booksByAuthor;
@@ -205,7 +231,6 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Author: " + author + " does not exist");
         }
 
@@ -218,7 +243,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             final PreparedStatement statement = c.prepareStatement ("SELECT b.*, u.first_name, u.last_name FROM Book b "
                     + "join author a on a.author_id=b.author_id "
                     + "join user u on u.username=a.username "
-                    + "where b.genre_id= ?");
+                    + "where b.genre_id= ?"
+                    + "ORDER BY b.book_name");
             statement.setInt(1, genre.ordinal());
 
             final ResultSet result = statement.executeQuery();
@@ -230,7 +256,6 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             statement.close();
             result.close();
         } catch (final SQLException e) {
-            e.printStackTrace();
             throw new GeneralPersistenceException("Could not find " + genre + " in system");
         }
         return booksByGenre;
@@ -254,11 +279,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             if (resultSet.next()) {
                 result = resultSet.getBoolean("rowExists");
             }
-        } catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
-            if (e instanceof NullPointerException) {
-                throw new UserNotFoundException("User does not exist");
-            }
+        } catch (SQLException e) {
+            throw new GeneralPersistenceException("Unable to access user favorite books");
         }
 
         return result;
@@ -284,17 +306,8 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
             c.commit();
             statement.close();
 
-        } catch (final SQLException | NullPointerException e) {
-
-            if (e instanceof SQLIntegrityConstraintViolationException) {
-                if(Objects.requireNonNull(e.getMessage()).contains("101124")){
-                    throw new InvalidISBNException(isbn);
-                }
-            } else if (e instanceof NullPointerException) {
-                throw new UserNotFoundException("User does not exist");
-            } else {
-                e.printStackTrace();
-            }
+        } catch (final SQLException e) {
+            throw new GeneralPersistenceException("Unable to change favorite book");
         }
 
         return result;
@@ -317,10 +330,48 @@ public class BookPersistenceHSQLDB implements IBookPersistence {
                 bookList.add(book);
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new GeneralPersistenceException("Unable to retrieve user favorite books");
         }
 
         return bookList;
+    }
+
+    public List<Genre> getAllAvailableGenreList(){
+        List<Genre> genreList = new ArrayList<>();
+        try(Connection c = connection()){
+            String sqlQuery = "select Genre_ID from book " +
+                    "group by genre_id " +
+                    "order by genre_id";
+            PreparedStatement statement = c.prepareStatement(sqlQuery);
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()){
+                int gID = result.getInt("Genre_ID");
+                final Genre genre= Genre.values()[gID];
+                genreList.add(genre);
+            }
+        }catch (SQLException e){
+            throw new GeneralPersistenceException(e.getMessage());
+        }
+
+        return genreList;
+    }
+
+    @Override
+    public void removeBookByISBN(String isbn) {
+        try (final Connection c = connection()) {
+            String sql = "DELETE from BOOK where book.isbn = ?";
+
+            final PreparedStatement statement = c.prepareStatement (sql);
+            statement.setString(1, isbn);
+
+            statement.executeUpdate();
+
+            statement.close();
+
+        } catch (final SQLException e) {
+            throw new BookException("No Books found");
+        }
     }
 
 

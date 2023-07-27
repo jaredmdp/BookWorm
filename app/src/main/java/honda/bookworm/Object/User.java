@@ -53,6 +53,11 @@ public class User {
         this.password = password;
     }
 
+    public boolean canAuthorBooks()
+    {
+        return false;
+    }
+
     //Getting the Arraylists
     public ArrayList<Book> getFavoriteBooks() {
         return favoriteBooks;
