@@ -4,7 +4,7 @@ BookWorm is a book browsing application that changes the way our users explore, 
 
 ## Our presentation website
 
-- [BookWorm](https://bookworm.vercel.app/)
+- [BookWorm](https://bookwormhonda.vercel.app/)
 
 ## Vision Statement
 
