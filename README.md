@@ -1,8 +1,8 @@
 # ![book worm logo](./logo/bookWorm_mascot.png) BookWorm
 
-BookWorm will be a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
+BookWorm is a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
 
-## Visit our presentation website!
+## Our presentation website
 
 - [BookWorm](https://bookworm.vercel.app/)
 
