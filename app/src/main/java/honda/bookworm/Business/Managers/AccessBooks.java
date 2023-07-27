@@ -72,6 +72,7 @@ public class AccessBooks implements IAccessBooks {
             book = bookPersistence.getBookByISBN(isbn);
         }catch (GeneralPersistenceException e){
             e.printStackTrace();
+            throw new InvalidISBNException("Could not get item. "+e.getMessage());
         }
 
         return book;

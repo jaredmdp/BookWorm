@@ -7,6 +7,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.widget.Toast;
 
+import java.io.IOException;
+
+import honda.bookworm.Business.Exceptions.GeneralPersistenceException;
+
 public class ImageImporter{
     private static final int REQUEST_CODE = 1;
     private static final int PICK_IMAGE = 1;
@@ -25,12 +29,19 @@ public class ImageImporter{
     }
 
 
-    public static void handleActivityResult(int requestCode, int resultCode, Intent data, ImageImportCallback callback) {
+    public static void handleActivityResult(int requestCode, int resultCode, Intent data, ImageImportCallback callback, Context context) {
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
 
             if (callback != null) {
-                callback.onImageImported(selectedImageUri);
+
+
+                try{
+                    callback.onImageImported(selectedImageUri);
+                } catch(IOException e)
+                {
+                    Toast.makeText(context, "Failed to import image: ", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
@@ -49,7 +60,7 @@ public class ImageImporter{
 
 
     public interface ImageImportCallback {
-        void onImageImported(Uri imageUri);
+        void onImageImported(Uri imageUri) throws IOException;
     }
 
 
