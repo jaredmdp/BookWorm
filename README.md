@@ -2,6 +2,10 @@
 
 BookWorm will be a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
 
+## Visit our presentation website!
+
+- [BookWorm](https://bookworm.vercel.app/)
+
 ## Vision Statement
 
 Our [Vision Statement](https://code.cs.umanitoba.ca/3350-summer2023/teamhonda-13/-/blob/main/docs/Vision%20Statement.md) from Iteration 0
@@ -50,4 +54,4 @@ Our document for [Contributing](./docs/Workflow.md) standards for this project
 
 - [UnitTests](./app/src/test/java/honda/bookworm/tests/AllUnitTests.java)
 - [IntegrationTests](./app/src/test/java/honda/bookworm/tests/AllIntegrationTests.java)
-- [AcceptanceTests](./app/src/test/java/honda/bookworm/tests/AllTests.java)
+- [AcceptanceTests](./app/src/androidTest/java/honda/bookworm/SystemTests/AllAcceptanceTests.java)
