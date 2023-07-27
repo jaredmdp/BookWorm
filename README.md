@@ -1,6 +1,10 @@
 # ![book worm logo](./logo/bookWorm_mascot.png) BookWorm
 
-BookWorm will be a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
+BookWorm is a book browsing application that changes the way our users explore, engage with, and purchase books, building a vibrant community for book enthusiasts.
+
+## Our presentation website
+
+- [BookWorm](https://bookworm.vercel.app/)
 
 ## Vision Statement
 
@@ -50,4 +54,4 @@ Our document for [Contributing](./docs/Workflow.md) standards for this project
 
 - [UnitTests](./app/src/test/java/honda/bookworm/tests/AllUnitTests.java)
 - [IntegrationTests](./app/src/test/java/honda/bookworm/tests/AllIntegrationTests.java)
-- [AcceptanceTests](./app/src/test/java/honda/bookworm/tests/AllTests.java)
+- [AcceptanceTests](./app/src/androidTest/java/honda/bookworm/SystemTests/AllAcceptanceTests.java)
