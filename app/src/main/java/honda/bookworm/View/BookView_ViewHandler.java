@@ -71,7 +71,7 @@ public class BookView_ViewHandler extends AppCompatActivity {
             this.book = accessBooks.getBookByISBN(bookISBN);
         } catch(InvalidISBNException e)
         {
-            //what do we want to happen
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
 
 
